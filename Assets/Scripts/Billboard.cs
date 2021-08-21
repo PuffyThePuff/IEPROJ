@@ -4,19 +4,9 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    private Camera mainCamera;
-
-    // Start is called before the first frame update
-    void Start()
+    //Makes the object always face the camera
+    void Update()
     {
-        mainCamera = Camera.main;
-    }
-
-    // Update is called once per frame
-    void LateUpdate()
-    {
-        transform.LookAt(mainCamera.transform);
-
-        transform.rotation = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
+        transform.rotation = Quaternion.Euler(0f, 45f, 0f);
     }
 }
