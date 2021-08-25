@@ -49,7 +49,7 @@ public class NodeParser : MonoBehaviour
 
             //waits for left mouse click before going to next node
             yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
-            yield return new WaitUntil(() => Input.GetMouseButtonUp(1));
+            yield return new WaitUntil(() => Input.GetMouseButtonUp(0));
             NextNode("exit");
         }
     }
