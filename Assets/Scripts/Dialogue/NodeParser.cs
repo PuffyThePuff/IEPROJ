@@ -11,9 +11,11 @@ public class NodeParser : MonoBehaviour
     public Text speaker;
     public Text dialogue;
     public Image speakerImage;
+    [SerializeField] private GameObject dialogueBox;
 
     private void Start()
     {
+        dialogueBox.SetActive(true);
         //finds the start node and make it the starting point
         foreach (BaseNode b in graph.nodes)
         {
@@ -51,6 +53,11 @@ public class NodeParser : MonoBehaviour
             yield return new WaitUntil(() => Input.GetMouseButtonDown(0));
             yield return new WaitUntil(() => Input.GetMouseButtonUp(0));
             NextNode("exit");
+        }
+
+        if (dataParts[0] == "End")
+        {
+            dialogueBox.SetActive(false);
         }
     }
 
