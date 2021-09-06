@@ -1485,6 +1485,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TransitionCollider
       objectReference: {fileID: 0}
+    - target: {fileID: 3557323909924128950, guid: 521655c9cb4d3504c88cfffca41165d6, type: 3}
+      propertyPath: sceneToLoad
+      value: DestinationSample
+      objectReference: {fileID: 0}
     - target: {fileID: 4424105719819451398, guid: 521655c9cb4d3504c88cfffca41165d6, type: 3}
       propertyPath: m_RootOrder
       value: 0
