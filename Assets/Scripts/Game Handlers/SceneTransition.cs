@@ -9,9 +9,16 @@ public class SceneTransition : MonoBehaviour
     public Vector3 playerPosition;
     public VectorValue playerStorage;
 
+    private void Start()
+    {
+
+        Debug.Log("adsfg");
+    }
+
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && !other.isTrigger)
+        Debug.Log(other.tag);
+        if (other.CompareTag("Player"))
         {
             playerStorage.initialValue = playerPosition;
             SceneManager.LoadScene(sceneToLoad);
