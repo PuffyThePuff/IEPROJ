@@ -28,9 +28,7 @@ public class ObjectClicker : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    this.GetComponent<PointAndClickController>().enabled = false;
                     this.GetComponent<DialogueTrigger>().TriggerDialogue();
-                    this.GetComponent<PointAndClickController>().enabled = true;
                 }
             }
         }
