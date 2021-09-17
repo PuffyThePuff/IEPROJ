@@ -4,5 +4,17 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/OtaconnectStart.unity
+    guid: 740eb5db570cf1d43814abc2903dd668
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 0d47a12a567429447bd8dd1b9c8b75a2
+  - enabled: 1
+    path: Assets/Scenes/LoadingScreen.unity
+    guid: 145e564784203364888266375df9dc89
+  - enabled: 1
+    path: Assets/Scenes/PhoneUIScene.unity
+    guid: 23413b28a667a9944aa570d39520efe1
   m_configObjects: {}
