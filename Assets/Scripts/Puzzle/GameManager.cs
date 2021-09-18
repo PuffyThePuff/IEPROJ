@@ -61,14 +61,20 @@ public class GameManager : MonoBehaviour
         GameObject newPiece;
 
         
-
+        
         if(this.gameObject.transform.parent != null)
         {
+            Transform parentTransform = this.gameObject.transform.parent.transform;
+            Vector3 parentPos = parentTransform.position;
+            parentPos.x -= 0.625f;
+            parentPos.y -= 0.45f;
             if (x % 2 == 0)
-                newPiece = Instantiate(pieces[pieceIndex], this.gameObject.transform.parent.transform.position + new Vector3(0.2f * x, (0.2f * y) + 0.1f, 0.0f) - ((this.gameObject.transform.parent.transform.forward * this.gameObject.transform.parent.transform.localScale.z)/2), Quaternion.identity, null);
+                newPiece = Instantiate(pieces[pieceIndex], parentPos + new Vector3(0.2f * x, (0.2f * y) + 0.1f, 0.0f) - ((parentTransform.forward * parentTransform.localScale.z)/2), Quaternion.identity, null);
 
             else
-                newPiece = Instantiate(pieces[pieceIndex], this.gameObject.transform.parent.transform.position + new Vector3(0.2f * x, 0.2f * y, 0.0f) - ((this.gameObject.transform.parent.transform.forward * this.gameObject.transform.parent.transform.localScale.z)/2), Quaternion.identity, null);
+                newPiece = Instantiate(pieces[pieceIndex], parentPos + new Vector3(0.2f * x, 0.2f * y, 0.0f) - ((parentTransform.forward * parentTransform.localScale.z)/2), Quaternion.identity, null);
+
+            newPiece.transform.parent = this.transform.parent;
             
         }
 
