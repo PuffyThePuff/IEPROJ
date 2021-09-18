@@ -5955,6 +5955,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 3049160239118194412, guid: e912c990041ea2d49adbe36e27974920, type: 3}
+      propertyPath: m_Text
+      value: Play Test Puzzle
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e912c990041ea2d49adbe36e27974920, type: 3}
 --- !u!1 &738272087

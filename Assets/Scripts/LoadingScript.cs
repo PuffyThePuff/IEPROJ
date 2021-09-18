@@ -34,4 +34,9 @@ public class LoadingScript : MonoBehaviour
             yield return null;
         }
     }
+
+    public void goMainMenu()
+    {
+        SceneManager.LoadSceneAsync("MainMenu");
+    }
 }
