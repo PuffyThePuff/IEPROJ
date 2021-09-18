@@ -66,13 +66,13 @@ public class GameManager : MonoBehaviour
         {
             Transform parentTransform = this.gameObject.transform.parent.transform;
             Vector3 parentPos = parentTransform.position;
-            parentPos.x -= 0.625f;
-            parentPos.y -= 0.45f;
+            parentPos.x -= 4.2f;
+            parentPos.y -= 2.8f;
             if (x % 2 == 0)
-                newPiece = Instantiate(pieces[pieceIndex], parentPos + new Vector3(0.2f * x, (0.2f * y) + 0.1f, 0.0f) - ((parentTransform.forward * parentTransform.localScale.z)/2), Quaternion.identity, null);
+                newPiece = Instantiate(pieces[pieceIndex], parentPos + new Vector3(1.4f * x, (1.4f * y) + 0.7f, 0.0f) - ((parentTransform.forward * parentTransform.localScale.z)/2), Quaternion.identity, null);
 
             else
-                newPiece = Instantiate(pieces[pieceIndex], parentPos + new Vector3(0.2f * x, 0.2f * y, 0.0f) - ((parentTransform.forward * parentTransform.localScale.z)/2), Quaternion.identity, null);
+                newPiece = Instantiate(pieces[pieceIndex], parentPos + new Vector3(1.4f * x, 1.4f * y, 0.0f) - ((parentTransform.forward * parentTransform.localScale.z)/2), Quaternion.identity, null);
 
             newPiece.transform.parent = this.transform.parent;
             
