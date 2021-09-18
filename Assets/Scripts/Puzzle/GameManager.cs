@@ -60,11 +60,32 @@ public class GameManager : MonoBehaviour
     {
         GameObject newPiece;
 
-        if(x%2 == 0)
-            newPiece = Instantiate(pieces[pieceIndex], new Vector3(0.2f * x, (0.2f * y) + 0.1f, 0.0f), Quaternion.identity, null);
+        
+        
+        if(this.gameObject.transform.parent != null)
+        {
+            Transform parentTransform = this.gameObject.transform.parent.transform;
+            Vector3 parentPos = parentTransform.position;
+            parentPos.x -= 0.625f;
+            parentPos.y -= 0.45f;
+            if (x % 2 == 0)
+                newPiece = Instantiate(pieces[pieceIndex], parentPos + new Vector3(0.2f * x, (0.2f * y) + 0.1f, 0.0f) - ((parentTransform.forward * parentTransform.localScale.z)/2), Quaternion.identity, null);
+
+            else
+                newPiece = Instantiate(pieces[pieceIndex], parentPos + new Vector3(0.2f * x, 0.2f * y, 0.0f) - ((parentTransform.forward * parentTransform.localScale.z)/2), Quaternion.identity, null);
+
+            newPiece.transform.parent = this.transform.parent;
+            
+        }
 
         else
-            newPiece = Instantiate(pieces[pieceIndex], new Vector3(0.2f * x, 0.2f * y, 0.0f), Quaternion.identity, null);
+        {
+            if (x % 2 == 0)
+                newPiece = Instantiate(pieces[pieceIndex], new Vector3(0.2f * x, (0.2f * y) + 0.1f, 0.0f), Quaternion.identity, null);
+
+            else
+                newPiece = Instantiate(pieces[pieceIndex], new Vector3(0.2f * x, 0.2f * y, 0.0f), Quaternion.identity, null);
+        }
 
         if(newPiece.TryGetComponent(out PieceBehavior PB))
             PB.SetValues(pieceIndex, x, y);
@@ -340,25 +361,27 @@ public class GameManager : MonoBehaviour
             identicalPieces.Clear();
         }
 
-        if(toDelete.Count == 0)
-        {
-            Debug.Log("No chain");
-            isBoardInteractable = true;
-        }
+        //if(toDelete.Count == 0)
+        //{
+        //    Debug.Log("No chain");
+        //    isBoardInteractable = true;
+        //}
 
-        else
-        {
-            Debug.Log("Chaining");
-            foreach(GameObject delete in toDelete)
-            {
-                PieceBehavior pb = delete.GetComponent<PieceBehavior>();
+        //else
+        //{
+        //    Debug.Log("Chaining");
+        //    foreach(GameObject delete in toDelete)
+        //    {
+        //        PieceBehavior pb = delete.GetComponent<PieceBehavior>();
 
-                nBoard[pb.x, pb.y] = -1;
-            }
+        //        nBoard[pb.x, pb.y] = -1;
+        //    }
 
-            DestroyDamagedPieces();
-            StartCoroutine(DelayedRefreshBoard());
-        }
+        //    DestroyDamagedPieces();
+        //    StartCoroutine(DelayedRefreshBoard());
+        //}
+
+        isBoardInteractable = true; //temp
         
     }
 
