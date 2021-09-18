@@ -21,15 +21,15 @@ public class LoadingScript : MonoBehaviour
 
     IEnumerator LoadAsync()
     {
-        AsyncOperation i = SceneManager.LoadSceneAsync("PhoneUIScene");
-        AsyncOperation j = SceneManager.LoadSceneAsync("RoomSample", LoadSceneMode.Additive);
+        AsyncOperation i = SceneManager.LoadSceneAsync("TransitionSample");
+        //AsyncOperation j = SceneManager.LoadSceneAsync("RoomSample", LoadSceneMode.Additive);
         loadingScreen.SetActive(true);
         mainMenuScreen.SetActive(false);
         //yield return new WaitForSeconds(3.0f);
 
-        while (!i.isDone && !j.isDone)
+        while (!i.isDone)
         {
-            float progress = Mathf.Clamp01(i.progress + j.progress / 0.18f);
+            float progress = Mathf.Clamp01(i.progress / 0.9f);
             slider.value = progress;
             yield return null;
         }
