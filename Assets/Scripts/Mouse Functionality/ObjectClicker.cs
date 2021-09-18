@@ -28,8 +28,7 @@ public class ObjectClicker : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                    GameObject nodeParser = hit.transform.GetChild(0).gameObject;
-                    nodeParser.SetActive(true);
+                    this.GetComponent<DialogueTrigger>().TriggerDialogue();
                 }
             }
         }
