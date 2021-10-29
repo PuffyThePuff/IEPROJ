@@ -28,16 +28,18 @@ public class GachaSystem : MonoBehaviour
         }
 
         randomNumber = Random.Range(0, weightTotal);
+        int rarity = 3;
 
         foreach (var weight in gachaWeights)
         {
             if (randomNumber <= weight)
             {
-                //give item
+                GameEvents.current.GachaSuccess(rarity);
             }
             else
             {
                 randomNumber -= weight;
+                rarity++;
             }
         }
     }

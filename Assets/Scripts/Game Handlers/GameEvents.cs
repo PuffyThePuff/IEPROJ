@@ -31,4 +31,10 @@ public class GameEvents : MonoBehaviour
     {
         onGachaRoll?.Invoke();
     }
+
+    public event Action<int> onGachaSuccess;
+    public void GachaSuccess(int rarity)
+    {
+        onGachaSuccess?.Invoke(rarity);
+    }
 }
