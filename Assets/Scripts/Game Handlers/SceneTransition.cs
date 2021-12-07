@@ -11,8 +11,6 @@ public class SceneTransition : MonoBehaviour
 
     private void Start()
     {
-
-        Debug.Log("adsfg");
     }
 
     public void OnTriggerEnter(Collider other)
