@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [System.Serializable]
 public class Dialogue
@@ -21,5 +22,5 @@ public class Dialogue
     public int[] speaker2Lines;
 
     public bool isDone = false;
-
+    public bool hasTriggered = false;
 }

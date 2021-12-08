@@ -10,7 +10,6 @@ public class StoryChapter
     public string ChapterTitle;
     public string[] ChapterScenes;
     public Dialogue[] ChapterDialogues;
-    public Animation[] ChapterAnimations;
 
     public Vector3 playerSpawn;
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class StoryManager : MonoBehaviour
 {
+    public static StoryManager instanceRef;
     public List<StoryChapter> StoryChapters = new List<StoryChapter>(MAX_CHAPTERS);
     public bool isOnDialogue = false;
 
@@ -11,7 +12,16 @@ public class StoryManager : MonoBehaviour
     public int currentDialogue = 0;
 
     private const int MAX_CHAPTERS = 2;
-
+    void Awake()
+    {
+        if (instanceRef == null)
+        {
+            instanceRef = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (instanceRef != this)
+            Destroy(gameObject);
+    }
     public void setAllDialogues()
     {
         StoryChapters[0].ChapterDialogues = new Dialogue[10];
@@ -34,7 +44,9 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[1] = new Dialogue();
         StoryChapters[0].ChapterDialogues[1].name = "MC";
         StoryChapters[0].ChapterDialogues[1].otherName = "NewFriend";
-        StoryChapters[0].ChapterDialogues[1].sentences = new string[34];
+        StoryChapters[0].ChapterDialogues[1].sentences = new string[32];
+        StoryChapters[0].ChapterDialogues[1].decision1 = new string[1];
+        StoryChapters[0].ChapterDialogues[1].decision2 = new string[1];
 
         StoryChapters[0].ChapterDialogues[1].sentences[0] = "Hey there! You don’t look too good. School draining you dead already?";
 
@@ -87,17 +99,24 @@ public class StoryManager : MonoBehaviour
 
         StoryChapters[0].ChapterDialogues[1].sentences[28] = "Yeah! So, are you interested in playing?";
 
-        StoryChapters[0].ChapterDialogues[1].decision1[29] = "Yeah! Let me download it right now.";
-        StoryChapters[0].ChapterDialogues[1].decision2[30] = "I’m unsure… It seems like a game for degenerates…";
+        StoryChapters[0].ChapterDialogues[1].decision1[0] = "Yeah! Let me download it right now.";
+        StoryChapters[0].ChapterDialogues[1].decision2[0] = "I’m unsure… It seems like a game for degenerates…";
         //1st choice result
-        StoryChapters[0].ChapterDialogues[1].sentences[31] = "Alright! Here’s my friend code!";
+        StoryChapters[0].ChapterDialogues[1].sentences[29] = "Alright! Here’s my friend code!";
         //2nd choice result
-        StoryChapters[0].ChapterDialogues[1].sentences[32] = "I see… Here’s my code anyways!";
+        StoryChapters[0].ChapterDialogues[1].sentences[30] = "I see… Here’s my code anyways!";
 
-        StoryChapters[0].ChapterDialogues[1].sentences[33] = "Alright…";
+        StoryChapters[0].ChapterDialogues[1].sentences[31] = "Alright…";
         //screen fade to black then back to dimly lit room
 
         //chapter 1 - dialogue 3
+        StoryChapters[0].ChapterDialogues[2] = new Dialogue();
+        StoryChapters[0].ChapterDialogues[2].name = "MC";
+        StoryChapters[0].ChapterDialogues[2].otherName = "Alice";
+        StoryChapters[0].ChapterDialogues[2].sentences = new string[32];
+        StoryChapters[0].ChapterDialogues[2].decision1 = new string[1];
+        StoryChapters[0].ChapterDialogues[2].decision2 = new string[1];
+
         StoryChapters[0].ChapterDialogues[2].sentences[5] = "...And it's done.";
         StoryChapters[0].ChapterDialogues[2].sentences[5] = "Still, the game is relatively light for a gacha game.";
         StoryChapters[0].ChapterDialogues[2].sentences[5] = "The princesses do look good though.";
@@ -201,13 +220,12 @@ public class StoryManager : MonoBehaviour
 
     public void Chapter1Dialogue2()
     {
-        if (StoryChapters[0].ChapterDialogues[0].isDone)
-        {
+
             //move character animation
             //load to classroom
             //then play next dialogue
-            FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[1]);
-        }
+            FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[1], true);
+        
     }
 
     // Start is called before the first frame update
@@ -216,12 +234,26 @@ public class StoryManager : MonoBehaviour
         DontDestroyOnLoad(this);
         setAllChapters();
         setAllDialogues();
-        FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[0]);
+        FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[0], true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (FindObjectOfType<StoryManager>().currentDialogue == 1 &&
+            FindObjectOfType<StoryManager>().currentChapter == 0)
+        {
+            Debug.Log("im called 1");
+            if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].isDone)
+            {
+                Debug.Log("im called 2");
+            }
+            else
+            {
+                Debug.Log("im called 3");
+                FindObjectOfType<StoryManager>().Chapter1Dialogue2();
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].isDone = true;
+            }
+        }
     }
 }

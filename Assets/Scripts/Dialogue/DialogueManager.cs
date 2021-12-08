@@ -5,20 +5,34 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    public static DialogueManager instanceRef;
     public GameObject dialogueUI;
     public Text nameText;
     public Text dialogueText;
     private Queue<string> sentences;
+    private bool isStoryDialogue = false;
+
+    void Awake()
+    {
+        /*if (instanceRef == null)
+        {
+            instanceRef = this;
+            //DontDestroyOnLoad(gameObject);
+        }
+        else if (instanceRef != this)
+        {
+        }
+        //Destroy(gameObject);*/
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(this);
     }
 
-    public void StartDialogue(Dialogue dialogue)
+    public void StartDialogue(Dialogue dialogue, bool isStoryRelated = false)
     {
-        
+        isStoryDialogue = isStoryRelated;
         FindObjectOfType<StoryManager>().isOnDialogue = true;
         sentences = new Queue<string>(100);
         dialogueUI.SetActive(true);
@@ -48,7 +62,7 @@ public class DialogueManager : MonoBehaviour
 
         StopAllCoroutines();
         string sentence = sentences.Dequeue();
-        Debug.Log("after dequeue " + sentences.Count);
+        //Debug.Log("after dequeue " + sentences.Count);
 
         StartCoroutine(TypeSentence(sentence));
     }
@@ -75,8 +89,14 @@ public class DialogueManager : MonoBehaviour
         FindObjectOfType<StoryManager>().isOnDialogue = false;
         Debug.Log("End of Conversation");
         dialogueUI.SetActive(false);
-        FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter].ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = false;
-        FindObjectOfType<StoryManager>().currentDialogue++;
+        if (isStoryDialogue)
+        {
+            FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+            FindObjectOfType<StoryManager>().currentDialogue++;
+        }
+
+        isStoryDialogue = false;
     }
 
     // Update is called once per frame

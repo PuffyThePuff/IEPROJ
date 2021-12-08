@@ -8,6 +8,7 @@ public class SceneTransition : MonoBehaviour
     public string sceneToLoad;
     public Vector3 playerPosition;
     public VectorValue playerStorage;
+    public Animator FadeBlackTransition;
 
     private void Start()
     {
@@ -18,8 +19,19 @@ public class SceneTransition : MonoBehaviour
         Debug.Log(other.tag);
         if (other.CompareTag("Player"))
         {
-            playerStorage.initialValue = playerPosition;
-            SceneManager.LoadScene(sceneToLoad);
+            StartCoroutine(FadeTransition());
+            
         }
+    }
+
+    IEnumerator FadeTransition()
+    {
+        FadeBlackTransition.SetTrigger("DramaticSceneEnter");
+        yield return new WaitForSeconds(1.0f);
+        playerStorage.initialValue = playerPosition;
+        SceneManager.LoadSceneAsync(sceneToLoad);
+        yield return new WaitForSeconds(1.0f);
+
+        
     }
 }
