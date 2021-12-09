@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public int currentTurn = 0;
+    public int maxTurn = 5;
+
     public static GameManager Instance;
     public List<GameObject> pieces;
     public int[,] nBoard;
@@ -11,10 +16,23 @@ public class GameManager : MonoBehaviour
     public bool isBoardInteractable = true;
     public List<GameObject> selected;
     public List<GameObject> powerups;
+    public Image hpBar;
+    public GameObject helpDialogue1;
+    public GameObject helpDialogue2;
+    public GameObject helpDialogue3;
+    public GameObject endText;
+    public GameObject arrowGroup1;
+    public GameObject arrowGroup2;
+    public GameObject arrowGroup3;
+
+    public float maxHP = 100;
+    private float currentHP = 100;
+
     private int xDimension = 7;
     private int yDimension = 5;
 
-
+    public static bool isTutorial = true;
+    public static int tutorialPhase = 0;
     private void Awake()
     {
         if (Instance == null)
@@ -24,14 +42,230 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        nBoard = InitializeBoard();
+        if(!isTutorial)
+            nBoard = InitializeBoard();
 
+        else
+        {
+            SetupTutorialBoard();
+
+            //for (int i = 0; i < xDimension; i++)
+            //{
+            //    for (int j = 0; j < yDimension; j++)
+            //    {
+            //        int n = Random.Range(0, pieces.Count);
+
+            //        GameObject newPiece = createPiece(n, i, j);
+
+            //        newBoard[i, j] = n;
+            //        gBoard[i, j] = newPiece;
+            //    }
+            //}
+
+            tutorialPhase = 1;
+        }
+
+    }
+
+    private void SetupTutorialBoard()
+    {
+        nBoard = new int[xDimension, yDimension];
+        gBoard = new GameObject[xDimension, yDimension];
+        {
+            {
+                GameObject newPiece = createPiece(0, 0, 0);
+                nBoard[0, 0] = 0;
+                gBoard[0, 0] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(1, 1, 0);
+                nBoard[1, 0] = 1;
+                gBoard[1, 0] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(2, 2, 0);
+                nBoard[2, 0] = 2;
+                gBoard[2, 0] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(0, 3, 0);
+                nBoard[3, 0] = 0;
+                gBoard[3, 0] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(1, 4, 0);
+                nBoard[4, 0] = 1;
+                gBoard[4, 0] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(2, 5, 0);
+                nBoard[5, 0] = 2;
+                gBoard[5, 0] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(0, 6, 0);
+                nBoard[6, 0] = 0;
+                gBoard[6, 0] = newPiece;
+            }
+        }
+
+        {
+            {
+                GameObject newPiece = createPiece(1, 0, 1);
+                nBoard[0, 1] = 1;
+                gBoard[0, 1] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(2, 1, 1);
+                nBoard[1, 1] = 2;
+                gBoard[1, 1] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(0, 2, 1);
+                nBoard[2, 1] = 0;
+                gBoard[2, 1] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(2, 3, 1);
+                nBoard[3, 1] = 2;
+                gBoard[3, 1] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(1, 4, 1);
+                nBoard[4, 1] = 1;
+                gBoard[4, 1] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(1, 5, 1);
+                nBoard[5, 1] = 1;
+                gBoard[5, 1] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(2, 6, 1);
+                nBoard[6, 1] = 2;
+                gBoard[6, 1] = newPiece;
+            }
+        }
+
+        {
+            {
+                GameObject newPiece = createPiece(0, 0, 2);
+                nBoard[0, 2] = 0;
+                gBoard[0, 2] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(1, 1, 2);
+                nBoard[1, 2] = 1;
+                gBoard[1, 2] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(2, 2, 2);
+                nBoard[2, 2] = 2;
+                gBoard[2, 2] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(0, 3, 2);
+                nBoard[3, 2] = 0;
+                gBoard[3, 2] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(1, 4, 2);
+                nBoard[4, 2] = 1;
+                gBoard[4, 2] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(2, 5, 2);
+                nBoard[5, 2] = 2;
+                gBoard[5, 2] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(0, 6, 2);
+                nBoard[6, 2] = 0;
+                gBoard[6, 2] = newPiece;
+            }
+        }
+
+        {
+            {
+                GameObject newPiece = createPiece(1, 0, 3);
+                nBoard[0, 3] = 1;
+                gBoard[0, 3] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(2, 1, 3);
+                nBoard[1, 3] = 2;
+                gBoard[1, 3] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(0, 2, 3);
+                nBoard[2, 3] = 0;
+                gBoard[2, 3] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(1, 3, 3);
+                nBoard[3, 3] = 1;
+                gBoard[3, 3] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(2, 4, 3);
+                nBoard[4, 3] = 2;
+                gBoard[4, 3] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(0, 5, 3);
+                nBoard[5, 3] = 0;
+                gBoard[5, 3] = newPiece;
+            }
+
+            {
+                GameObject newPiece = createPiece(1, 6, 3);
+                nBoard[6, 3] = 1;
+                gBoard[6, 3] = newPiece;
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(hpBar != null)
+        {
+            //currentHP -= 0.25f;   //testing
+            hpBar.fillAmount = currentHP / maxHP;
+        }
+
+        if(isTutorial)
+        {
+            UpdateHelpDialogue();
+            if(tutorialPhase == 3 && Input.GetMouseButtonDown(0))
+            {
+                SceneManager.LoadScene("TransitionSample");
+            }
+        }
+
     }
 
     int[,] InitializeBoard()
@@ -60,37 +294,11 @@ public class GameManager : MonoBehaviour
     {
         GameObject newPiece;
 
-        
-        
-        if(this.gameObject.transform.parent != null)
-        {
-
-            Transform parentTransform = this.gameObject.transform.parent.transform;
-
-            Vector3 parentPos = parentTransform.position;
-            
-            parentPos.x -= 1.2f;
-            parentPos.y -= 0.8f;
-
-            if (x % 2 == 0)
-                newPiece = Instantiate(pieces[pieceIndex], parentPos + new Vector3(0.4f * x, (0.4f * y) + 0.2f, 0.0f) - ((parentTransform.forward * parentTransform.lossyScale.z)/2), Quaternion.identity, null);
-
-            else
-                newPiece = Instantiate(pieces[pieceIndex], parentPos + new Vector3(0.4f * x, 0.4f * y, 0.0f) - ((parentTransform.forward * parentTransform.lossyScale.z)/2), Quaternion.identity, null);
-
-            newPiece.transform.parent = this.transform.parent;
-
-            
-        }
+        if(x%2 == 0)
+            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) -0.925f, (0.3f * y) + 0.15f, 0.0f), Quaternion.identity, null);
 
         else
-        {
-            if (x % 2 == 0)
-                newPiece = Instantiate(pieces[pieceIndex], new Vector3(0.2f * x, (0.2f * y) + 0.1f, 0.0f), Quaternion.identity, null);
-
-            else
-                newPiece = Instantiate(pieces[pieceIndex], new Vector3(0.2f * x, 0.2f * y, 0.0f), Quaternion.identity, null);
-        }
+            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) - 0.925f, (0.3f * y) + 0.25f, 0.0f), Quaternion.identity, null);
 
         if(newPiece.TryGetComponent(out PieceBehavior PB))
             PB.SetValues(pieceIndex, x, y);
@@ -189,6 +397,7 @@ public class GameManager : MonoBehaviour
                 
                 if (nBoard[i, j] == -1)
                 {
+                    currentHP -= 10;
                     Destroy(gBoard[i, j]);
 
                     int k = j;
@@ -217,20 +426,10 @@ public class GameManager : MonoBehaviour
                             gBoard[i, k] = gBoard[i, k - (k - l)];
                             gBoard[i, k].GetComponent<PieceBehavior>().y = k;
 
-
-                            Transform parentTransform = this.gameObject.transform.parent.transform;
-
-                            Vector3 parentPos = parentTransform.position;
-
-                            parentPos.x -= 1.2f;
-                            parentPos.y -= 0.8f;
-
-                        if (gBoard[i, k].GetComponent<PieceBehavior>().x % 2 == 0)
-                            gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(0, parentPos.y, 0) + new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.4f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.2f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
-                        else
-                            gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(0, parentPos.y, 0) + new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.4f * gBoard[i, k].GetComponent<PieceBehavior>().y), gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
-
-
+                            if (gBoard[i, k].GetComponent<PieceBehavior>().x % 2 == 0)
+                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.15f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                            else
+                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.25f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
 
                             nBoard[i, k - (k - l)] = -1;
                             gBoard[i, k - (k - l)] = null;
@@ -278,6 +477,32 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
+        if(tutorialPhase == 2)
+        {
+            Destroy(gBoard[3, 0]);
+            GameObject newPiece1 = createPiece(3, 3, 0);
+
+            nBoard[3, 0] = 3;
+            gBoard[3, 0] = newPiece1;
+
+
+
+            generatedPieces.Add(newPiece1);
+
+
+            Destroy(gBoard[2, 0]);
+            GameObject newPiece2 = createPiece(1, 2, 0);
+
+            nBoard[2, 0] = 1;
+            gBoard[2, 0] = newPiece2;
+
+
+
+            generatedPieces.Add(newPiece2);
+        }
+
+        
 
         GameObject[] allPieces = GameObject.FindGameObjectsWithTag("Piece");
         foreach (GameObject piece in allPieces)
@@ -376,6 +601,8 @@ public class GameManager : MonoBehaviour
             identicalPieces.Clear();
         }
 
+        
+
         //if(toDelete.Count == 0)
         //{
         //    Debug.Log("No chain");
@@ -395,9 +622,12 @@ public class GameManager : MonoBehaviour
         //    DestroyDamagedPieces();
         //    StartCoroutine(DelayedRefreshBoard());
         //}
-
-        isBoardInteractable = true; //temp
         
+        isBoardInteractable = true;
+        currentTurn++;
+
+        if (currentTurn > maxTurn)
+            isBoardInteractable = false;
     }
 
     public void InstantRefreshBoard()
@@ -426,6 +656,44 @@ public class GameManager : MonoBehaviour
             currentColor.a = 1.0f;
             piece.GetComponent<SpriteRenderer>().color = currentColor;
 
+        }
+    }
+
+    private void UpdateHelpDialogue()
+    {
+        if(tutorialPhase == 1 && !(helpDialogue1.activeInHierarchy))
+        {
+            helpDialogue1.SetActive(true);
+            helpDialogue2.SetActive(false);
+            helpDialogue3.SetActive(false);
+
+            arrowGroup1.SetActive(true);
+            arrowGroup2.SetActive(false);
+            arrowGroup3.SetActive(false);
+        }
+
+        if (tutorialPhase == 2 && !(helpDialogue2.activeInHierarchy))
+        {
+            helpDialogue1.SetActive(false);
+            helpDialogue2.SetActive(true);
+            helpDialogue3.SetActive(false);
+
+            arrowGroup1.SetActive(false);
+            arrowGroup2.SetActive(true);
+            arrowGroup3.SetActive(false);
+        }
+
+        if (tutorialPhase == 3 && !(helpDialogue3.activeInHierarchy))
+        {
+            helpDialogue1.SetActive(false);
+            helpDialogue2.SetActive(false);
+            helpDialogue3.SetActive(true);
+
+            arrowGroup1.SetActive(false);
+            arrowGroup2.SetActive(false);
+            arrowGroup3.SetActive(true);
+
+            endText.SetActive(true);
         }
     }
 }

@@ -8,7 +8,28 @@ public class ButtonFunctions : MonoBehaviour
     // Start is called before the first frame update
     public void Attack()
     {
-        GameManager.Instance.Attack();
-        StartCoroutine(GameManager.Instance.DelayedRefreshBoard());
+        if(!GameManager.isTutorial)
+        {
+            GameManager.Instance.Attack();
+            StartCoroutine(GameManager.Instance.DelayedRefreshBoard());
+        }
+        
+        else
+        {
+            if(GameManager.tutorialPhase == 1 && GameManager.Instance.selected.Count == 2)
+            {
+                GameManager.tutorialPhase = 2;
+                GameManager.Instance.Attack();
+                StartCoroutine(GameManager.Instance.DelayedRefreshBoard());
+                
+            }
+
+            else if (GameManager.tutorialPhase == 2 && GameManager.Instance.selected.Count >= 3)
+            {
+                GameManager.tutorialPhase = 3;
+                GameManager.Instance.Attack();
+                StartCoroutine(GameManager.Instance.DelayedRefreshBoard());
+            }
+        }
     }
 }
