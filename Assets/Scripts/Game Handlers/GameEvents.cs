@@ -25,4 +25,16 @@ public class GameEvents : MonoBehaviour
     {
         onPuzzleMatch?.Invoke(dmg);
     }
+
+    public event Action onGachaRoll;
+    public void GachaRoll()
+    {
+        onGachaRoll?.Invoke();
+    }
+
+    public event Action<int> onGachaSuccess;
+    public void GachaSuccess(int rarity)
+    {
+        onGachaSuccess?.Invoke(rarity);
+    }
 }
