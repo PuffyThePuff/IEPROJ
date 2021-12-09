@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 //simple listener for gacha events
 public class GachaListener : MonoBehaviour
 {
-    private Text text;
+    private VideoPlayer videoPlayer;
 
     // Start is called before the first frame update
     void Start()
     {
-        GameEvents.current.onGachaSuccess += ChangeText;
-        text = this.GetComponent<Text>();
+        GameEvents.current.onGachaSuccess += PlayVid;
+        videoPlayer = this.GetComponent<VideoPlayer>();
     }
 
-    private void ChangeText(int rarity)
+    private void PlayVid(int rarity)
     {
-        text.text = "Rarity: " + rarity;
+        videoPlayer.Play();
+        Debug.Log("boop");
     }
 }
