@@ -7,10 +7,21 @@ public class DialogueManager : MonoBehaviour
 {
     public static DialogueManager instanceRef;
     public GameObject dialogueUI;
-    public Text nameText;
+
+    public Image Speaker1Image;
+    public Image Speaker2Image;
+
+    public GameObject name1TextBox;
+    public GameObject name2TextBox;
+    public Text name1Text;
+    public Text name2Text;
+    
     public Text dialogueText;
+    public GameObject bottomRightMC;
+
     private Queue<string> sentences;
     private bool isStoryDialogue = false;
+    private int dequeueIndex = 0;
 
     void Awake()
     {
@@ -32,14 +43,31 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(Dialogue dialogue, bool isStoryRelated = false)
     {
+        bottomRightMC.SetActive(false);
+        name1TextBox.SetActive(false);
+        name2TextBox.SetActive(false);
+        Speaker2Image.gameObject.SetActive(false);
+
         isStoryDialogue = isStoryRelated;
+        dequeueIndex = 0;
         FindObjectOfType<StoryManager>().isOnDialogue = true;
-        sentences = new Queue<string>(100);
+        sentences = new Queue<string>();
         dialogueUI.SetActive(true);
 
         Debug.Log("Starting conversation with " + dialogue.name);
 
-        nameText.text = dialogue.name;
+        name1Text.text = dialogue.name;
+        Speaker1Image.sprite = dialogue.speaker1Sprites[0];
+        if (dialogue.otherName != "")
+        {
+            name2Text.text = dialogue.otherName;
+            Speaker2Image.sprite = dialogue.speaker2Sprites[0];
+            Speaker2Image.gameObject.SetActive(true);
+        }
+        else
+        {
+            name2Text.text = "";
+        }
 
         if (sentences != null)
             sentences.Clear();
@@ -54,6 +82,9 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNextSentence()
     {
+        bool isSpeaker1 = false;
+        bool isSpeaker2 = false;
+
         if (sentences.Count == 0)
         {
             EndDialogue();
@@ -62,7 +93,44 @@ public class DialogueManager : MonoBehaviour
 
         StopAllCoroutines();
         string sentence = sentences.Dequeue();
-        //Debug.Log("after dequeue " + sentences.Count);
+        dequeueIndex++;
+        
+        foreach (int index in FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+            .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker1Lines)
+        {
+            if (index == dequeueIndex)
+            {
+                //grey out sprite2
+                name1TextBox.SetActive(true);
+                name2TextBox.SetActive(false);
+                isSpeaker1 = true;
+            }
+        }
+
+        if (name2Text.text != "")
+        {
+            foreach (int index in FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker2Lines)
+            {
+                if (index == dequeueIndex)
+                {
+                    //grey out sprite1
+                    name1TextBox.SetActive(false);
+                    name2TextBox.SetActive(true);
+                    isSpeaker2 = true;
+                }
+            }
+        }
+
+        if (!isSpeaker1 && !isSpeaker2)
+        {
+            name1TextBox.SetActive(false);
+            name2TextBox.SetActive(false);
+            Speaker1Image.gameObject.SetActive(false);
+            Speaker2Image.gameObject.SetActive(false);
+        }
+
 
         StartCoroutine(TypeSentence(sentence));
     }
@@ -95,7 +163,7 @@ public class DialogueManager : MonoBehaviour
                 .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
             FindObjectOfType<StoryManager>().currentDialogue++;
         }
-
+        bottomRightMC.SetActive(true);
         isStoryDialogue = false;
     }
 
