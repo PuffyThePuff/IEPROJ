@@ -8,6 +8,7 @@ public class LoadingScript : MonoBehaviour
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject mainMenuScreen;
     [SerializeField] private Slider slider;
+    public Animator FadeBlackTransition;
 
     public void onQuit()
     {

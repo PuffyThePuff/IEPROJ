@@ -9,16 +9,19 @@ public class PointAndClickController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!FindObjectOfType<StoryManager>().isOnDialogue)
         {
-            //shoot a ray from the cam to mouse position
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            //returns true if ray hits an object
-            if (Physics.Raycast(ray, out hit))
+            if (Input.GetMouseButtonDown(0))
             {
-                agent.SetDestination(hit.point);
+                //shoot a ray from the cam to mouse position
+                Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                //returns true if ray hits an object
+                if (Physics.Raycast(ray, out hit))
+                {
+                    agent.SetDestination(hit.point);
+                }
             }
         }
     }
