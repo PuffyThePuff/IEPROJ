@@ -263,6 +263,9 @@ public class GameManager : MonoBehaviour
             if(tutorialPhase == 3 && Input.GetMouseButtonDown(0))
             {
                 SceneManager.LoadScene("TransitionSample");
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
             }
         }
 
