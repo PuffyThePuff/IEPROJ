@@ -13,6 +13,10 @@ public class StoryManager : MonoBehaviour
     public int currentChapter = 0;
     public int currentDialogue = 0;
 
+    public Sprite[] McSprites;
+    public Sprite[] NFSprites;
+    public Sprite[] AliceSprites;
+
     private const int MAX_CHAPTERS = 2;
     void Awake()
     {
@@ -32,13 +36,17 @@ public class StoryManager : MonoBehaviour
         //chapter 1 - dialogue 1 - only 1 speaker
         StoryChapters[0].ChapterDialogues[0] = new Dialogue();
         StoryChapters[0].ChapterDialogues[0].name = "MC";
+        StoryChapters[0].ChapterDialogues[0].otherName = "";
         StoryChapters[0].ChapterDialogues[0].sentences = new string[6];
+        StoryChapters[0].ChapterDialogues[0].speaker1Lines = new int[] {0, 1, 2, 3,4,5 };
         StoryChapters[0].ChapterDialogues[0].sentences[0] = "Well then… I guess that’s it for us then.";
         StoryChapters[0].ChapterDialogues[0].sentences[1] = "Five years, gone, just like that.";
         StoryChapters[0].ChapterDialogues[0].sentences[2] = "...";
         StoryChapters[0].ChapterDialogues[0].sentences[3] = "It’s only been a week and...";
         StoryChapters[0].ChapterDialogues[0].sentences[4] = "*sigh*";
         StoryChapters[0].ChapterDialogues[0].sentences[5] = "Time for school I guess.";
+        StoryChapters[0].ChapterDialogues[0].speaker1Sprites = new Sprite[] {};
+        StoryChapters[0].ChapterDialogues[0].speaker1Sprites = McSprites;
         //fade to black i guess...
 
         //goes to school and meets new friend 
@@ -51,10 +59,13 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[1].decision2 = new string[1];
         StoryChapters[0].ChapterDialogues[1].speaker1Lines = new int[] { 1, 2, 5, 7, 10, 12, 14, 16, 17, 19, 23, 26, 30};
         StoryChapters[0].ChapterDialogues[1].speaker2Lines = new int[] { 0, 3, 4, 6, 8, 9, 11, 13, 15, 18, 20, 21, 22, 24, 28, 29} ;
-        
+        StoryChapters[0].ChapterDialogues[1].speaker1Sprites = new Sprite[] { };
+        StoryChapters[0].ChapterDialogues[1].speaker1Sprites = McSprites;
+        StoryChapters[0].ChapterDialogues[1].speaker2Sprites = new Sprite[] { };
+        StoryChapters[0].ChapterDialogues[1].speaker2Sprites = NFSprites;
         //narration [] = 25
-        
-        
+
+
         StoryChapters[0].ChapterDialogues[1].sentences[0] = "Hey there! You don’t look too good. School draining you dead already?";
 
         StoryChapters[0].ChapterDialogues[1].sentences[1] = "Ah, h-hi.";
@@ -122,6 +133,10 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[2].name = "MC";
         StoryChapters[0].ChapterDialogues[2].otherName = "Alice";
         StoryChapters[0].ChapterDialogues[2].sentences = new string[14];
+        StoryChapters[0].ChapterDialogues[2].speaker1Sprites = new Sprite[] { };
+        StoryChapters[0].ChapterDialogues[2].speaker1Sprites = McSprites;
+        StoryChapters[0].ChapterDialogues[2].speaker2Sprites = new Sprite[] { };
+        StoryChapters[0].ChapterDialogues[2].speaker2Sprites = AliceSprites;
 
         StoryChapters[0].ChapterDialogues[2].sentences[0] = "...And it's done.";
         StoryChapters[0].ChapterDialogues[2].sentences[1] = "Still, the game is relatively light for a gacha game.";

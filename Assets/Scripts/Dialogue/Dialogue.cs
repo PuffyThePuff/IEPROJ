@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Dialogue
@@ -21,6 +22,9 @@ public class Dialogue
 
     public int[] speaker1Lines;
     public int[] speaker2Lines;
+
+    public Sprite[] speaker1Sprites;
+    public Sprite[] speaker2Sprites;
 
     public bool isDone = false;
     public bool hasTriggered = false;
