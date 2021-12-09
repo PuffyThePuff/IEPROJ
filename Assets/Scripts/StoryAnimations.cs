@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StoryAnimations : MonoBehaviour
 {
     public Animator MoveToSchoolAnim;
+    public Animator FadeBlackTransition;
 
     // Start is called before the first frame update
     void Start()
@@ -18,8 +20,33 @@ public class StoryAnimations : MonoBehaviour
         if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].isDone &&
             !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].hasTriggered)
         {
-            MoveToSchoolAnim.SetTrigger("C1D1Done");
-            FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].hasTriggered = true;
+            if (MoveToSchoolAnim != null)
+            {
+                MoveToSchoolAnim.SetTrigger("C1D1Done");
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].hasTriggered = true;
+                
+            }
         }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].isDone &&
+            !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].hasTriggered)
+        {
+            if (FadeBlackTransition != null)
+            {
+                MoveToSchoolAnim = null;
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].hasTriggered = true;
+                StartCoroutine(FadeTransition());
+            }
+
+        }
+
+
+    }
+
+    IEnumerator FadeTransition()
+    {
+        FadeBlackTransition.SetTrigger("DramaticSceneEnter");
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadSceneAsync("TransitionSample");
+        yield return new WaitForSeconds(1.0f);
     }
 }
