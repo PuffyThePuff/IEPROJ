@@ -133,6 +133,8 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[2].name = "MC";
         StoryChapters[0].ChapterDialogues[2].otherName = "Alice";
         StoryChapters[0].ChapterDialogues[2].sentences = new string[14];
+        StoryChapters[0].ChapterDialogues[2].speaker1Lines = new int[] { 0, 1, 2, 8};
+        StoryChapters[0].ChapterDialogues[2].speaker2Lines = new int[] { 5, 6, 9, 11, 13};
         StoryChapters[0].ChapterDialogues[2].speaker1Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[2].speaker1Sprites = McSprites;
         StoryChapters[0].ChapterDialogues[2].speaker2Sprites = new Sprite[] { };
@@ -151,23 +153,70 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[2].sentences[6] = "Quickly, take my hand!";
 
         //spawn phone image
-        StoryChapters[0].ChapterDialogues[2].sentences[7] = "Phone:\nAnd just like that, I was whisked away.The girl dragged me out of the dimly lit room… And it was there that I saw it, a world of color.";
+        StoryChapters[0].ChapterDialogues[2].sentences[7] = "[Phone]\nAnd just like that, I was whisked away.The girl dragged me out of the dimly lit room… And it was there that I saw it, a world of color.";
         
         StoryChapters[0].ChapterDialogues[2].sentences[8] = "What are we, colorless?";
 
         StoryChapters[0].ChapterDialogues[2].sentences[9] = "Hero, there’s no time to explain, kiss the back of my palm!";
 
         //phone
-        StoryChapters[0].ChapterDialogues[2].sentences[10] = "Phone:\n“Huh? Why?” I asked out of surprise. As I asked, however, the area immediately began to feel eerie, and a shiver went down my spine.";
+        StoryChapters[0].ChapterDialogues[2].sentences[10] = "[Phone]\n“Huh? Why?” I asked out of surprise. As I asked, however, the area immediately began to feel eerie, and a shiver went down my spine.";
         
         StoryChapters[0].ChapterDialogues[2].sentences[11] = "Hurry!";
 
         //phone
-        StoryChapters[0].ChapterDialogues[2].sentences[12] = "Phone\nAlice shoves her hand towards my face, and I immediately kiss it.As I pull back, A mark is left on the back of her palm.A crown. A smile of confidence replaces her once nervous face.Light begins to combine around the mark on her hand, and a sword forms from the light";
+        StoryChapters[0].ChapterDialogues[2].sentences[12] = "[Phone]\nAlice shoves her hand towards my face, and I immediately kiss it.As I pull back, A mark is left on the back of her palm.A crown. A smile of confidence replaces her once nervous face.Light begins to combine around the mark on her hand, and a sword forms from the light";
         
         StoryChapters[0].ChapterDialogues[2].sentences[13] = "Alright! Let’s do this!";
 
         //start phone game (load phone game scene)
+        StoryChapters[0].ChapterDialogues[3] = new Dialogue();
+
+        //dia4
+        StoryChapters[0].ChapterDialogues[4] = new Dialogue();
+        StoryChapters[0].ChapterDialogues[4].name = "MC";
+        StoryChapters[0].ChapterDialogues[4].otherName = "Alice";
+        StoryChapters[0].ChapterDialogues[4].sentences = new string[5];
+        StoryChapters[0].ChapterDialogues[4].speaker1Lines = new int[] { 3 };
+        StoryChapters[0].ChapterDialogues[4].speaker2Lines = new int[] { 0,2,4};
+        StoryChapters[0].ChapterDialogues[4].speaker1Sprites = new Sprite[] { };
+        StoryChapters[0].ChapterDialogues[4].speaker1Sprites = McSprites;
+        StoryChapters[0].ChapterDialogues[4].speaker2Sprites = new Sprite[] { };
+        StoryChapters[0].ChapterDialogues[4].speaker2Sprites = AliceSprites;
+
+        StoryChapters[0].ChapterDialogues[4].sentences[0] = "Whew, Thanks Hero. If it wasn’t for you, we would’ve been lost.";
+        StoryChapters[0].ChapterDialogues[4].sentences[1] = "H-How did I know your name?";
+        StoryChapters[0].ChapterDialogues[4].sentences[2] = "Ah, right… The moment you kissed my hand, we formed a contract. I’m now your pawn, and you, my king.";
+        StoryChapters[0].ChapterDialogues[4].sentences[3] = "Pawn? King? That explains the chess pieces";
+        StoryChapters[0].ChapterDialogues[4].sentences[4] = "However, we need to look for more people to join under your army… Come! There’s a camp nearby where others have come to rest. Follow me!";
+
+        //dialogue 5
+        StoryChapters[0].ChapterDialogues[5] = new Dialogue();
+        StoryChapters[0].ChapterDialogues[5].name = "Alice";
+        StoryChapters[0].ChapterDialogues[5].otherName = "";
+        StoryChapters[0].ChapterDialogues[5].sentences = new string[2];
+        StoryChapters[0].ChapterDialogues[5].speaker1Lines = new int[] { 0, 1 };
+        StoryChapters[0].ChapterDialogues[5].speaker1Sprites = new Sprite[] { };
+        StoryChapters[0].ChapterDialogues[5].speaker1Sprites = AliceSprites;
+
+        StoryChapters[0].ChapterDialogues[5].sentences[0] = "We got lucky earlier. Help is needed for us to handle the upcoming battles.";
+        StoryChapters[0].ChapterDialogues[5].sentences[1] = "Well, you know the drill, kiss the hand of the maiden!";
+
+        //dialogue 6
+        StoryChapters[0].ChapterDialogues[6] = new Dialogue();
+        StoryChapters[0].ChapterDialogues[6].name = "MC";
+        StoryChapters[0].ChapterDialogues[6].otherName = "Alice";
+        StoryChapters[0].ChapterDialogues[6].sentences = new string[5];
+        StoryChapters[0].ChapterDialogues[6].speaker1Lines = new int[] { 1,2 };
+        StoryChapters[0].ChapterDialogues[6].speaker2Lines = new int[] { 0};
+        StoryChapters[0].ChapterDialogues[6].speaker1Sprites = new Sprite[] { };
+        StoryChapters[0].ChapterDialogues[6].speaker1Sprites = McSprites;
+        StoryChapters[0].ChapterDialogues[6].speaker2Sprites = new Sprite[] { };
+        StoryChapters[0].ChapterDialogues[6].speaker2Sprites = AliceSprites;
+
+        StoryChapters[0].ChapterDialogues[6].sentences[0] = "Okay, we have what we need now. Don’t forget to select the princesses you want in our adventure!";
+        StoryChapters[0].ChapterDialogues[6].sentences[1] = "Well, that’s enough for tonight… I have to go to sleep tomorrow…";
+        StoryChapters[0].ChapterDialogues[6].sentences[2] = "Ah, right, I have to add him as a friend";
         /*
             [Tutorial begins]
 
@@ -287,6 +336,24 @@ public class StoryManager : MonoBehaviour
                 && !isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].isDone)
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[2], true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 0 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 5)
+        {
+            if (SceneManager.GetActiveScene().name == "GachaSample"
+                && !isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[5], true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 0 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 6)
+        {
+            if (SceneManager.GetActiveScene().name == "TransitionSample"
+                && !isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[6], true);
             }
         }
     }
