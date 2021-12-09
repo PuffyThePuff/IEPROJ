@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PieceBehavior : MonoBehaviour
 {
+    
     public int ID { get; private set; } = -1;
     public int x = -1;
     public int y = -1;
@@ -38,76 +39,100 @@ public class PieceBehavior : MonoBehaviour
 
         if (!GameManager.Instance.isBoardInteractable)
             return;
-
-        if (GameManager.Instance.selected.Count == 0)
+        if (!(GameManager.isTutorial))
         {
-            if (this.GetComponent<PieceBehavior>().ID >= 3)
-                return;
-
-            GameObject[] allPieces = GameObject.FindGameObjectsWithTag("Piece");
-            foreach (GameObject piece in allPieces)
+            if (GameManager.Instance.selected.Count == 0)
             {
-                if (piece.GetComponent<PieceBehavior>().ID != this.ID  && piece.GetComponent<PieceBehavior>().ID < 3)
+                if (this.GetComponent<PieceBehavior>().ID >= 3)
+                    return;
+
+                GameObject[] allPieces = GameObject.FindGameObjectsWithTag("Piece");
+                foreach (GameObject piece in allPieces)
                 {
-                    Color currentColor = piece.GetComponent<SpriteRenderer>().color;
-                    currentColor.a = 0.5f;
-                    piece.GetComponent<SpriteRenderer>().color = currentColor;
+                    if (piece.GetComponent<PieceBehavior>().ID != this.ID && piece.GetComponent<PieceBehavior>().ID < 3)
+                    {
+                        Color currentColor = piece.GetComponent<SpriteRenderer>().color;
+                        currentColor.a = 0.5f;
+                        piece.GetComponent<SpriteRenderer>().color = currentColor;
+                    }
                 }
+
+                GameManager.Instance.selected.Add(gameObject);
+                Instantiate(Border, this.transform);
             }
 
-            GameManager.Instance.selected.Add(gameObject);
-            Instantiate(Border, this.transform);
-        }
-
-        else if (this.ID == GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID || this.GetComponent<PieceBehavior>().ID >= 3)
-        {
-            
-            GameObject latestSelected = GameManager.Instance.selected[GameManager.Instance.selected.Count - 1];
-            if (this.gameObject == latestSelected)
+            else if (this.ID == GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID || this.GetComponent<PieceBehavior>().ID >= 3)
             {
-                Destroy(this.transform.GetChild(0).gameObject);
-                GameManager.Instance.selected.Remove(this.gameObject);
 
-                if(this.GetComponent<PieceBehavior>().ID >= 3)
+                GameObject latestSelected = GameManager.Instance.selected[GameManager.Instance.selected.Count - 1];
+                if (this.gameObject == latestSelected)
                 {
-                    GameManager.Instance.powerups.Remove(this.gameObject);
-                }
+                    Destroy(this.transform.GetChild(0).gameObject);
+                    GameManager.Instance.selected.Remove(this.gameObject);
 
-                if(GameManager.Instance.selected.Count == 0)
-                {
-                    GameManager.Instance.InstantRefreshBoard();
-                }
-            }
-
-            
-
-            else
-            {
-                bool neighborInX = this.x <= latestSelected.GetComponent<PieceBehavior>().x + 1 && this.x >= latestSelected.GetComponent<PieceBehavior>().x - 1;
-                bool neighborInY = this.y <= latestSelected.GetComponent<PieceBehavior>().y + 1 && this.y >= latestSelected.GetComponent<PieceBehavior>().y - 1;
-
-                if (neighborInX && neighborInY)
-                {
                     if (this.GetComponent<PieceBehavior>().ID >= 3)
                     {
-                        Debug.Log(GameManager.Instance.powerups.Count);
-                        if (GameManager.Instance.powerups.Count < 2)
-                        {
-                            GameManager.Instance.powerups.Add(gameObject);
-                        }
-
-                        else
-                        {
-                            return;
-                        }
-
+                        GameManager.Instance.powerups.Remove(this.gameObject);
                     }
+
+                    if (GameManager.Instance.selected.Count == 0)
+                    {
+                        GameManager.Instance.InstantRefreshBoard();
+                    }
+                }
+
+
+
+                else
+                {
+                    bool neighborInX = this.x <= latestSelected.GetComponent<PieceBehavior>().x + 1 && this.x >= latestSelected.GetComponent<PieceBehavior>().x - 1;
+                    bool neighborInY = this.y <= latestSelected.GetComponent<PieceBehavior>().y + 1 && this.y >= latestSelected.GetComponent<PieceBehavior>().y - 1;
+
+                    if (neighborInX && neighborInY)
+                    {
+                        if (this.GetComponent<PieceBehavior>().ID >= 3)
+                        {
+                            Debug.Log(GameManager.Instance.powerups.Count);
+                            if (GameManager.Instance.powerups.Count < 2)
+                            {
+                                GameManager.Instance.powerups.Add(gameObject);
+                            }
+
+                            else
+                            {
+                                return;
+                            }
+
+                        }
+                        GameManager.Instance.selected.Add(gameObject);
+                        Instantiate(Border, this.transform);
+                    }
+                }
+
+
+            }
+        }
+
+
+        else
+        {
+            if(GameManager.tutorialPhase == 1)
+            {
+                if((this.x == 2 && this.y == 2) || ((this.x == 3 && this.y == 1)))
+                {
                     GameManager.Instance.selected.Add(gameObject);
                     Instantiate(Border, this.transform);
                 }
             }
-            
-            
+
+            if (GameManager.tutorialPhase == 2)
+            {
+                if ((this.x == 2 && this.y == 3) || ((this.x == 2 && this.y == 2))|| (this.x == 3 && this.y == 2) || (this.x == 3 && this.y == 1) || (this.x == 4 && this.y == 1) || (this.x == 3 && this.y == 0))
+                {
+                    GameManager.Instance.selected.Add(gameObject);
+                    Instantiate(Border, this.transform);
+                }
+            }
         }
     }
 }
