@@ -93,8 +93,10 @@ public class DialogueManager : MonoBehaviour
 
         StopAllCoroutines();
         string sentence = sentences.Dequeue();
-        dequeueIndex++;
-        
+        Speaker1Image.gameObject.SetActive(true);
+        if (name2Text.text != "")
+            Speaker2Image.gameObject.SetActive(true);
+
         foreach (int index in FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
             .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker1Lines)
         {
@@ -130,7 +132,7 @@ public class DialogueManager : MonoBehaviour
             Speaker1Image.gameObject.SetActive(false);
             Speaker2Image.gameObject.SetActive(false);
         }
-
+        dequeueIndex++;
 
         StartCoroutine(TypeSentence(sentence));
     }
