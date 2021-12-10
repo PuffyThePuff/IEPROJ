@@ -19,7 +19,7 @@ public class StartCutScene : MonoBehaviour
     {
         
         yield return new WaitForSeconds(1.0f);
-        SceneManager.LoadSceneAsync("MainMenu");
+        SceneManager.LoadSceneAsync("MainMenuScene");
         yield return new WaitForSeconds(1.0f);
     }
 }

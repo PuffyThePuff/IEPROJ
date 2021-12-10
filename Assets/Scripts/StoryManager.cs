@@ -58,7 +58,7 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[1].decision1 = new string[1];
         StoryChapters[0].ChapterDialogues[1].decision2 = new string[1];
         StoryChapters[0].ChapterDialogues[1].speaker1Lines = new int[] { 1, 2, 5, 7, 10, 12, 14, 16, 17, 19, 23, 26, 30};
-        StoryChapters[0].ChapterDialogues[1].speaker2Lines = new int[] { 0, 3, 4, 6, 8, 9, 11, 13, 15, 18, 20, 21, 22, 24, 28, 29} ;
+        StoryChapters[0].ChapterDialogues[1].speaker2Lines = new int[] { 0, 3, 4, 6, 8, 9, 11, 13, 15, 18, 20, 21, 22, 24, 27, 28, 29} ;
         StoryChapters[0].ChapterDialogues[1].speaker1Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[1].speaker1Sprites = McSprites;
         StoryChapters[0].ChapterDialogues[1].speaker2Sprites = new Sprite[] { };
