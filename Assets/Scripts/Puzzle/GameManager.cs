@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public int currentTurn = 0;
-    public int maxTurn = 5;
+    public int maxTurn = 99;
 
     public static GameManager Instance;
     public List<GameObject> pieces;
@@ -16,7 +16,10 @@ public class GameManager : MonoBehaviour
     public bool isBoardInteractable = true;
     public List<GameObject> selected;
     public List<GameObject> powerups;
-    public Image hpBar;
+    public Image enemyHpBar;
+    public Image c1HpBar;
+    public Image c2HpBar;
+    public Image c3HpBar;
     public GameObject helpDialogue1;
     public GameObject helpDialogue2;
     public GameObject helpDialogue3;
@@ -24,14 +27,29 @@ public class GameManager : MonoBehaviour
     public GameObject arrowGroup1;
     public GameObject arrowGroup2;
     public GameObject arrowGroup3;
+    private float holdTime = 5.0f;
+    private float holdTick = 0.0f;
 
-    public float maxHP = 100;
-    private float currentHP = 100;
+    public int c1Index = 3;
+    public int c2Index = 4;
+    private float c1MaxHp = 0;
+    private float c2MaxHp = 0;
+    private float c3MaxHp = 0;
+
+    private float c1CurrentHp = 0;
+    private float c2CurrentHp = 0;
+    private float c3CurrentHp = 0;
+
+    public float enemyMaxHp = 100;
+    private float enemyCurrentHp = 100;
+    private float enemyDmg = 0;
+    private float enemyAttackInterval = 1.5f;
+    private float enemyAttackTick = 0.0f;
 
     private int xDimension = 7;
     private int yDimension = 5;
 
-    public static bool isTutorial = true;
+    public static bool isTutorial = false;
     public static int tutorialPhase = 0;
     private void Awake()
     {
@@ -39,6 +57,7 @@ public class GameManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+
     }
     void Start()
     {
@@ -48,23 +67,18 @@ public class GameManager : MonoBehaviour
         else
         {
             SetupTutorialBoard();
-
-            //for (int i = 0; i < xDimension; i++)
-            //{
-            //    for (int j = 0; j < yDimension; j++)
-            //    {
-            //        int n = Random.Range(0, pieces.Count);
-
-            //        GameObject newPiece = createPiece(n, i, j);
-
-            //        newBoard[i, j] = n;
-            //        gBoard[i, j] = newPiece;
-            //    }
-            //}
-
             tutorialPhase = 1;
         }
 
+        c1MaxHp = Values.Characters.c1.hp;
+        c1CurrentHp = c1MaxHp;
+        c2MaxHp = Values.Characters.c2.hp;
+        c2CurrentHp = c2MaxHp;
+        c3MaxHp = Values.Characters.c3.hp;
+        c3CurrentHp = c3MaxHp;
+        enemyMaxHp = Values.Enemy.maxHP;
+        enemyCurrentHp = enemyMaxHp;
+        enemyDmg = Values.Enemy.dmg;
     }
 
     private void SetupTutorialBoard()
@@ -251,21 +265,167 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(hpBar != null)
+        UpdateHpBars();
+
+        enemyAttackTick+= Time.deltaTime;
+        if(enemyAttackTick >= enemyAttackInterval)
         {
-            //currentHP -= 0.25f;   //testing
-            hpBar.fillAmount = currentHP / maxHP;
+            int charToAttack = Random.Range(0, 2);
+            switch (charToAttack)
+            {
+                case 0: c1CurrentHp -= enemyDmg; break;
+                case 1: c2CurrentHp -= enemyDmg; break;
+                case 2: c3CurrentHp -= enemyDmg; break;
+            }
+
+            enemyAttackTick = 0.0f;
         }
 
-        if(isTutorial)
+        if(Input.GetMouseButtonUp(0))
+        {
+            if(!isTutorial)
+            {
+                if (GameManager.Instance.selected.Count >= 3)
+                {
+                    GameManager.Instance.Attack();
+                    GameManager.Instance.InstantRefreshBoard();
+                }
+
+                else
+                {
+                    foreach (GameObject selectedPiece in GameManager.Instance.selected)
+                    {
+                        Debug.Log("before: " + GameManager.Instance.selected.Count);
+                        Destroy(selectedPiece.transform.GetChild(0).gameObject);
+
+
+                        if (selectedPiece.GetComponent<PieceBehavior>().ID >= 3)
+                        {
+                            GameManager.Instance.powerups.Remove(selectedPiece);
+                        }
+
+
+
+                        Debug.Log("after: " + GameManager.Instance.selected.Count);
+
+                    }
+
+                    GameManager.Instance.selected.Clear();
+                    //if (GameManager.Instance.selected.Count == 1)
+                    //{
+                    //    Destroy(GameManager.Instance.selected[0].transform.GetChild(0).gameObject);
+                    //    GameManager.Instance.selected.Remove(GameManager.Instance.selected[0]);
+
+
+                    //    if (GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID >= 3)
+                    //    {
+                    //        GameManager.Instance.powerups.Remove(GameManager.Instance.selected[0]);
+                    //    }
+
+                    //    GameManager.Instance.InstantRefreshBoard();
+                    //}
+
+
+                    GameManager.Instance.InstantRefreshBoard();
+                }
+            }
+
+            else
+            {
+                Debug.Log("true2");
+                if (GameManager.tutorialPhase == 1 && GameManager.Instance.selected.Count == 2)
+                {
+                    GameManager.tutorialPhase = 2;
+                    GameManager.Instance.Attack();
+                    GameManager.Instance.InstantRefreshBoard();
+                    Debug.Log("true3");
+                }
+
+                else if (GameManager.tutorialPhase == 2 && GameManager.Instance.selected.Count >= 3)
+                {
+                    GameManager.tutorialPhase = 3;
+                    GameManager.Instance.Attack();
+                    GameManager.Instance.InstantRefreshBoard();
+                }
+            }
+            
+        }
+
+        //if(selected.Count > 0)
+        //{
+        //    holdTick += Time.deltaTime;
+
+        //    if (holdTick >= holdTime)
+        //    {
+        //        holdTick = 0.0f;
+
+        //        while (selected.Count > 0)
+        //        {
+        //            Debug.Log("inside");
+        //            Destroy(selected[0].transform.GetChild(0).gameObject);
+        //            selected.Remove(selected[0]);
+
+        //            if (selected[0].GetComponent<PieceBehavior>().ID >= 3)
+        //            {
+        //                powerups.Remove(selected[0]);
+        //            }
+
+        //            if (selected.Count == 0)
+        //            {
+        //                InstantRefreshBoard();
+                        
+        //            }
+
+
+        //        }
+        //    }
+
+            
+        //}
+
+        //else
+        //{
+        //    holdTick = 0.0f;
+        //}
+
+        if (isTutorial)
         {
             UpdateHelpDialogue();
-            if(tutorialPhase == 3 && Input.GetMouseButtonDown(0))
+            if (tutorialPhase == 3 && Input.GetMouseButtonDown(0))
             {
                 SceneManager.LoadScene("TransitionSample");
             }
         }
 
+        
+
+    }
+
+    private void UpdateHpBars()
+    {
+        if (enemyHpBar != null)
+        {
+            //currentHP -= 0.25f;   //testing
+            enemyHpBar.fillAmount = enemyCurrentHp / enemyMaxHp;
+        }
+
+        if (c1HpBar != null)
+        {
+            //currentHP -= 0.25f;   //testing
+            c1HpBar.fillAmount = c1CurrentHp / c1MaxHp;
+        }
+
+        if (c2HpBar != null)
+        {
+            //currentHP -= 0.25f;   //testing
+            c1HpBar.fillAmount = c1CurrentHp / c1MaxHp;
+        }
+
+        if (c3HpBar != null)
+        {
+            //currentHP -= 0.25f;   //testing
+            c3HpBar.fillAmount = c3CurrentHp / c3MaxHp;
+        }
     }
 
     int[,] InitializeBoard()
@@ -279,7 +439,26 @@ public class GameManager : MonoBehaviour
         {
             for(int j = 0; j < yDimension; j++)
             {
-                int n = Random.Range(0, pieces.Count);
+                int n = Random.Range(0, 7);
+
+                if(n > 0)
+                {
+                    n = Random.Range(0, 3);
+                }
+
+                else
+                {
+                    int specialCharacterIndex = Random.Range(0, 2); // 0-1
+
+                    switch(specialCharacterIndex)
+                    {
+                        case 0: n = c1Index; break;
+                        case 1: n = c2Index; break;
+                    }
+
+                    Debug.Log(specialCharacterIndex);
+                    
+                }
 
                 GameObject newPiece = createPiece(n, i, j);
 
@@ -311,7 +490,7 @@ public class GameManager : MonoBehaviour
     {
         return ((x >= 0 && x <= xDimension) && (y >= 0 && y <= yDimension));
     }
-
+    
     public void Attack()
     {
         for (int i = 0; i < selected.Count; i++)
@@ -397,7 +576,7 @@ public class GameManager : MonoBehaviour
                 
                 if (nBoard[i, j] == -1)
                 {
-                    currentHP -= 10;
+                    enemyCurrentHp -= 10;
                     Destroy(gBoard[i, j]);
 
                     int k = j;
@@ -452,11 +631,12 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
     public IEnumerator DelayedRefreshBoard()
     {
-
+        
         yield return new WaitForSeconds(0.5f);
-
+        Debug.Log("in delay spawn func");
         List<GameObject> generatedPieces = new List<GameObject>();
         List<GameObject> toDelete = new List<GameObject>();
 
@@ -466,7 +646,17 @@ public class GameManager : MonoBehaviour
             {
                 if(nBoard[i, j] == -1)
                 {
-                    int n = Random.Range(0, pieces.Count);
+                    int n = Random.Range(0, 7);
+
+                    if (n > 0)
+                    {
+                        n = Random.Range(0, 3);
+                    }
+
+                    else
+                    {
+                        n = Random.Range(3, 5);
+                    }
 
                     GameObject newPiece = createPiece(n, i, j);
 
@@ -485,7 +675,6 @@ public class GameManager : MonoBehaviour
 
             nBoard[3, 0] = 3;
             gBoard[3, 0] = newPiece1;
-
 
 
             generatedPieces.Add(newPiece1);
@@ -628,6 +817,8 @@ public class GameManager : MonoBehaviour
 
         if (currentTurn > maxTurn)
             isBoardInteractable = false;
+
+        
     }
 
     public void InstantRefreshBoard()
@@ -638,7 +829,17 @@ public class GameManager : MonoBehaviour
             {
                 if (nBoard[i, j] == -1)
                 {
-                    int n = Random.Range(0, pieces.Count);
+                    int n = Random.Range(0, 7);
+
+                    if (n > 0)
+                    {
+                        n = Random.Range(0, 3);
+                    }
+
+                    else
+                    {
+                        n = Random.Range(3, 5);
+                    }
 
                     GameObject newPiece = createPiece(n, i, j);
 
@@ -657,6 +858,12 @@ public class GameManager : MonoBehaviour
             piece.GetComponent<SpriteRenderer>().color = currentColor;
 
         }
+
+        isBoardInteractable = true;
+        currentTurn++;
+
+        if (currentTurn > maxTurn)
+            isBoardInteractable = false;
     }
 
     private void UpdateHelpDialogue()
@@ -695,5 +902,15 @@ public class GameManager : MonoBehaviour
 
             endText.SetActive(true);
         }
+    }
+
+    private void OnWin()
+    {
+
+    }
+
+    private void OnLose()
+    {
+
     }
 }

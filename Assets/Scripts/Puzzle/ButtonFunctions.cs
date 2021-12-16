@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class ButtonFunctions : MonoBehaviour
 {
-
+    
     // Start is called before the first frame update
     public void Attack()
     {
         if(!GameManager.isTutorial)
         {
-            GameManager.Instance.Attack();
-            StartCoroutine(GameManager.Instance.DelayedRefreshBoard());
+            if(GameManager.Instance.selected.Count >= 3)
+            {
+                GameManager.Instance.Attack();
+                StartCoroutine(GameManager.Instance.DelayedRefreshBoard());
+            }
+            
         }
         
         else

@@ -15,7 +15,6 @@ public class UIGameManager : MonoBehaviour
     private int xDimension = 7;
     private int yDimension = 5;
 
-
     private void Awake()
     {
         if (Instance == null)
