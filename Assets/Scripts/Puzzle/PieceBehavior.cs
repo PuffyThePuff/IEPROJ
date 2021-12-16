@@ -70,7 +70,7 @@ public class PieceBehavior : MonoBehaviour
             {
                 if (GameManager.tutorialPhase == 1)
                 {
-                    if ((this.x == 2 && this.y == 2) || ((this.x == 3 && this.y == 1)))
+                    if ((this.x == 2 && this.y == 2) || (this.x == 3 && this.y == 1) || (this.x == 1 && this.y == 1))
                     {
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
@@ -258,7 +258,7 @@ public class PieceBehavior : MonoBehaviour
             {
                 if (GameManager.tutorialPhase == 1)
                 {
-                    if ((this.x == 2 && this.y == 2) || ((this.x == 3 && this.y == 1)))
+                    if ((this.x == 2 && this.y == 2) || (this.x == 3 && this.y == 1) || (this.x == 1 && this.y == 1))
                     {
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);

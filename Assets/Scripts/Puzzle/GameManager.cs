@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     private int xDimension = 7;
     private int yDimension = 5;
 
-    public static bool isTutorial = false;
+    public static bool isTutorial = true;
     public static int tutorialPhase = 0;
     private void Awake()
     {
@@ -333,7 +333,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 Debug.Log("true2");
-                if (GameManager.tutorialPhase == 1 && GameManager.Instance.selected.Count == 2)
+                if (GameManager.tutorialPhase == 1 && GameManager.Instance.selected.Count == 3)
                 {
                     GameManager.tutorialPhase = 2;
                     GameManager.Instance.Attack();
@@ -842,6 +842,14 @@ public class GameManager : MonoBehaviour
                     else
                     {
                         n = Random.Range(3, 5);
+                    }
+
+                    if (isTutorial && tutorialPhase == 2)
+                    {
+                        if (i == 3 && j == 0)
+                        {
+                            n = 4;
+                        }
                     }
 
                     GameObject newPiece = createPiece(n, i, j);
