@@ -74,6 +74,8 @@ public class GameManager : MonoBehaviour
     private float enemyAttackInterval = 1.5f;
     private float enemyAttackTick = 0.0f;
 
+    public int gameState = 0;
+    public bool hasEnded = false;
     //board rows and columns
     private int xDimension = 7;
     private int yDimension = 5;
@@ -81,6 +83,7 @@ public class GameManager : MonoBehaviour
     //tutorial
     public static bool isTutorial = false;
     public static int tutorialPhase = 0;
+    
 
     private void Awake()
     {
@@ -501,6 +504,31 @@ public class GameManager : MonoBehaviour
             else if (tutorialPhase == 5 && Input.GetMouseButtonDown(0))
             {
                 SceneManager.LoadScene("TransitionSample");
+            }
+        }
+
+        else
+        {
+            if (c1CurrentHp <= 0 && c2CurrentHp <= 0 && c3CurrentHp <= 0)
+                gameState = -1;
+
+            else if(enemyCurrentHp <= 0)
+            {
+                gameState = 1;
+            }
+
+
+            if(gameState != 0 && hasEnded == false)
+            {
+                if(gameState == 1)
+                {
+                    OnWin();
+                }
+
+                else if(gameState == -1)
+                {
+                    OnLose();
+                }
             }
         }
 
