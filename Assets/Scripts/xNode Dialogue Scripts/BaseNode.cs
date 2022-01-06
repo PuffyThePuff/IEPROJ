@@ -14,4 +14,9 @@ public class BaseNode : Node {
     {
         return null;
     }
+
+    public virtual Sprite GetSprite2()
+    {
+        return null;
+    }
 }

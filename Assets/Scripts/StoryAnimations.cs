@@ -32,21 +32,67 @@ public class StoryAnimations : MonoBehaviour
         {
             if (FadeBlackTransition != null)
             {
-                MoveToSchoolAnim = null;
                 FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].hasTriggered = true;
-                StartCoroutine(FadeTransition());
+                StartCoroutine(FadeTransition("TransitionSample"));
             }
 
         }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered)
+        {
+            if (FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered = true;
+                StartCoroutine(FadeTransition("Puzzle"));
+            }
+
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[3].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[3].hasTriggered)
+        {
+            if (FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[3].hasTriggered = true;
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4], true);
+            }
+
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4].hasTriggered)
+        {
+            if (FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4].hasTriggered = true;
+                StartCoroutine(FadeTransition("GachaSample"));
+               
+            }
+
+        }
+        
 
 
     }
 
-    IEnumerator FadeTransition()
+    IEnumerator FadeTransition(string scenetoLoad)
     {
         FadeBlackTransition.SetTrigger("DramaticSceneEnter");
         yield return new WaitForSeconds(1.0f);
-        SceneManager.LoadSceneAsync("TransitionSample");
+        SceneManager.LoadSceneAsync(scenetoLoad);
         yield return new WaitForSeconds(1.0f);
+    }
+
+    public void gachatutorReturnButton()
+    {
+        if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5].isDone &&
+            !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5].hasTriggered)
+        {
+            if (FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5].hasTriggered = true;
+                StartCoroutine(FadeTransition("TransitionSample"));
+
+            }
+
+        }
     }
 }
