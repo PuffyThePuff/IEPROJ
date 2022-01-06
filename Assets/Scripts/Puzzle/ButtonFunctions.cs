@@ -28,9 +28,9 @@ public class ButtonFunctions : MonoBehaviour
                 
             }
 
-            else if (GameManager.tutorialPhase == 2 && GameManager.Instance.selected.Count >= 3)
+            else if (GameManager.tutorialPhase == 3 && GameManager.Instance.selected.Count >= 3)
             {
-                GameManager.tutorialPhase = 3;
+                GameManager.tutorialPhase = 4;
                 GameManager.Instance.Attack();
                 StartCoroutine(GameManager.Instance.DelayedRefreshBoard());
             }
