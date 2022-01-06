@@ -9,48 +9,79 @@ public class GameManager : MonoBehaviour
     public int currentTurn = 0;
     public int maxTurn = 99;
 
-    public static GameManager Instance;
-    public List<GameObject> pieces;
-    public int[,] nBoard;
-    public GameObject[,] gBoard;
-    public bool isBoardInteractable = true;
-    public List<GameObject> selected;
-    public List<GameObject> powerups;
-    public Image enemyHpBar;
+    public static GameManager Instance; //instance that can be called anywhere
+    public List<GameObject> pieces; //list of all piece gameobjects where index 0-2 are plain pieces
+    public int[,] nBoard;   //integer representation of board
+    public GameObject[,] gBoard;    //gameobject board with reference to each piece
+    public bool isBoardInteractable = true; // pieces can be selected if true
+    public List<GameObject> selected;   //list of selected pieces including powerups
+    public List<GameObject> powerups;   //list of selected powerups
+
+    //enemy hp bar ui
+    public Image enemyHpBar;    
+
+    //characters hp bar ui
     public Image c1HpBar;
     public Image c2HpBar;
     public Image c3HpBar;
+
+    //tutorial help dialogues ui
     public GameObject helpDialogue1;
     public GameObject helpDialogue2;
     public GameObject helpDialogue3;
+    public GameObject helpDialogue4;
     public GameObject endText;
+
+    //tutorial arrow ui
     public GameObject arrowGroup1;
     public GameObject arrowGroup2;
     public GameObject arrowGroup3;
+    public GameObject arrowGroup4;
+
+    //hold timer
     private float holdTime = 5.0f;
     private float holdTick = 0.0f;
 
+    //special piece count and references
+    public int specialPiecesCount = 0;
+    public GameObject specialPiece1 = null;
+    public GameObject specialPiece2 = null;
+    public GameObject specialPiece3 = null;
+   
+
+    //special pieces index and characters hp
     public int c1Index = 3;
     public int c2Index = 4;
+    public int c3Index = 5;
     private float c1MaxHp = 0;
     private float c2MaxHp = 0;
     private float c3MaxHp = 0;
-
     private float c1CurrentHp = 0;
     private float c2CurrentHp = 0;
     private float c3CurrentHp = 0;
+    private float c1MaxCharge = 100;
+    private float c2MaxCharge = 100;
+    private float c3MaxCharge = 100;
+    public float c1CurrentCharge = 0;
+    public float c2CurrentCharge = 0;
+    public float c3CurrentCharge = 0;
 
+
+    //enemy stats
     public float enemyMaxHp = 100;
     private float enemyCurrentHp = 100;
     private float enemyDmg = 0;
     private float enemyAttackInterval = 1.5f;
     private float enemyAttackTick = 0.0f;
 
+    //board rows and columns
     private int xDimension = 7;
     private int yDimension = 5;
 
+    //tutorial
     public static bool isTutorial = false;
     public static int tutorialPhase = 0;
+
     private void Awake()
     {
         if (Instance == null)
@@ -61,7 +92,26 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        if(!isTutorial)
+        //debug
+        Debug.Log("c1 index: " + Values.Player.equippedChar1.index + ", c2 Index: " + Values.Player.equippedChar2.index + ", c3 Index: " + Values.Player.equippedChar3.index);
+
+        //setting up stats accoroding to values.cs
+        c1Index = Values.Player.equippedChar1.index;
+        c1MaxHp = Values.Player.equippedChar1.hp;
+        c1CurrentHp = c1MaxHp;
+        c2Index = Values.Player.equippedChar2.index;
+        c2MaxHp = Values.Player.equippedChar2.hp;
+        c2CurrentHp = c2MaxHp;
+        c3Index = Values.Player.equippedChar3.index;
+        c3MaxHp = Values.Player.equippedChar3.hp;
+        c3CurrentHp = c3MaxHp;
+        enemyMaxHp = Values.Enemy.maxHP;
+        enemyCurrentHp = enemyMaxHp;
+        enemyDmg = Values.Enemy.dmg;
+        isTutorial = Values.Puzzle.isTutorial;
+
+
+        if (!isTutorial)
             nBoard = InitializeBoard();
 
         else
@@ -70,17 +120,10 @@ public class GameManager : MonoBehaviour
             tutorialPhase = 1;
         }
 
-        c1MaxHp = Values.Characters.c1.hp;
-        c1CurrentHp = c1MaxHp;
-        c2MaxHp = Values.Characters.c2.hp;
-        c2CurrentHp = c2MaxHp;
-        c3MaxHp = Values.Characters.c3.hp;
-        c3CurrentHp = c3MaxHp;
-        enemyMaxHp = Values.Enemy.maxHP;
-        enemyCurrentHp = enemyMaxHp;
-        enemyDmg = Values.Enemy.dmg;
+        
     }
 
+    //manually set up board for tutorial
     private void SetupTutorialBoard()
     {
         nBoard = new int[xDimension, yDimension];
@@ -270,31 +313,83 @@ public class GameManager : MonoBehaviour
         enemyAttackTick+= Time.deltaTime;
         if(enemyAttackTick >= enemyAttackInterval)
         {
-            int charToAttack = Random.Range(0, 2);
-            switch (charToAttack)
+            if (!isTutorial)
             {
-                case 0: c1CurrentHp -= enemyDmg; break;
-                case 1: c2CurrentHp -= enemyDmg; break;
-                case 2: c3CurrentHp -= enemyDmg; break;
+                int charToAttack = Random.Range(0, 2);
+                switch (charToAttack)
+                {
+
+                    case 0: // prioritize attack on char1
+                        {
+                            if (c1CurrentHp > 0)
+                                c1CurrentHp -= enemyDmg;
+
+                            else if (c2CurrentHp > 0)
+                                c2CurrentHp -= enemyDmg;
+
+                            else if (c3CurrentHp > 0)
+                                c3CurrentHp -= enemyDmg;
+                        }
+                        break;
+                    case 1: // prioritize attack on char2
+                        {
+                            if (c2CurrentHp > 0)
+                                c2CurrentHp -= enemyDmg;
+
+                            else if (c3CurrentHp > 0)
+                                c3CurrentHp -= enemyDmg;
+
+                            else if (c1CurrentHp > 0)
+                                c1CurrentHp -= enemyDmg;
+                        }
+                        break;
+                    case 2: // prioritize attack on char3
+                        {
+                            if (c3CurrentHp > 0)
+                                c3CurrentHp -= enemyDmg;
+
+                            else if (c1CurrentHp > 0)
+                                c1CurrentHp -= enemyDmg;
+
+                            else if (c2CurrentHp > 0)
+                                c2CurrentHp -= enemyDmg;
+                        }
+                        break;
+                }
+
+                enemyAttackTick = 0.0f;
             }
 
-            enemyAttackTick = 0.0f;
+            else if(tutorialPhase == 2)
+            {
+                if(c1CurrentHp == c1MaxHp)
+                    c1CurrentHp -= enemyDmg;
+
+
+                if(Input.GetMouseButtonDown(0))
+                {
+                    tutorialPhase = 3;
+                }
+
+            }
+            
         }
 
-        if(Input.GetMouseButtonUp(0))
+        if(Input.GetMouseButtonUp(0))   //if left mouse button released
         {
             if(!isTutorial)
             {
-                if (GameManager.Instance.selected.Count >= 3)
+                if (GameManager.Instance.selected.Count >= 3)   //if more than 3 pieces selected
                 {
-                    GameManager.Instance.Attack();
-                    GameManager.Instance.InstantRefreshBoard();
+                    GameManager.Instance.Attack();  //delete normal pieces and trigger special pieces effects
+                    GameManager.Instance.InstantRefreshBoard(); //replace deleted pieces
                 }
 
                 else
                 {
-                    foreach (GameObject selectedPiece in GameManager.Instance.selected)
+                    foreach (GameObject selectedPiece in GameManager.Instance.selected) //for each selected piece
                     {
+                        //unselect
                         Debug.Log("before: " + GameManager.Instance.selected.Count);
                         Destroy(selectedPiece.transform.GetChild(0).gameObject);
 
@@ -310,6 +405,7 @@ public class GameManager : MonoBehaviour
 
                     }
 
+                    //clear slected list
                     GameManager.Instance.selected.Clear();
                     //if (GameManager.Instance.selected.Count == 1)
                     //{
@@ -325,7 +421,7 @@ public class GameManager : MonoBehaviour
                     //    GameManager.Instance.InstantRefreshBoard();
                     //}
 
-
+                    //undo transparency effect
                     GameManager.Instance.InstantRefreshBoard();
                 }
             }
@@ -333,7 +429,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 Debug.Log("true2");
-                if (GameManager.tutorialPhase == 1 && GameManager.Instance.selected.Count == 2)
+                if (GameManager.tutorialPhase == 1 && GameManager.Instance.selected.Count == 3)
                 {
                     GameManager.tutorialPhase = 2;
                     GameManager.Instance.Attack();
@@ -341,9 +437,9 @@ public class GameManager : MonoBehaviour
                     Debug.Log("true3");
                 }
 
-                else if (GameManager.tutorialPhase == 2 && GameManager.Instance.selected.Count >= 3)
+                else if (GameManager.tutorialPhase == 3 && GameManager.Instance.selected.Count >= 3)
                 {
-                    GameManager.tutorialPhase = 3;
+                    GameManager.tutorialPhase = 4;
                     GameManager.Instance.Attack();
                     GameManager.Instance.InstantRefreshBoard();
                 }
@@ -391,7 +487,18 @@ public class GameManager : MonoBehaviour
         if (isTutorial)
         {
             UpdateHelpDialogue();
-            if (tutorialPhase == 3 && Input.GetMouseButtonDown(0))
+
+            if(tutorialPhase == 2 && Input.GetMouseButtonDown(0))
+            {
+                tutorialPhase = 3;
+            }
+
+            else if (tutorialPhase == 4 && Input.GetMouseButtonDown(0))
+            {
+                tutorialPhase = 5;
+            }
+
+            else if (tutorialPhase == 5 && Input.GetMouseButtonDown(0))
             {
                 SceneManager.LoadScene("TransitionSample");
             }
@@ -418,7 +525,7 @@ public class GameManager : MonoBehaviour
         if (c2HpBar != null)
         {
             //currentHP -= 0.25f;   //testing
-            c1HpBar.fillAmount = c1CurrentHp / c1MaxHp;
+            c2HpBar.fillAmount = c2CurrentHp / c2MaxHp;
         }
 
         if (c3HpBar != null)
@@ -428,6 +535,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // initialize randomization of board pieces
     int[,] InitializeBoard()
     {
 
@@ -439,28 +547,69 @@ public class GameManager : MonoBehaviour
         {
             for(int j = 0; j < yDimension; j++)
             {
-                int n = Random.Range(0, 7);
+                GameObject newPiece;
+                int n = Random.Range(0, 7); //2nd parameter dictates special piece rng: higher = more rare
 
-                if(n > 0)
+                if(n > 0 || specialPiecesCount >= 3)
                 {
-                    n = Random.Range(0, 3);
+                    //create normal piece
+                    n = Random.Range(0, 3); //randomize between normal pieces index (0-2)
+                    newPiece = createPiece(n, i, j);
                 }
 
                 else
                 {
-                    int specialCharacterIndex = Random.Range(0, 2); // 0-1
+                    //Debug.Log("creating special piece");
 
-                    switch(specialCharacterIndex)
+                    if(specialPiece1 == null && c1CurrentHp > 0 && c1CurrentCharge == c1MaxCharge)   //if no specialPiece1 on board & character 1 is alive
                     {
-                        case 0: n = c1Index; break;
-                        case 1: n = c2Index; break;
+                        //Debug.Log("creating special piece1");
+                        n = c1Index;
+                        newPiece = createPiece(n, i, j);
+                        specialPiece1 = newPiece;
+                        specialPiecesCount++;
+                        c1CurrentCharge = 0;
                     }
 
-                    Debug.Log(specialCharacterIndex);
-                    
+                    else if(specialPiece2 == null && c2CurrentHp > 0 && c2CurrentCharge == c2MaxCharge)  //if no specialPiece2 on board & character 2 is alive
+                    {
+                        //Debug.Log("creating special piece2");
+                        n = c2Index;
+                        newPiece = createPiece(n, i, j);
+                        specialPiece2 = newPiece;
+                        specialPiecesCount++;
+                        c2CurrentCharge = 0;
+                    }
+
+                    else if (specialPiece3 == null && c3CurrentHp > 0 && c3CurrentCharge == c3MaxCharge) //if no specialPiece3 on board & character 3 is alive
+                    {
+                        //Debug.Log("creating special piece3");
+                        n = c3Index;
+                        newPiece = createPiece(n, i, j);
+                        specialPiece3 = newPiece;
+                        specialPiecesCount++;
+                        c3CurrentCharge = 0;
+                    }   
+
+                    //int specialCharacterIndex = Random.Range(0, 2); // 0-1
+
+                    //switch(specialCharacterIndex)
+                    //{
+                    //    case 0: n = c1Index; break;
+                    //    case 1: n = c2Index; break;
+                    //}
+
+                    //Debug.Log(specialCharacterIndex);
+
+                    else
+                    {
+                        Debug.Log("creating special piece4");
+                        n = Random.Range(0, 3);
+                        newPiece = createPiece(n, i, j);
+                    }
                 }
 
-                GameObject newPiece = createPiece(n, i, j);
+                
 
                 newBoard[i, j] = n;
                 gBoard[i, j] = newPiece;
@@ -474,10 +623,10 @@ public class GameManager : MonoBehaviour
         GameObject newPiece;
 
         if(x%2 == 0)
-            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) -0.925f, (0.3f * y) + 0.15f, 0.0f), Quaternion.identity, null);
+            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) -0.925f, (0.3f * y) + 0.35f, 0.0f), Quaternion.identity, null);
 
         else
-            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) - 0.925f, (0.3f * y) + 0.25f, 0.0f), Quaternion.identity, null);
+            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) - 0.925f, (0.3f * y) + 0.45f, 0.0f), Quaternion.identity, null);
 
         if(newPiece.TryGetComponent(out PieceBehavior PB))
             PB.SetValues(pieceIndex, x, y);
@@ -491,30 +640,66 @@ public class GameManager : MonoBehaviour
         return ((x >= 0 && x <= xDimension) && (y >= 0 && y <= yDimension));
     }
     
+    //set piece value on integer board to -1 then delete correspnding game objects
     public void Attack()
     {
-        for (int i = 0; i < selected.Count; i++)
+        for (int i = 0; i < selected.Count; i++)    //for all selected piece
         {
-            if(selected[i].GetComponent<PieceBehavior>().ID < 3)
+            if(selected[i].GetComponent<PieceBehavior>().ID < 3)    //if normal piece
             {
+                //delete normal piece
                 Debug.Log("Deleting");
 
                 int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                 int yIndex = selected[i].GetComponent<PieceBehavior>().y;
+                if(nBoard[xIndex, yIndex] != -1)
+                {
+                    if(selected[i].GetComponent<PieceBehavior>().ID == 0)
+                    {
+                        c1CurrentCharge += 10;
 
-                nBoard[xIndex, yIndex] = -1;
+                        if(c1CurrentCharge >= c1MaxCharge)
+                        {
+                            c1CurrentCharge = c1MaxCharge;
+                        }
+                    }
+
+                    if (selected[i].GetComponent<PieceBehavior>().ID == 1)
+                    {
+                        c2CurrentCharge += 10;
+
+                        if (c2CurrentCharge >= c2MaxCharge)
+                        {
+                            c2CurrentCharge = c2MaxCharge;
+                        }
+                    }
+
+                    if (selected[i].GetComponent<PieceBehavior>().ID == 2)
+                    {
+                        c3CurrentCharge += 10;
+
+                        if (c3CurrentCharge >= c3MaxCharge)
+                        {
+                            c3CurrentCharge = c3MaxCharge;
+                        }
+                    }
+
+                    nBoard[xIndex, yIndex] = -1;
+                }
+                
             }
             
 
-            else
+            else    //if special piece
             {
+                //perform special piece effect
                 PerformSpecialPieceEffects(i);
             }
         }
 
-        selected.Clear();
-        powerups.Clear();
-        DestroyDamagedPieces();
+        selected.Clear();   //clear reference list of selected pieces
+        powerups.Clear();   //clear reference list of selected powerups
+        DestroyDamagedPieces(); //destroy game object pieces that have been set to -1 value
         isBoardInteractable = false;
     }
 
@@ -522,9 +707,33 @@ public class GameManager : MonoBehaviour
     {
         GameObject specialPiece = selected[i];
 
-        switch(specialPiece.GetComponent<PieceBehavior>().ID)
+        if(specialPiece.GetComponent<PieceBehavior>().ID == c1Index)
         {
-            case 3:
+            specialPiece1 = null;
+            specialPiecesCount--;
+        }
+
+        else if (specialPiece.GetComponent<PieceBehavior>().ID == c2Index)
+        {
+            specialPiece2 = null;
+            specialPiecesCount--;
+        }
+
+        else if (specialPiece.GetComponent<PieceBehavior>().ID == c3Index)
+        {
+            Debug.Log("delete 3");
+            specialPiece3 = null;
+            specialPiecesCount--;
+        }
+
+        //else if (specialPiece.GetComponent<PieceBehavior>().ID == c3Index)
+        //{
+        //    specialPiece3 = null;
+        //}
+
+        switch (specialPiece.GetComponent<PieceBehavior>().ID)
+        {
+            case 3: //clear row of powerup piece
                 {
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
                     for (int j = 0; j < xDimension; j++)
@@ -534,7 +743,7 @@ public class GameManager : MonoBehaviour
                 }
                 break;
 
-            case 4:
+            case 4: //clear pieces around powerup piece
                 {
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
@@ -563,10 +772,49 @@ public class GameManager : MonoBehaviour
 
                 }
                 break;
+
+            case 5: //clear column of powerup piece
+                {
+                    int xIndex = selected[i].GetComponent<PieceBehavior>().x;
+                    for (int j = 0; j < yDimension; j++)
+                    {
+                        nBoard[xIndex, j] = -1;
+                    }
+
+                }
+                break;
+            case 6:
+                {
+                    int xIndex = selected[i].GetComponent<PieceBehavior>().x;
+                    int yIndex = selected[i].GetComponent<PieceBehavior>().y;
+
+                    if(xIndex+1 <= xDimension - 1 && yIndex+1 <= yDimension - 1)
+                    {
+                        nBoard[xIndex + 1, yIndex + 1] = -1;
+                    }
+
+                    if(xIndex + 2 >= xDimension - 1&& yIndex + 2 >= yDimension - 1)
+                    {
+                        nBoard[xIndex + 2, yIndex + 2] = -1;
+                    }
+
+                    if (xIndex - 1 > 0 && yIndex - 1 > 0)
+                    {
+                        nBoard[xIndex - 1, yIndex - 1] = -1;
+                    }
+
+                    if (xIndex - 2 > 0 && yIndex - 2 > 0)
+                    {
+                        nBoard[xIndex - 2, yIndex -  2] = -1;
+                    }
+                }
+                break;
         }
+
         
     }
 
+    //destroy pieces from game object board where equivalent index in integer board is -1
     public void DestroyDamagedPieces()
     {
         for (int i = xDimension-1; i >= 0; i--)
@@ -576,6 +824,7 @@ public class GameManager : MonoBehaviour
                 
                 if (nBoard[i, j] == -1)
                 {
+                    
                     enemyCurrentHp -= 10;
                     Destroy(gBoard[i, j]);
 
@@ -606,9 +855,9 @@ public class GameManager : MonoBehaviour
                             gBoard[i, k].GetComponent<PieceBehavior>().y = k;
 
                             if (gBoard[i, k].GetComponent<PieceBehavior>().x % 2 == 0)
-                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.15f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.35f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
                             else
-                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.25f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.45f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
 
                             nBoard[i, k - (k - l)] = -1;
                             gBoard[i, k - (k - l)] = null;
@@ -632,6 +881,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //replace damaged pieces and undo transparency of pieces on board after a delay
     public IEnumerator DelayedRefreshBoard()
     {
         
@@ -668,28 +918,28 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if(tutorialPhase == 2)
-        {
-            Destroy(gBoard[3, 0]);
-            GameObject newPiece1 = createPiece(3, 3, 0);
+        //if(tutorialPhase == 3)
+        //{
+        //    Destroy(gBoard[3, 0]);
+        //    GameObject newPiece1 = createPiece(3, 3, 0);
 
-            nBoard[3, 0] = 3;
-            gBoard[3, 0] = newPiece1;
-
-
-            generatedPieces.Add(newPiece1);
+        //    nBoard[3, 0] = 3;
+        //    gBoard[3, 0] = newPiece1;
 
 
-            Destroy(gBoard[2, 0]);
-            GameObject newPiece2 = createPiece(1, 2, 0);
-
-            nBoard[2, 0] = 1;
-            gBoard[2, 0] = newPiece2;
+        //    generatedPieces.Add(newPiece1);
 
 
+        //    Destroy(gBoard[2, 0]);
+        //    GameObject newPiece2 = createPiece(1, 2, 0);
 
-            generatedPieces.Add(newPiece2);
-        }
+        //    nBoard[2, 0] = 1;
+        //    gBoard[2, 0] = newPiece2;
+
+
+
+        //    generatedPieces.Add(newPiece2);
+        //}
 
         
 
@@ -813,14 +1063,16 @@ public class GameManager : MonoBehaviour
         //}
         
         isBoardInteractable = true;
-        currentTurn++;
+        //currentTurn++;
 
-        if (currentTurn > maxTurn)
-            isBoardInteractable = false;
+        //if (currentTurn > maxTurn)
+        //    isBoardInteractable = false;
 
         
     }
 
+    //replace damaged pieces and undo transparency of pieces on board instantly
+    //create new pieces in game object board where equivalent index in integer board is -1
     public void InstantRefreshBoard()
     {
         for (int i = 0; i < xDimension; i++)
@@ -829,19 +1081,84 @@ public class GameManager : MonoBehaviour
             {
                 if (nBoard[i, j] == -1)
                 {
+                    GameObject newPiece;
                     int n = Random.Range(0, 7);
 
-                    if (n > 0)
+                    if (isTutorial && tutorialPhase == 2)
                     {
-                        n = Random.Range(0, 3);
+                        if(tutorialPhase == 2 && i == 3 && j == 0)
+                        {
+                            n = 4;
+                            newPiece = createPiece(n, i, j);
+                        }
+                        
+                        else
+                        {
+                            n = Random.Range(0, 3);
+                            newPiece = createPiece(n, i, j);
+                        }
+                    }
+
+                    else if (n > 0 || specialPiecesCount >= 3)
+                    {
+                            Debug.Log("true");
+                            n = Random.Range(0, 3);
+                        newPiece = createPiece(n, i, j);
+                    
                     }
 
                     else
                     {
-                        n = Random.Range(3, 5);
+                        Debug.Log("Spawning special piece");
+                        if (specialPiece1 == null && c1CurrentHp > 0 && c1CurrentCharge == c1MaxCharge)   //if no specialPiece1 on board & character 1 is alive
+                        {
+                            //Debug.Log("creating special piece1");
+                            n = c1Index;
+                            newPiece = createPiece(n, i, j);
+                            specialPiece1 = newPiece;
+                            specialPiecesCount++;
+                            c1CurrentCharge = 0;
+                        }
+
+                        else if (specialPiece2 == null && c2CurrentHp > 0 && c2CurrentCharge == c2MaxCharge)  //if no specialPiece2 on board & character 2 is alive
+                        {
+                            //Debug.Log("creating special piece2");
+                            n = c2Index;
+                            newPiece = createPiece(n, i, j);
+                            specialPiece2 = newPiece;
+                            specialPiecesCount++;
+                            c2CurrentCharge = 0;
+                        }
+
+                        else if (specialPiece3 == null && c3CurrentHp > 0 && c3CurrentCharge == c3MaxCharge) //if no specialPiece3 on board & character 3 is alive
+                        {
+                            //Debug.Log("creating special piece3");
+                            n = c3Index;
+                            newPiece = createPiece(n, i, j);
+                            specialPiece3 = newPiece;
+                            specialPiecesCount++;
+                            c3CurrentCharge = 0;
+                        }
+
+                        //int specialCharacterIndex = Random.Range(0, 2); // 0-1
+
+                        //switch(specialCharacterIndex)
+                        //{
+                        //    case 0: n = c1Index; break;
+                        //    case 1: n = c2Index; break;
+                        //}
+
+                        //Debug.Log(specialCharacterIndex);
+
+                        else
+                        {
+                            n = Random.Range(0, 3);
+                            newPiece = createPiece(n, i, j);
+                        }
                     }
 
-                    GameObject newPiece = createPiece(n, i, j);
+                
+                
 
                     nBoard[i, j] = n;
                     gBoard[i, j] = newPiece;
@@ -862,8 +1179,8 @@ public class GameManager : MonoBehaviour
         isBoardInteractable = true;
         currentTurn++;
 
-        if (currentTurn > maxTurn)
-            isBoardInteractable = false;
+        //if (currentTurn > maxTurn)
+        //    isBoardInteractable = false;
     }
 
     private void UpdateHelpDialogue()
@@ -873,6 +1190,7 @@ public class GameManager : MonoBehaviour
             helpDialogue1.SetActive(true);
             helpDialogue2.SetActive(false);
             helpDialogue3.SetActive(false);
+            helpDialogue4.SetActive(false);
 
             arrowGroup1.SetActive(true);
             arrowGroup2.SetActive(false);
@@ -884,6 +1202,7 @@ public class GameManager : MonoBehaviour
             helpDialogue1.SetActive(false);
             helpDialogue2.SetActive(true);
             helpDialogue3.SetActive(false);
+            helpDialogue4.SetActive(false);
 
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(true);
@@ -895,22 +1214,54 @@ public class GameManager : MonoBehaviour
             helpDialogue1.SetActive(false);
             helpDialogue2.SetActive(false);
             helpDialogue3.SetActive(true);
+            helpDialogue4.SetActive(false);
 
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(false);
             arrowGroup3.SetActive(true);
 
+        }
+
+        if (tutorialPhase == 4 && !(helpDialogue4.activeInHierarchy))
+        {
+            helpDialogue1.SetActive(false);
+            helpDialogue2.SetActive(false);
+            helpDialogue3.SetActive(false);
+            helpDialogue4.SetActive(true);
+
+            arrowGroup1.SetActive(false);
+            arrowGroup2.SetActive(false);
+            arrowGroup3.SetActive(false);
+            arrowGroup4.SetActive(true);
+
+        }
+
+        if (tutorialPhase == 5 && !(endText.activeInHierarchy))
+        {
+            helpDialogue1.SetActive(false);
+            helpDialogue2.SetActive(false);
+            helpDialogue3.SetActive(false);
+            helpDialogue4.SetActive(false);
+
+            arrowGroup1.SetActive(false);
+            arrowGroup2.SetActive(false);
+            arrowGroup3.SetActive(false);
+            arrowGroup4.SetActive(false);
+
+
             endText.SetActive(true);
         }
+
+
     }
 
     private void OnWin()
     {
-
+        Values.Player.gold += 25;
     }
 
     private void OnLose()
     {
-
+        
     }
 }
