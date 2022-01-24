@@ -25,6 +25,10 @@ public class GameManager : MonoBehaviour
     public Image c2HpBar;
     public Image c3HpBar;
 
+    public Image c1ChargeBar;
+    public Image c2ChargeBar;
+    public Image c3ChargeBar;
+
     //tutorial help dialogues ui
     public GameObject helpDialogue1;
     public GameObject helpDialogue2;
@@ -402,6 +406,10 @@ public class GameManager : MonoBehaviour
                             GameManager.Instance.powerups.Remove(selectedPiece);
                         }
 
+                        if(selectedPiece.GetComponent<LineRenderer>() != null)
+                        {
+                            selectedPiece.GetComponent<LineRenderer>().positionCount = 0;
+                        }
 
 
                         Debug.Log("after: " + GameManager.Instance.selected.Count);
@@ -563,6 +571,59 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void UpdateChargeBars(int i)
+    {
+        if (selected[i].GetComponent<PieceBehavior>().ID == 0)
+        {
+            c1CurrentCharge += 10;
+
+            if (c1CurrentCharge >= c1MaxCharge)
+            {
+                c1CurrentCharge = c1MaxCharge;
+            }
+        }
+
+        if (selected[i].GetComponent<PieceBehavior>().ID == 1)
+        {
+            c2CurrentCharge += 10;
+
+            if (c2CurrentCharge >= c2MaxCharge)
+            {
+                c2CurrentCharge = c2MaxCharge;
+            }
+        }
+
+        if (selected[i].GetComponent<PieceBehavior>().ID == 2)
+        {
+            c3CurrentCharge += 10;
+
+            if (c3CurrentCharge >= c3MaxCharge)
+            {
+                c3CurrentCharge = c3MaxCharge;
+            }
+        }
+
+
+        if (c1ChargeBar != null)
+        {
+            //currentHP -= 0.25f;   //testing
+            c1ChargeBar.fillAmount = c1CurrentCharge / c1MaxCharge;
+        }
+
+        if (c2ChargeBar != null)
+        {
+            //currentHP -= 0.25f;   //testing
+            c2ChargeBar.fillAmount = c2CurrentCharge / c2MaxCharge;
+        }
+
+        if (c3ChargeBar != null)
+        {
+            //currentHP -= 0.25f;   //testing
+            c3ChargeBar.fillAmount = c3CurrentCharge / c3MaxCharge;
+        }
+    }
+
+
     // initialize randomization of board pieces
     int[,] InitializeBoard()
     {
@@ -596,7 +657,7 @@ public class GameManager : MonoBehaviour
                         newPiece = createPiece(n, i, j);
                         specialPiece1 = newPiece;
                         specialPiecesCount++;
-                        c1CurrentCharge = 0;
+                        
                     }
 
                     else if(specialPiece2 == null && c2CurrentHp > 0 && c2CurrentCharge == c2MaxCharge)  //if no specialPiece2 on board & character 2 is alive
@@ -682,39 +743,11 @@ public class GameManager : MonoBehaviour
                 int yIndex = selected[i].GetComponent<PieceBehavior>().y;
                 if(nBoard[xIndex, yIndex] != -1)
                 {
-                    if(selected[i].GetComponent<PieceBehavior>().ID == 0)
-                    {
-                        c1CurrentCharge += 10;
-
-                        if(c1CurrentCharge >= c1MaxCharge)
-                        {
-                            c1CurrentCharge = c1MaxCharge;
-                        }
-                    }
-
-                    if (selected[i].GetComponent<PieceBehavior>().ID == 1)
-                    {
-                        c2CurrentCharge += 10;
-
-                        if (c2CurrentCharge >= c2MaxCharge)
-                        {
-                            c2CurrentCharge = c2MaxCharge;
-                        }
-                    }
-
-                    if (selected[i].GetComponent<PieceBehavior>().ID == 2)
-                    {
-                        c3CurrentCharge += 10;
-
-                        if (c3CurrentCharge >= c3MaxCharge)
-                        {
-                            c3CurrentCharge = c3MaxCharge;
-                        }
-                    }
+                    UpdateChargeBars(i);
 
                     nBoard[xIndex, yIndex] = -1;
                 }
-                
+
             }
             
 
@@ -731,6 +764,8 @@ public class GameManager : MonoBehaviour
         isBoardInteractable = false;
     }
 
+    
+
     private void PerformSpecialPieceEffects(int i)
     {
         GameObject specialPiece = selected[i];
@@ -739,12 +774,16 @@ public class GameManager : MonoBehaviour
         {
             specialPiece1 = null;
             specialPiecesCount--;
+            c1CurrentCharge = 0;
+            UpdateChargeBars(i);
         }
 
         else if (specialPiece.GetComponent<PieceBehavior>().ID == c2Index)
         {
             specialPiece2 = null;
             specialPiecesCount--;
+            c2CurrentCharge = 0;
+            UpdateChargeBars(i);
         }
 
         else if (specialPiece.GetComponent<PieceBehavior>().ID == c3Index)
@@ -752,6 +791,8 @@ public class GameManager : MonoBehaviour
             Debug.Log("delete 3");
             specialPiece3 = null;
             specialPiecesCount--;
+            c3CurrentCharge = 0;
+            UpdateChargeBars(i);
         }
 
         //else if (specialPiece.GetComponent<PieceBehavior>().ID == c3Index)
@@ -816,12 +857,14 @@ public class GameManager : MonoBehaviour
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
 
-                    if(xIndex+1 <= xDimension - 1 && yIndex+1 <= yDimension - 1)
+                    nBoard[xIndex, yIndex] = -1;
+
+                    if (xIndex+1 <= xDimension - 1 && yIndex+1 <= yDimension - 1)
                     {
                         nBoard[xIndex + 1, yIndex + 1] = -1;
                     }
 
-                    if(xIndex + 2 >= xDimension - 1&& yIndex + 2 >= yDimension - 1)
+                    if(xIndex + 2 <= xDimension - 1&& yIndex + 2 <= yDimension - 1)
                     {
                         nBoard[xIndex + 2, yIndex + 2] = -1;
                     }
@@ -1145,7 +1188,6 @@ public class GameManager : MonoBehaviour
                             newPiece = createPiece(n, i, j);
                             specialPiece1 = newPiece;
                             specialPiecesCount++;
-                            c1CurrentCharge = 0;
                         }
 
                         else if (specialPiece2 == null && c2CurrentHp > 0 && c2CurrentCharge == c2MaxCharge)  //if no specialPiece2 on board & character 2 is alive
@@ -1155,7 +1197,6 @@ public class GameManager : MonoBehaviour
                             newPiece = createPiece(n, i, j);
                             specialPiece2 = newPiece;
                             specialPiecesCount++;
-                            c2CurrentCharge = 0;
                         }
 
                         else if (specialPiece3 == null && c3CurrentHp > 0 && c3CurrentCharge == c3MaxCharge) //if no specialPiece3 on board & character 3 is alive
@@ -1165,8 +1206,8 @@ public class GameManager : MonoBehaviour
                             newPiece = createPiece(n, i, j);
                             specialPiece3 = newPiece;
                             specialPiecesCount++;
-                            c3CurrentCharge = 0;
                         }
+
 
                         //int specialCharacterIndex = Random.Range(0, 2); // 0-1
 
