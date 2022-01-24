@@ -512,6 +512,9 @@ public class GameManager : MonoBehaviour
             else if (tutorialPhase == 5 && Input.GetMouseButtonDown(0))
             {
                 SceneManager.LoadScene("TransitionSample");
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
             }
         }
 

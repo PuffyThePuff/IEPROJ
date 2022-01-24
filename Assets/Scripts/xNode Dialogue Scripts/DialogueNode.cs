@@ -10,6 +10,7 @@ public class DialogueNode : BaseNode {
 	public string speakerName;
 	public string dialogueLine;
 	public Sprite sprite;
+    public Sprite sprite2;
 
     public override string GetString()
     {
@@ -19,5 +20,10 @@ public class DialogueNode : BaseNode {
     public override Sprite GetSprite()
     {
         return sprite;
+    }
+
+    public override Sprite GetSprite2()
+    {
+        return sprite2;
     }
 }
