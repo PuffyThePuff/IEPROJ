@@ -29,6 +29,7 @@ public class PieceBehavior : MonoBehaviour
 
         lineRenderer.startWidth = 0.03f;
         lineRenderer.endWidth = 0.03f;
+        lineRenderer.positionCount = 0;
     }
 
     // Update is called once per frame
@@ -77,6 +78,7 @@ public class PieceBehavior : MonoBehaviour
                 
                 GameManager.Instance.selected.Add(gameObject); //add selected object to selected objects list
                 Instantiate(Border, this.transform);    //create border around piece for visual aid
+                lineRenderer.positionCount = 2;
             }
 
             else
@@ -235,6 +237,8 @@ public class PieceBehavior : MonoBehaviour
                         {
                             GameManager.Instance.InstantRefreshBoard();
                         }
+
+                        lineRenderer.positionCount = 0;
                     }
 
 
@@ -245,7 +249,7 @@ public class PieceBehavior : MonoBehaviour
                         bool neighborInX = this.x <= latestSelected.GetComponent<PieceBehavior>().x + 1 && this.x >= latestSelected.GetComponent<PieceBehavior>().x - 1;
                         bool neighborInY = this.y <= latestSelected.GetComponent<PieceBehavior>().y + 1 && this.y >= latestSelected.GetComponent<PieceBehavior>().y - 1;
 
-                        if (neighborInX && neighborInY)
+                        if (neighborInX && neighborInY && !(GameManager.Instance.selected.Contains(this.gameObject)))
                         {
                             if (this.GetComponent<PieceBehavior>().ID >= 3)
                             {
@@ -263,8 +267,8 @@ public class PieceBehavior : MonoBehaviour
                             }
                             GameManager.Instance.selected.Add(gameObject);
                             Instantiate(Border, this.transform);
-                            
 
+                            lineRenderer.positionCount = 2;
                             lineRenderer.SetPosition(0, latestSelected.transform.position);
                             lineRenderer.SetPosition(1, gameObject.transform.position);
                             Debug.Log("drawing line");

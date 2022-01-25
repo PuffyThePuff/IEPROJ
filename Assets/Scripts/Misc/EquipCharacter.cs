@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class EquipCharacter : MonoBehaviour
 {
     public Text goldTxt = null;
+    public Dropdown[] dropdowns;
     public void SelectChar1Dropdown(Dropdown dd) //equpping character 1 based on dropdown value
     {
         
@@ -131,46 +132,77 @@ public class EquipCharacter : MonoBehaviour
 
     public void SelectLevel1()
     {
-        Values.Enemy.maxHP = 100;
-        Values.Enemy.dmg = 10;
-        SceneManager.LoadScene("PuzzleTest");
-
+        if(dropdowns[0].value != dropdowns[1].value && dropdowns[0].value != dropdowns[2].value && dropdowns[1].value != dropdowns[2].value)
+        {
+            Values.Enemy.maxHP = 100;
+            Values.Enemy.dmg = 10;
+            SceneManager.LoadScene("PuzzleTest");
+        }
+        
+        else
+        {
+            Debug.Log("Cannot use a piece more than once");
+        }
     }
 
     public void SelectLevel2()
     {
-        Values.Enemy.maxHP = 300;
-        Values.Enemy.dmg = 30;
-        SceneManager.LoadScene("PuzzleTest");
+        if (dropdowns[0].value != dropdowns[1].value && dropdowns[0].value != dropdowns[2].value && dropdowns[1].value != dropdowns[2].value)
+        {
+            Values.Enemy.maxHP = 300;
+            Values.Enemy.dmg = 30;
+            SceneManager.LoadScene("PuzzleTest");
+        }
 
-
+        else
+        {
+            Debug.Log("Cannot use a piece more than once");
+        }
     }
 
     public void SelectLevel3()
     {
-        Values.Enemy.maxHP = 900;
-        Values.Enemy.dmg = 90;
-        SceneManager.LoadScene("PuzzleTest");
+        if (dropdowns[0].value != dropdowns[1].value && dropdowns[0].value != dropdowns[2].value && dropdowns[1].value != dropdowns[2].value)
+        {
+            Values.Enemy.maxHP = 900;
+            Values.Enemy.dmg = 90;
+            SceneManager.LoadScene("PuzzleTest");
+        }
 
-
+        else
+        {
+            Debug.Log("Cannot use a piece more than once");
+        }
     }
 
     public void SelectLevel4()
     {
-        Values.Enemy.maxHP = 2700;
-        Values.Enemy.dmg = 270;
-        SceneManager.LoadScene("PuzzleTest");
+        if (dropdowns[0].value != dropdowns[1].value && dropdowns[0].value != dropdowns[2].value && dropdowns[1].value != dropdowns[2].value)
+        {
+            Values.Enemy.maxHP = 2700;
+            Values.Enemy.dmg = 270;
+            SceneManager.LoadScene("PuzzleTest");
+        }
 
-
+        else
+        {
+            Debug.Log("Cannot use a piece more than once");
+        }
     }
 
     public void SelectLevel5()
     {
-        Values.Enemy.maxHP = 8100;
-        Values.Enemy.dmg = 810;
-        SceneManager.LoadScene("PuzzleTest");
+        if (dropdowns[0].value != dropdowns[1].value && dropdowns[0].value != dropdowns[2].value && dropdowns[1].value != dropdowns[2].value)
+        {
+            Values.Enemy.maxHP = 8100;
+            Values.Enemy.dmg = 810;
+            SceneManager.LoadScene("PuzzleTest");
+        }
 
-
+        else
+        {
+            Debug.Log("Cannot use a piece more than once");
+        }
     }
 
     private void Start()

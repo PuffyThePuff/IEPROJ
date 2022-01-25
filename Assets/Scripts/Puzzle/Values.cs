@@ -10,13 +10,15 @@ public static class Values
         public int index;
         public string name;
         public float hp;
+        public float charge;
         
 
-        public Character(int _index, string _name, float _hp)
+        public Character(int _index, string _name, float _hp, float _charge)
         {
             index = _index;
             name = _name;
             hp = _hp;
+            charge = _charge;
         }
     }
     public class Enemy
@@ -27,10 +29,10 @@ public static class Values
 
     public class Characters
     {
-        public static Character c1 = new Character(3, "HorizontalPowerup", 1000);
-        public static Character c2 = new Character(4, "SurroundPowerup", 1000);
-        public static Character c3 = new Character(5, "VerticalPowerup", 1000);
-        public static Character c4 = new Character(6, "X Powerup", 1000);
+        public static Character c1 = new Character(3, "HorizontalPowerup", 1000, 100);
+        public static Character c2 = new Character(4, "SurroundPowerup", 1000, 100);
+        public static Character c3 = new Character(5, "VerticalPowerup", 1000, 100);
+        public static Character c4 = new Character(6, "X Powerup", 1000, 100);
     }
 
     public class Player

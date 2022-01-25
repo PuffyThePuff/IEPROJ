@@ -6269,6 +6269,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5049633ad12f0f14fb5402c821a8c58d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  goldTxt: {fileID: 1672791663}
+  dropdowns:
+  - {fileID: 2020691211}
+  - {fileID: 1562535764}
+  - {fileID: 1064386480}
 --- !u!1 &2134281032
 GameObject:
   m_ObjectHideFlags: 0
