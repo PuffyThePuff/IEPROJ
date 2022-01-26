@@ -69,7 +69,26 @@ public class GameManager : MonoBehaviour
     public float c1CurrentCharge = 0;
     public float c2CurrentCharge = 0;
     public float c3CurrentCharge = 0;
+    private float basicDamage = 10;
+    private float enhancedDamage = 60;
 
+    //player stats
+
+    //status effects
+    private bool enemyStunned = false;
+    private int enemyStunnedRounds = 0;
+
+    private bool playerStunned = false;
+    private int playerStunnedRounds = 0;
+
+    private bool manipulatedSpawnRates = false;
+    private int manipulatedSpawnRatesRounds = 0;
+    private bool rIncreaseRate = false;
+    private bool gIncreaseRate = false;
+    private bool bIncreaseRate = false;
+    private bool specialPieceDecreaseRate = false;
+
+    
 
     //enemy stats
     public float enemyMaxHp = 100;
@@ -103,19 +122,28 @@ public class GameManager : MonoBehaviour
         Debug.Log("c1 index: " + Values.Player.equippedChar1.index + ", c2 Index: " + Values.Player.equippedChar2.index + ", c3 Index: " + Values.Player.equippedChar3.index);
 
         //setting up stats accoroding to values.cs
-        c1Index = Values.Player.equippedChar1.index;
-        c1MaxHp = Values.Player.equippedChar1.hp;
-        c1CurrentHp = c1MaxHp;
-        c2Index = Values.Player.equippedChar2.index;
-        c2MaxHp = Values.Player.equippedChar2.hp;
-        c2CurrentHp = c2MaxHp;
-        c3Index = Values.Player.equippedChar3.index;
-        c3MaxHp = Values.Player.equippedChar3.hp;
-        c3CurrentHp = c3MaxHp;
-        enemyMaxHp = Values.Enemy.maxHP;
-        enemyCurrentHp = enemyMaxHp;
-        enemyDmg = Values.Enemy.dmg;
         isTutorial = Values.Puzzle.isTutorial;
+
+        if(!isTutorial)
+        {
+            //setup game
+            c1Index = Values.Player.equippedChar1.index;
+            c1MaxHp = Values.Player.equippedChar1.hp;
+            c1CurrentHp = c1MaxHp;
+            c2Index = Values.Player.equippedChar2.index;
+            c2MaxHp = Values.Player.equippedChar2.hp;
+            c2CurrentHp = c2MaxHp;
+            c3Index = Values.Player.equippedChar3.index;
+            c3MaxHp = Values.Player.equippedChar3.hp;
+            c3CurrentHp = c3MaxHp;
+            enemyMaxHp = Values.Enemy.maxHP;
+            enemyCurrentHp = enemyMaxHp;
+            enemyDmg = Values.Enemy.dmg;
+            basicDamage = Values.Player.basicDamage;
+            enhancedDamage = Values.Player.enhancedDmaage;
+        }
+        
+        
 
 
         if (!isTutorial)
@@ -317,70 +345,93 @@ public class GameManager : MonoBehaviour
     {
         UpdateHpBars();
 
-        enemyAttackTick+= Time.deltaTime;
-        if(enemyAttackTick >= enemyAttackInterval)
+        if(!enemyStunned)
         {
-            if (!isTutorial)
+            enemyAttackTick += Time.deltaTime;
+            if (enemyAttackTick >= enemyAttackInterval)
             {
-                int charToAttack = Random.Range(0, 2);
-                switch (charToAttack)
+                if (!isTutorial)
                 {
-
-                    case 0: // prioritize attack on char1
+                    if(!enemyStunned)
+                    {
+                        int charToAttack = Random.Range(0, 2);
+                        switch (charToAttack)
                         {
-                            if (c1CurrentHp > 0)
-                                c1CurrentHp -= enemyDmg;
 
-                            else if (c2CurrentHp > 0)
-                                c2CurrentHp -= enemyDmg;
+                            case 0: // prioritize attack on char1
+                                {
+                                    if (c1CurrentHp > 0)
+                                        c1CurrentHp -= enemyDmg;
 
-                            else if (c3CurrentHp > 0)
-                                c3CurrentHp -= enemyDmg;
+                                    else if (c2CurrentHp > 0)
+                                        c2CurrentHp -= enemyDmg;
+
+                                    else if (c3CurrentHp > 0)
+                                        c3CurrentHp -= enemyDmg;
+                                }
+                                break;
+                            case 1: // prioritize attack on char2
+                                {
+                                    if (c2CurrentHp > 0)
+                                        c2CurrentHp -= enemyDmg;
+
+                                    else if (c3CurrentHp > 0)
+                                        c3CurrentHp -= enemyDmg;
+
+                                    else if (c1CurrentHp > 0)
+                                        c1CurrentHp -= enemyDmg;
+                                }
+                                break;
+                            case 2: // prioritize attack on char3
+                                {
+                                    if (c3CurrentHp > 0)
+                                        c3CurrentHp -= enemyDmg;
+
+                                    else if (c1CurrentHp > 0)
+                                        c1CurrentHp -= enemyDmg;
+
+                                    else if (c2CurrentHp > 0)
+                                        c2CurrentHp -= enemyDmg;
+                                }
+                                break;
                         }
-                        break;
-                    case 1: // prioritize attack on char2
-                        {
-                            if (c2CurrentHp > 0)
-                                c2CurrentHp -= enemyDmg;
+                    }
 
-                            else if (c3CurrentHp > 0)
-                                c3CurrentHp -= enemyDmg;
+                    else
+                    {
+                        Debug.Log("Enemy is stunned and cannot attack");
+                        enemyStunnedRounds--;
 
-                            else if (c1CurrentHp > 0)
-                                c1CurrentHp -= enemyDmg;
-                        }
-                        break;
-                    case 2: // prioritize attack on char3
-                        {
-                            if (c3CurrentHp > 0)
-                                c3CurrentHp -= enemyDmg;
+                        if (enemyStunnedRounds == 0)
+                            enemyStunned = false;
+                    }
+                    
 
-                            else if (c1CurrentHp > 0)
-                                c1CurrentHp -= enemyDmg;
-
-                            else if (c2CurrentHp > 0)
-                                c2CurrentHp -= enemyDmg;
-                        }
-                        break;
+                    enemyAttackTick = 0.0f;
                 }
 
-                enemyAttackTick = 0.0f;
-            }
-
-            else if(tutorialPhase == 2)
-            {
-                if(c1CurrentHp == c1MaxHp)
-                    c1CurrentHp -= enemyDmg;
-
-
-                if(Input.GetMouseButtonDown(0))
+                else if (tutorialPhase == 2)
                 {
-                    tutorialPhase = 3;
+                    if (c1CurrentHp == c1MaxHp)
+                        c1CurrentHp -= enemyDmg;
+
+
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        tutorialPhase = 3;
+                    }
+
                 }
 
             }
-            
         }
+
+        else
+        {
+            
+
+        }
+        
 
         if(Input.GetMouseButtonUp(0))   //if left mouse button released
         {
@@ -397,7 +448,7 @@ public class GameManager : MonoBehaviour
                     foreach (GameObject selectedPiece in GameManager.Instance.selected) //for each selected piece
                     {
                         //unselect
-                        Debug.Log("before: " + GameManager.Instance.selected.Count);
+                        //Debug.Log("before: " + GameManager.Instance.selected.Count);
                         Destroy(selectedPiece.transform.GetChild(0).gameObject);
 
 
@@ -412,7 +463,7 @@ public class GameManager : MonoBehaviour
                         }
 
 
-                        Debug.Log("after: " + GameManager.Instance.selected.Count);
+                        //Debug.Log("after: " + GameManager.Instance.selected.Count);
 
                     }
 
@@ -695,7 +746,7 @@ public class GameManager : MonoBehaviour
 
                     else
                     {
-                        Debug.Log("creating special piece4");
+                        //Debug.Log("creating special piece4");
                         n = Random.Range(0, 3);
                         newPiece = createPiece(n, i, j);
                     }
@@ -807,51 +858,97 @@ public class GameManager : MonoBehaviour
         {
             case 3: //clear row of powerup piece
                 {
+                    //-----------patterned clearing-----------\\
+                    //int yIndex = selected[i].GetComponent<PieceBehavior>().y;
+                    //for (int j = 0; j < xDimension; j++)
+                    //{
+                    //    nBoard[j, yIndex] = -1;
+                    //}
+                    //--------------------------------------------\\
+
+
+
+                    //-----------deal huge damage to boss-----------\\
+                    enemyCurrentHp -= enhancedDamage;
+                    int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
-                    for (int j = 0; j < xDimension; j++)
-                    {
-                        nBoard[j, yIndex] = -1;
-                    }
+                    nBoard[xIndex, yIndex] = -1;
+                    //--------------------------------------------\\
                 }
                 break;
 
             case 4: //clear pieces around powerup piece
                 {
+                    //-----------patterned clearing-----------\\
+                    //int xIndex = selected[i].GetComponent<PieceBehavior>().x;
+                    //int yIndex = selected[i].GetComponent<PieceBehavior>().y;
+
+                    //nBoard[xIndex, yIndex] = -1;
+
+                    //if(xIndex - 1 >= 0)
+                    //{
+                    //    nBoard[xIndex - 1, yIndex] = -1;
+
+                    //    if (yIndex + 1 < yDimension)
+                    //        nBoard[xIndex - 1, yIndex + 1] = -1;
+                    //}
+                    
+                    //if(xIndex + 1 < xDimension)
+                    //{
+                    //    nBoard[xIndex + 1, yIndex] = -1;
+
+                    //    if (yIndex + 1 < yDimension)
+                    //        nBoard[xIndex + 1, yIndex + 1] = -1;
+                    //}
+                    //--------------------------------------------\\
+
+
+                    //nBoard[xIndex, yIndex] = -1;
+                    //nBoard[xIndex, yIndex] = -1;
+                    //nBoard[xIndex, yIndex] = -1;
+
+
+                    //-----------stun boss-----------\\
+                    enemyStunned = true;
+                    enemyStunnedRounds = 1;
+
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
-
                     nBoard[xIndex, yIndex] = -1;
-
-                    if(xIndex - 1 >= 0)
-                    {
-                        nBoard[xIndex - 1, yIndex] = -1;
-
-                        if (yIndex + 1 < yDimension)
-                            nBoard[xIndex - 1, yIndex + 1] = -1;
-                    }
-                    
-                    if(xIndex + 1 < xDimension)
-                    {
-                        nBoard[xIndex + 1, yIndex] = -1;
-
-                        if (yIndex + 1 < yDimension)
-                            nBoard[xIndex + 1, yIndex + 1] = -1;
-                    }
-                    
-                    //nBoard[xIndex, yIndex] = -1;
-                    //nBoard[xIndex, yIndex] = -1;
-                    //nBoard[xIndex, yIndex] = -1;
-
+                    //--------------------------------------------\\
                 }
                 break;
 
             case 5: //clear column of powerup piece
                 {
+                    //-----------patterned clearing-----------\\
+                    //int xIndex = selected[i].GetComponent<PieceBehavior>().x;
+                    //for (int j = 0; j < yDimension; j++)
+                    //{
+                    //    nBoard[xIndex, j] = -1;
+                    //}
+                    //--------------------------------------------\\
+
+
+                    //-----------random piece rate boost-----------\\
+                    int pieceBoostRateIndex = Random.Range(0, 3);
+
+                    if (pieceBoostRateIndex == 0)
+                        rIncreaseRate = true;
+
+                    else if (pieceBoostRateIndex == 1)
+                        gIncreaseRate = true;
+
+                    else if (pieceBoostRateIndex == 2)
+                        bIncreaseRate = true;
+
+                    manipulatedSpawnRates = true;
+                    manipulatedSpawnRatesRounds = 5;
+
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
-                    for (int j = 0; j < yDimension; j++)
-                    {
-                        nBoard[xIndex, j] = -1;
-                    }
+                    int yIndex = selected[i].GetComponent<PieceBehavior>().y;
+                    nBoard[xIndex, yIndex] = -1;
+                    //--------------------------------------------\\
 
                 }
                 break;
@@ -899,7 +996,7 @@ public class GameManager : MonoBehaviour
                 if (nBoard[i, j] == -1)
                 {
                     
-                    enemyCurrentHp -= 10;
+                    enemyCurrentHp -= basicDamage;
                     Destroy(gBoard[i, j]);
 
                     int k = j;
@@ -1149,15 +1246,19 @@ public class GameManager : MonoBehaviour
     //create new pieces in game object board where equivalent index in integer board is -1
     public void InstantRefreshBoard()
     {
+        int clearedPieces = 0;
+
         for (int i = 0; i < xDimension; i++)
         {
             for (int j = 0; j < yDimension; j++)
             {
                 if (nBoard[i, j] == -1)
                 {
+                    clearedPieces++;
                     GameObject newPiece;
                     int n = Random.Range(0, 7);
 
+                    //----------manipulating spawning of new pieces in tutorial----------\\
                     if (isTutorial && tutorialPhase == 2)
                     {
                         if(tutorialPhase == 2 && i == 3 && j == 0)
@@ -1172,13 +1273,63 @@ public class GameManager : MonoBehaviour
                             newPiece = createPiece(n, i, j);
                         }
                     }
+                    //-------------------------------------------------------\\
 
                     else if (n > 0 || specialPiecesCount >= 3)
                     {
-                            Debug.Log("true");
+                            //Debug.Log("spawning normal piece");
+                        if(!manipulatedSpawnRates)
+                        {
                             n = Random.Range(0, 3);
-                        newPiece = createPiece(n, i, j);
-                    
+                            newPiece = createPiece(n, i, j);
+                        }
+
+
+                        else if(rIncreaseRate)  //boosted spawn rate red piece
+                        {
+                            Debug.Log("Spawning pieces with increased spawn rates for red pieces for " + manipulatedSpawnRatesRounds + "rounds");
+                            int m = Random.Range(0, 10);
+
+                            if(m == 1 || m==2)
+                                newPiece = createPiece(n, i, j);
+
+                            else
+                                newPiece = createPiece(0, i, j);
+
+                            
+                        }
+
+                        else if (gIncreaseRate)  //boosted spawn rate red piece
+                        {
+                            Debug.Log("Spawning pieces with increased spawn rates for green pieces for " + manipulatedSpawnRatesRounds + "rounds");
+                            int m = Random.Range(0, 10);
+
+                            if (m == 0 || m == 2)
+                                newPiece = createPiece(n, i, j);
+
+                            else
+                                newPiece = createPiece(1, i, j);                            
+                        }
+
+                        else if (bIncreaseRate)  //boosted spawn rate red piece
+                        {
+                            Debug.Log("Spawning pieces with increased spawn rates for blue pieces for " + manipulatedSpawnRatesRounds + "rounds");
+                            int m = Random.Range(0, 10);
+
+                            if (m == 0 || m == 1)
+                                newPiece = createPiece(n, i, j);
+
+                            else
+                                newPiece = createPiece(2, i, j);
+                        }
+
+                        else //same as default
+                        {
+                            n = Random.Range(0, 3);
+                            newPiece = createPiece(n, i, j);
+                        }
+
+
                     }
 
                     else
@@ -1248,6 +1399,16 @@ public class GameManager : MonoBehaviour
 
         }
 
+        if(clearedPieces >= 3)
+        {
+            if (manipulatedSpawnRates) //if manipulated spawn rates
+            {
+                manipulatedSpawnRatesRounds--;  //decrease rounds remaining for manipulated spawn rates
+
+                if (manipulatedSpawnRatesRounds == 0)
+                    manipulatedSpawnRates = false;
+            }
+        }
         isBoardInteractable = true;
         currentTurn++;
 
