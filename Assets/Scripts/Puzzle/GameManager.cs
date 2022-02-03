@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
     private int xDimension = 7;
     private int yDimension = 5;
 
-    public static bool isTutorial = false;
+    public static bool isTutorial = true;
     public static int tutorialPhase = 0;
     private void Awake()
     {
