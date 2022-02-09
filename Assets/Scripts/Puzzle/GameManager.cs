@@ -69,6 +69,9 @@ public class GameManager : MonoBehaviour
     public float c1CurrentCharge = 0;
     public float c2CurrentCharge = 0;
     public float c3CurrentCharge = 0;
+    public bool playerIsFrozen = false;
+    public float playerFrozenDuration = 1.5f;
+    public float playerFrozenTick = 0.0f;
     private float basicDamage = 10;
     private float enhancedDamage = 60;
 
@@ -101,7 +104,7 @@ public class GameManager : MonoBehaviour
     public bool hasEnded = false;
     //board rows and columns
     private int xDimension = 7;
-    private int yDimension = 5;
+    private int yDimension = 4;
 
     //tutorial
     public static bool isTutorial = false;
@@ -344,7 +347,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         UpdateHpBars();
-
+        UpdatePlayerStatusEffects();
         if(!enemyStunned)
         {
             enemyAttackTick += Time.deltaTime;
@@ -394,6 +397,62 @@ public class GameManager : MonoBehaviour
                                         c2CurrentHp -= enemyDmg;
                                 }
                                 break;
+                        }
+
+                        if(Values.Enemy.skill == Values.Enemy.SkillType.Burst)
+                        {
+                            int charToBurst = Random.Range(0, 2);
+                            switch (charToBurst)
+                            {
+
+                                case 0: // prioritize attack on char1
+                                    {
+                                        if (c1CurrentHp > 0)
+                                            c1CurrentHp -= enemyDmg*3;
+
+                                        else if (c2CurrentHp > 0)
+                                            c2CurrentHp -= enemyDmg*3;
+
+                                        else if (c3CurrentHp > 0)
+                                            c3CurrentHp -= enemyDmg*3;
+                                    }
+                                    break;
+                                case 1: // prioritize attack on char2
+                                    {
+                                        if (c2CurrentHp > 0)
+                                            c2CurrentHp -= enemyDmg*3;
+
+                                        else if (c3CurrentHp > 0)
+                                            c3CurrentHp -= enemyDmg*3;
+
+                                        else if (c1CurrentHp > 0)
+                                            c1CurrentHp -= enemyDmg*3;
+                                    }
+                                    break;
+                                case 2: // prioritize attack on char3
+                                    {
+                                        if (c3CurrentHp > 0)
+                                            c3CurrentHp -= enemyDmg*3;
+
+                                        else if (c1CurrentHp > 0)
+                                            c1CurrentHp -= enemyDmg*3;
+
+                                        else if (c2CurrentHp > 0)
+                                            c2CurrentHp -= enemyDmg*3;
+                                    }
+                                    break;
+                            }
+                        }
+
+                        else if(Values.Enemy.skill == Values.Enemy.SkillType.Freeze)
+                        {
+                            if(!playerIsFrozen)
+                            {
+                                playerIsFrozen = true;
+                                isBoardInteractable = false;
+                                Debug.Log("Freeze player");
+                            }
+                                
                         }
                     }
 
@@ -677,6 +736,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void UpdatePlayerStatusEffects()
+    {
+        if(playerIsFrozen)
+        {
+            if(playerFrozenTick > playerFrozenDuration)
+            {
+                playerIsFrozen = false;
+                playerFrozenTick = 0.0f;
+                isBoardInteractable = true;
+                Debug.Log("Unfreeze player");
+            }
+        }
+    }
+
 
     // initialize randomization of board pieces
     int[,] InitializeBoard()
@@ -766,10 +839,10 @@ public class GameManager : MonoBehaviour
         GameObject newPiece;
 
         if(x%2 == 0)
-            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) -0.925f, (0.3f * y) + 0.35f, 0.0f), Quaternion.identity, null);
+            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) -0.925f, (0.3f * y) + 0.25f, 0.0f), Quaternion.identity, null);
 
         else
-            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) - 0.925f, (0.3f * y) + 0.45f, 0.0f), Quaternion.identity, null);
+            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) - 0.925f, (0.3f * y) + 0.35f, 0.0f), Quaternion.identity, null);
 
         if(newPiece.TryGetComponent(out PieceBehavior PB))
             PB.SetValues(pieceIndex, x, y);
@@ -869,6 +942,7 @@ public class GameManager : MonoBehaviour
 
 
                     //-----------deal huge damage to boss-----------\\
+                    Debug.Log("Dealing enhanced damage to enemy");
                     enemyCurrentHp -= enhancedDamage;
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
@@ -1026,9 +1100,9 @@ public class GameManager : MonoBehaviour
                             gBoard[i, k].GetComponent<PieceBehavior>().y = k;
 
                             if (gBoard[i, k].GetComponent<PieceBehavior>().x % 2 == 0)
-                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.35f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.25f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
                             else
-                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.45f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.35f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
 
                             nBoard[i, k - (k - l)] = -1;
                             gBoard[i, k - (k - l)] = null;
@@ -1291,7 +1365,7 @@ public class GameManager : MonoBehaviour
                             int m = Random.Range(0, 10);
 
                             if(m == 1 || m==2)
-                                newPiece = createPiece(n, i, j);
+                                newPiece = createPiece(m, i, j);
 
                             else
                                 newPiece = createPiece(0, i, j);
@@ -1305,7 +1379,7 @@ public class GameManager : MonoBehaviour
                             int m = Random.Range(0, 10);
 
                             if (m == 0 || m == 2)
-                                newPiece = createPiece(n, i, j);
+                                newPiece = createPiece(m, i, j);
 
                             else
                                 newPiece = createPiece(1, i, j);                            
@@ -1317,7 +1391,7 @@ public class GameManager : MonoBehaviour
                             int m = Random.Range(0, 10);
 
                             if (m == 0 || m == 1)
-                                newPiece = createPiece(n, i, j);
+                                newPiece = createPiece(m, i, j);
 
                             else
                                 newPiece = createPiece(2, i, j);
@@ -1334,10 +1408,10 @@ public class GameManager : MonoBehaviour
 
                     else
                     {
-                        Debug.Log("Spawning special piece");
+                        
                         if (specialPiece1 == null && c1CurrentHp > 0 && c1CurrentCharge == c1MaxCharge)   //if no specialPiece1 on board & character 1 is alive
                         {
-                            //Debug.Log("creating special piece1");
+                            Debug.Log("creating special piece1");
                             n = c1Index;
                             newPiece = createPiece(n, i, j);
                             specialPiece1 = newPiece;
@@ -1346,7 +1420,7 @@ public class GameManager : MonoBehaviour
 
                         else if (specialPiece2 == null && c2CurrentHp > 0 && c2CurrentCharge == c2MaxCharge)  //if no specialPiece2 on board & character 2 is alive
                         {
-                            //Debug.Log("creating special piece2");
+                            Debug.Log("creating special piece2");
                             n = c2Index;
                             newPiece = createPiece(n, i, j);
                             specialPiece2 = newPiece;
@@ -1355,7 +1429,7 @@ public class GameManager : MonoBehaviour
 
                         else if (specialPiece3 == null && c3CurrentHp > 0 && c3CurrentCharge == c3MaxCharge) //if no specialPiece3 on board & character 3 is alive
                         {
-                            //Debug.Log("creating special piece3");
+                            Debug.Log("creating special piece3");
                             n = c3Index;
                             newPiece = createPiece(n, i, j);
                             specialPiece3 = newPiece;

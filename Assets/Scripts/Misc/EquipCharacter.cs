@@ -136,6 +136,7 @@ public class EquipCharacter : MonoBehaviour
         {
             Values.Enemy.maxHP = 100;
             Values.Enemy.dmg = 10;
+            
             SceneManager.LoadScene("PuzzleTest");
         }
         
@@ -151,6 +152,7 @@ public class EquipCharacter : MonoBehaviour
         {
             Values.Enemy.maxHP = 300;
             Values.Enemy.dmg = 30;
+            Values.Enemy.skill = Values.Enemy.SkillType.Freeze;
             SceneManager.LoadScene("PuzzleTest");
         }
 

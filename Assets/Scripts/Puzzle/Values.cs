@@ -21,10 +21,25 @@ public static class Values
             charge = _charge;
         }
     }
+
+    
     public class Enemy
     {
+        public enum SkillType
+        {
+            None = 0,
+            Burst = 1,
+            Heal = 2,
+            Freeze = 3
+                
+        };
+
         public static float maxHP = 500;
         public static float dmg = 10f;
+        public static SkillType skill = SkillType.None;
+
+
+
     }
 
     public class Characters
