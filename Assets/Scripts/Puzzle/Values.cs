@@ -62,7 +62,7 @@ public static class Values
 
     public class Puzzle
     {
-        public static bool isTutorial = true;
+        public static bool isTutorial = false;
     }
 }
     
