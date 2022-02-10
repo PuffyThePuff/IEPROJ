@@ -126,7 +126,7 @@ public class EquipCharacter : MonoBehaviour
         Values.Enemy.maxHP = 100;
         Values.Enemy.dmg = 10;
         Values.Puzzle.isTutorial = true;
-        SceneManager.LoadScene("PuzzleTest");
+        SceneManager.LoadScene("Puzzle");
 
     }
 
@@ -137,7 +137,7 @@ public class EquipCharacter : MonoBehaviour
             Values.Enemy.maxHP = 100;
             Values.Enemy.dmg = 10;
             
-            SceneManager.LoadScene("PuzzleTest");
+            SceneManager.LoadScene("Puzzle");
         }
         
         else
@@ -153,7 +153,7 @@ public class EquipCharacter : MonoBehaviour
             Values.Enemy.maxHP = 300;
             Values.Enemy.dmg = 30;
             Values.Enemy.skill = Values.Enemy.SkillType.Freeze;
-            SceneManager.LoadScene("PuzzleTest");
+            SceneManager.LoadScene("Puzzle");
         }
 
         else
@@ -168,7 +168,7 @@ public class EquipCharacter : MonoBehaviour
         {
             Values.Enemy.maxHP = 900;
             Values.Enemy.dmg = 90;
-            SceneManager.LoadScene("PuzzleTest");
+            SceneManager.LoadScene("Puzzle");
         }
 
         else
@@ -183,7 +183,7 @@ public class EquipCharacter : MonoBehaviour
         {
             Values.Enemy.maxHP = 2700;
             Values.Enemy.dmg = 270;
-            SceneManager.LoadScene("PuzzleTest");
+            SceneManager.LoadScene("Puzzle");
         }
 
         else
@@ -198,7 +198,7 @@ public class EquipCharacter : MonoBehaviour
         {
             Values.Enemy.maxHP = 8100;
             Values.Enemy.dmg = 810;
-            SceneManager.LoadScene("PuzzleTest");
+            SceneManager.LoadScene("Puzzle");
         }
 
         else

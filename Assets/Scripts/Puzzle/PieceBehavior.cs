@@ -82,10 +82,25 @@ public class PieceBehavior : MonoBehaviour
                 
                 GameManager.Instance.selected.Add(gameObject); //add selected object to selected objects list
                 Instantiate(Border, this.transform);    //create border around piece for visual aid
-                lineRenderer.positionCount = 2;
+                lineRenderer.positionCount = 9;
 
-                lineRenderer.SetPosition(0, new Vector3(gameObject.transform.position.x - 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
-                lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x - 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                lineRenderer.SetPosition(0, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.05f, gameObject.transform.position.z - 0.0001f));
+                lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x + 0.025f, gameObject.transform.position.y + 0.025f, gameObject.transform.position.z - 0.0001f));
+                lineRenderer.SetPosition(2, new Vector3(gameObject.transform.position.x + 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                lineRenderer.SetPosition(3, new Vector3(gameObject.transform.position.x + 0.025f, gameObject.transform.position.y - 0.025f, gameObject.transform.position.z - 0.0001f));
+                lineRenderer.SetPosition(4, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 0.05f, gameObject.transform.position.z - 0.0001f));
+                lineRenderer.SetPosition(5, new Vector3(gameObject.transform.position.x - 0.025f, gameObject.transform.position.y - 0.025f, gameObject.transform.position.z - 0.0001f));
+                lineRenderer.SetPosition(6, new Vector3(gameObject.transform.position.x - 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                lineRenderer.SetPosition(7, new Vector3(gameObject.transform.position.x - 0.025f, gameObject.transform.position.y + 0.025f, gameObject.transform.position.z - 0.0001f));
+                lineRenderer.SetPosition(8, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.05f, gameObject.transform.position.z - 0.0001f));
+
+
+
+
+
+
+
+                //lineRenderer.SetPosition(3, gameObject.)
             }
 
             else
@@ -96,7 +111,17 @@ public class PieceBehavior : MonoBehaviour
                     {
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
-                        lineRenderer.positionCount = 2;
+                        lineRenderer.positionCount = 9;
+
+                        lineRenderer.SetPosition(0, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.05f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x + 0.025f, gameObject.transform.position.y + 0.025f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(2, new Vector3(gameObject.transform.position.x + 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(3, new Vector3(gameObject.transform.position.x + 0.025f, gameObject.transform.position.y - 0.025f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(4, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 0.05f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(5, new Vector3(gameObject.transform.position.x - 0.025f, gameObject.transform.position.y - 0.025f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(6, new Vector3(gameObject.transform.position.x - 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(7, new Vector3(gameObject.transform.position.x - 0.025f, gameObject.transform.position.y + 0.025f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(8, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.05f, gameObject.transform.position.z - 0.0001f));
                     }
                 }
 
@@ -106,7 +131,17 @@ public class PieceBehavior : MonoBehaviour
                     {
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
-                        lineRenderer.positionCount = 2;
+                        lineRenderer.positionCount = 9;
+
+                        lineRenderer.SetPosition(0, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.05f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x + 0.025f, gameObject.transform.position.y + 0.025f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(2, new Vector3(gameObject.transform.position.x + 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(3, new Vector3(gameObject.transform.position.x + 0.025f, gameObject.transform.position.y - 0.025f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(4, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 0.05f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(5, new Vector3(gameObject.transform.position.x - 0.025f, gameObject.transform.position.y - 0.025f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(6, new Vector3(gameObject.transform.position.x - 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(7, new Vector3(gameObject.transform.position.x - 0.025f, gameObject.transform.position.y + 0.025f, gameObject.transform.position.z - 0.0001f));
+                        lineRenderer.SetPosition(8, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.05f, gameObject.transform.position.z - 0.0001f));
                     }
                 }
             }
@@ -224,7 +259,18 @@ public class PieceBehavior : MonoBehaviour
 
                     GameManager.Instance.selected.Add(gameObject);
                     Instantiate(Border, this.transform);
-                    
+                    lineRenderer.positionCount = 9;
+
+                    lineRenderer.SetPosition(0, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.05f, gameObject.transform.position.z - 0.0001f));
+                    lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x + 0.025f, gameObject.transform.position.y + 0.025f, gameObject.transform.position.z - 0.0001f));
+                    lineRenderer.SetPosition(2, new Vector3(gameObject.transform.position.x + 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                    lineRenderer.SetPosition(3, new Vector3(gameObject.transform.position.x + 0.025f, gameObject.transform.position.y - 0.025f, gameObject.transform.position.z - 0.0001f));
+                    lineRenderer.SetPosition(4, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y - 0.05f, gameObject.transform.position.z - 0.0001f));
+                    lineRenderer.SetPosition(5, new Vector3(gameObject.transform.position.x - 0.025f, gameObject.transform.position.y - 0.025f, gameObject.transform.position.z - 0.0001f));
+                    lineRenderer.SetPosition(6, new Vector3(gameObject.transform.position.x - 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                    lineRenderer.SetPosition(7, new Vector3(gameObject.transform.position.x - 0.025f, gameObject.transform.position.y + 0.025f, gameObject.transform.position.z - 0.0001f));
+                    lineRenderer.SetPosition(8, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.05f, gameObject.transform.position.z - 0.0001f));
+
                 }
 
                 else if (this.ID == GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID || this.GetComponent<PieceBehavior>().ID >= 3)
