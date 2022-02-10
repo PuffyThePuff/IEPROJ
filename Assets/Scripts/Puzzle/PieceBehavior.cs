@@ -30,6 +30,9 @@ public class PieceBehavior : MonoBehaviour
         lineRenderer.startWidth = 0.03f;
         lineRenderer.endWidth = 0.03f;
         lineRenderer.positionCount = 0;
+        lineRenderer.startColor = Color.black;
+        lineRenderer.endColor = Color.black;
+
     }
 
     // Update is called once per frame
@@ -75,29 +78,35 @@ public class PieceBehavior : MonoBehaviour
                     }
                 }
 
+
                 
                 GameManager.Instance.selected.Add(gameObject); //add selected object to selected objects list
                 Instantiate(Border, this.transform);    //create border around piece for visual aid
                 lineRenderer.positionCount = 2;
+
+                lineRenderer.SetPosition(0, new Vector3(gameObject.transform.position.x - 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x - 0.05f, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
             }
 
             else
             {
                 if (GameManager.tutorialPhase == 1)
                 {
-                    if ((this.x == 3 && this.y == 1) || (this.x == 1 && this.y == 1))
+                    if (((this.x == 3 && this.y == 1) || (this.x == 1 && this.y == 1)) && !GameManager.Instance.selected.Contains(this.gameObject))
                     {
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
+                        lineRenderer.positionCount = 2;
                     }
                 }
 
-                if (GameManager.tutorialPhase == 3)
+                if (GameManager.tutorialPhase == 4)
                 {
                     if ((this.x == 2 && this.y == 3) || ((this.x == 2 && this.y == 2)) || (this.x == 3 && this.y == 2) || (this.x == 3 && this.y == 1) || (this.x == 4 && this.y == 1) || (this.x == 3 && this.y == 0))
                     {
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
+                        lineRenderer.positionCount = 2;
                     }
                 }
             }
@@ -269,8 +278,8 @@ public class PieceBehavior : MonoBehaviour
                             Instantiate(Border, this.transform);
 
                             lineRenderer.positionCount = 2;
-                            lineRenderer.SetPosition(0, latestSelected.transform.position);
-                            lineRenderer.SetPosition(1, gameObject.transform.position);
+                            lineRenderer.SetPosition(0, new Vector3( latestSelected.transform.position.x, latestSelected.transform.position.y, latestSelected.transform.position.z - 0.0001f));
+                            lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
                             Debug.Log("drawing line");
                         }
                     }
@@ -282,37 +291,51 @@ public class PieceBehavior : MonoBehaviour
 
             else
             {
+                GameObject latestSelected;
+                if (GameManager.Instance.selected.Count >= 1) latestSelected = GameManager.Instance.selected[GameManager.Instance.selected.Count - 1];
+                else latestSelected = null;
                 //unselect
-                if (GameManager.Instance.selected.Count > 0)
+                if (GameManager.Instance.selected.Count > 0 && this.gameObject == latestSelected)
                 {
-                    GameObject latestSelected = GameManager.Instance.selected[GameManager.Instance.selected.Count - 1];
-                    if (this.gameObject == latestSelected)
+                    
+                    
+                    Debug.Log("Unselecting in tutorial");
+                    Destroy(this.transform.GetChild(0).gameObject);
+                    GameManager.Instance.selected.Remove(this.gameObject);
+
+                    if (this.GetComponent<PieceBehavior>().ID >= 3)
                     {
-                        Destroy(this.transform.GetChild(0).gameObject);
-                        GameManager.Instance.selected.Remove(this.gameObject);
-
-                        if (this.GetComponent<PieceBehavior>().ID >= 3)
-                        {
-                            GameManager.Instance.powerups.Remove(this.gameObject);
-                        }
-
-                        if (GameManager.Instance.selected.Count == 0)
-                        {
-                            GameManager.Instance.InstantRefreshBoard();
-                        }
+                        GameManager.Instance.powerups.Remove(this.gameObject);
                     }
+
+                    if (GameManager.Instance.selected.Count == 0)
+                    {
+                        GameManager.Instance.InstantRefreshBoard();
+                    }
+
+                    lineRenderer.positionCount = 0;
+                    
                 }
 
-                if (GameManager.tutorialPhase == 1)
+                else if (GameManager.tutorialPhase == 1)
                 {
 
-                    if ((((this.x == 2 && this.y == 2) && (GameManager.Instance.selected.Contains(GameManager.Instance.gBoard[3, 1]) || GameManager.Instance.selected.Contains(GameManager.Instance.gBoard[1, 1])))
+                    if (((((this.x == 2 && this.y == 2) && (GameManager.Instance.selected.Contains(GameManager.Instance.gBoard[3, 1]) || GameManager.Instance.selected.Contains(GameManager.Instance.gBoard[1, 1])))
                         || ((this.x == 3 && this.y == 1) && (GameManager.Instance.selected.Contains(GameManager.Instance.gBoard[2, 2]) || GameManager.Instance.selected.Count == 0))
                         || ((this.x == 1 && this.y == 1) && (GameManager.Instance.selected.Contains(GameManager.Instance.gBoard[2, 2]) || GameManager.Instance.selected.Count == 0))))
+                        && !(GameManager.Instance.selected.Contains(this.gameObject)))
                     {
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
-                        Debug.Log("true101");
+
+                        if(latestSelected != null)
+                        {
+                            lineRenderer.positionCount = 2;
+                            lineRenderer.SetPosition(0, new Vector3(latestSelected.transform.position.x, latestSelected.transform.position.y, latestSelected.transform.position.z - 0.0001f));
+                            lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                            //Debug.Log("true101");
+                        }
+
 
                     }
 
@@ -322,7 +345,7 @@ public class PieceBehavior : MonoBehaviour
                     Debug.Log(((this.x == 2 && this.y == 2) && (GameManager.Instance.selected.Contains(GameManager.Instance.gBoard[3, 1]) || GameManager.Instance.selected.Contains(GameManager.Instance.gBoard[1, 1]))));
                 }
 
-                if (GameManager.tutorialPhase == 3)
+                else if (GameManager.tutorialPhase == 4)
                 {
                     if ((this.x == 2 && this.y == 3)
                         ||((this.x == 2 && this.y == 2))
@@ -333,8 +356,15 @@ public class PieceBehavior : MonoBehaviour
                     {
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
+                        if (latestSelected != null)
+                        {
+                            lineRenderer.positionCount = 2;
+                            lineRenderer.SetPosition(0, new Vector3(latestSelected.transform.position.x, latestSelected.transform.position.y, latestSelected.transform.position.z - 0.0001f));
+                            lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+                            //Debug.Log("true101");
+                        }
                     }
-                    Debug.Log("phase1 " + this.x + this.y);
+                    Debug.Log("phase4 " + this.x + this.y);
                 }
 
                 
@@ -350,7 +380,7 @@ public class PieceBehavior : MonoBehaviour
     //    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
     //    if (Physics.Raycast(ray, out hit))
     //    {
-            
+
     //        if(Input.GetMouseButton(0))
     //        {
 
@@ -387,7 +417,7 @@ public class PieceBehavior : MonoBehaviour
     //                    GameObject latestSelected = GameManager.Instance.selected[GameManager.Instance.selected.Count - 1];
     //                    if (this.gameObject == latestSelected)
     //                    {
-                            
+
     //                    }
 
     //                    else if(GameManager.Instance.selected.Contains(this.gameObject))
@@ -447,7 +477,28 @@ public class PieceBehavior : MonoBehaviour
     //                }
     //            }
     //        }
-            
+
     //    }
+    //}
+
+    //public static void DrawCircle(this GameObject container, float radius, float lineWidth)
+    //{
+    //    var segments = 360;
+    //    var line = container.AddComponent<LineRenderer>();
+    //    line.useWorldSpace = false;
+    //    line.startWidth = lineWidth;
+    //    line.endWidth = lineWidth;
+    //    line.positionCount = segments + 1;
+
+    //    var pointCount = segments + 1; // add extra point to make startpoint and endpoint the same to close the circle
+    //    var points = new Vector3[pointCount];
+
+    //    for (int i = 0; i < pointCount; i++)
+    //    {
+    //        var rad = Mathf.Deg2Rad * (i * 360f / segments);
+    //        points[i] = new Vector3(Mathf.Sin(rad) * radius, 0, Mathf.Cos(rad) * radius);
+    //    }
+
+    //    line.SetPositions(points);
     //}
 }

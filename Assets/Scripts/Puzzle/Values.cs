@@ -44,10 +44,10 @@ public static class Values
 
     public class Characters
     {
-        public static Character c1 = new Character(3, "HorizontalPowerup", 1000, 100);
-        public static Character c2 = new Character(4, "SurroundPowerup", 1000, 100);
-        public static Character c3 = new Character(5, "VerticalPowerup", 1000, 100);
-        public static Character c4 = new Character(6, "X Powerup", 1000, 100);
+        public static Character c1 = new Character(3, "HorizontalPowerup", 1000, 100);  //damage
+        public static Character c2 = new Character(4, "SurroundPowerup", 1000, 100);    //stun
+        public static Character c3 = new Character(5, "VerticalPowerup", 1000, 100);    //increase spawn rate
+        public static Character c4 = new Character(6, "X Powerup", 1000, 100);          //heal alive allies
     }
 
     public class Player

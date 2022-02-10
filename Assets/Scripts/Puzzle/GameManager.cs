@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public GameObject helpDialogue2;
     public GameObject helpDialogue3;
     public GameObject helpDialogue4;
+    public GameObject helpDialogue5;
     public GameObject endText;
 
     //tutorial arrow ui
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
     public GameObject arrowGroup2;
     public GameObject arrowGroup3;
     public GameObject arrowGroup4;
+    public GameObject arrowGroup5;
 
     //hold timer
     private float holdTime = 5.0f;
@@ -57,12 +59,12 @@ public class GameManager : MonoBehaviour
     public int c1Index = 3;
     public int c2Index = 4;
     public int c3Index = 5;
-    private float c1MaxHp = 0;
-    private float c2MaxHp = 0;
-    private float c3MaxHp = 0;
-    private float c1CurrentHp = 0;
-    private float c2CurrentHp = 0;
-    private float c3CurrentHp = 0;
+    private float c1MaxHp = 100;
+    private float c2MaxHp = 100;
+    private float c3MaxHp = 100;
+    private float c1CurrentHp = 100;
+    private float c2CurrentHp = 100;
+    private float c3CurrentHp = 100;
     private float c1MaxCharge = 100;
     private float c2MaxCharge = 100;
     private float c3MaxCharge = 100;
@@ -96,7 +98,7 @@ public class GameManager : MonoBehaviour
     //enemy stats
     public float enemyMaxHp = 100;
     private float enemyCurrentHp = 100;
-    private float enemyDmg = 0;
+    private float enemyDmg = 10;
     private float enemyAttackInterval = 1.5f;
     private float enemyAttackTick = 0.0f;
 
@@ -109,6 +111,16 @@ public class GameManager : MonoBehaviour
     //tutorial
     public static bool isTutorial = false;
     public static int tutorialPhase = 0;
+
+    /*tutorial phases:
+     * 0 = start
+     * 1 = connect 3 blues
+     * 2 = dialogue "connect more pieces and deal more damage"
+     * new 3 = dialogue "charge mechanic"
+     * 3 = connect 4 normal piece and 1 special piece
+     * 4 = dialogue take damage
+     * 5 = show exit ui
+     */
     
 
     private void Awake()
@@ -145,6 +157,8 @@ public class GameManager : MonoBehaviour
             basicDamage = Values.Player.basicDamage;
             enhancedDamage = Values.Player.enhancedDmaage;
         }
+
+
         
         
 
@@ -348,7 +362,81 @@ public class GameManager : MonoBehaviour
     {
         UpdateHpBars();
         UpdatePlayerStatusEffects();
-        if(!enemyStunned)
+        Debug.Log(tutorialPhase);
+
+        if (isTutorial)
+        {
+            UpdateHelpDialogue();
+
+            if (tutorialPhase == 2)
+            {
+                if (c1CurrentHp == c1MaxHp)
+                    c1CurrentHp -= enemyDmg;
+
+
+                if (Input.GetMouseButtonUp(0))
+                {
+                    tutorialPhase = 3;
+                }
+
+            }
+
+            else if (tutorialPhase == 2 && Input.GetMouseButtonUp(0))
+            {
+                tutorialPhase = 3;
+            }
+
+            else if (tutorialPhase == 3 && Input.GetMouseButtonUp(0))
+            {
+                tutorialPhase = 4;
+
+            }
+
+            else if (tutorialPhase == 5 && Input.GetMouseButtonUp(0))
+            {
+                tutorialPhase = 6;
+                c1CurrentHp -= enemyDmg;
+            }
+
+            else if (tutorialPhase == 6 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene("TransitionSample");
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+        }
+
+        else
+        {
+            if (c1CurrentHp <= 0 && c2CurrentHp <= 0 && c3CurrentHp <= 0)
+                gameState = -1;
+
+            else if (enemyCurrentHp <= 0)
+            {
+                gameState = 1;
+            }
+
+
+            if (gameState != 0 && hasEnded == false)
+            {
+
+                if (gameState == 1)
+                {
+                    OnWin();
+                }
+
+                else if (gameState == -1)
+                {
+                    OnLose();
+                }
+
+                hasEnded = true;
+            }
+        }
+
+
+        if (!enemyStunned)
         {
             enemyAttackTick += Time.deltaTime;
             if (enemyAttackTick >= enemyAttackInterval)
@@ -469,18 +557,7 @@ public class GameManager : MonoBehaviour
                     enemyAttackTick = 0.0f;
                 }
 
-                else if (tutorialPhase == 2)
-                {
-                    if (c1CurrentHp == c1MaxHp)
-                        c1CurrentHp -= enemyDmg;
-
-
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        tutorialPhase = 3;
-                    }
-
-                }
+               
 
             }
         }
@@ -550,17 +627,47 @@ public class GameManager : MonoBehaviour
             else
             {
                 Debug.Log("true2");
-                if (GameManager.tutorialPhase == 1 && GameManager.Instance.selected.Count == 3)
+                if (GameManager.Instance.selected.Count < 3)   //if more than 3 pieces selected
+                {
+                    foreach (GameObject selectedPiece in GameManager.Instance.selected) //for each selected piece
+                    {
+                        //unselect
+                        //Debug.Log("before: " + GameManager.Instance.selected.Count);
+                        Destroy(selectedPiece.transform.GetChild(0).gameObject);
+
+
+                        if (selectedPiece.GetComponent<PieceBehavior>().ID >= 3)
+                        {
+                            GameManager.Instance.powerups.Remove(selectedPiece);
+                        }
+
+                        if (selectedPiece.GetComponent<LineRenderer>() != null)
+                        {
+                            selectedPiece.GetComponent<LineRenderer>().positionCount = 0;
+                        }
+
+
+                        //Debug.Log("after: " + GameManager.Instance.selected.Count);
+
+                    }
+
+                    //clear slected list
+                    GameManager.Instance.selected.Clear();
+                }
+
+                else if (GameManager.tutorialPhase == 1 && GameManager.Instance.selected.Count == 3)
                 {
                     GameManager.tutorialPhase = 2;
                     GameManager.Instance.Attack();
                     GameManager.Instance.InstantRefreshBoard();
+                    c2CurrentCharge = c2MaxCharge;
+                    c2ChargeBar.fillAmount = c2MaxCharge / c2CurrentCharge;
                     Debug.Log("true3");
                 }
 
-                else if (GameManager.tutorialPhase == 3 && GameManager.Instance.selected.Count >= 3)
+                else if (GameManager.tutorialPhase == 4 && GameManager.Instance.selected.Count >= 4)
                 {
-                    GameManager.tutorialPhase = 4;
+                    GameManager.tutorialPhase = 5;
                     GameManager.Instance.Attack();
                     GameManager.Instance.InstantRefreshBoard();
                 }
@@ -605,53 +712,7 @@ public class GameManager : MonoBehaviour
         //    holdTick = 0.0f;
         //}
 
-        if (isTutorial)
-        {
-            UpdateHelpDialogue();
-
-            if(tutorialPhase == 2 && Input.GetMouseButtonDown(0))
-            {
-                tutorialPhase = 3;
-            }
-
-            else if (tutorialPhase == 4 && Input.GetMouseButtonDown(0))
-            {
-                tutorialPhase = 5;
-            }
-
-            else if (tutorialPhase == 5 && Input.GetMouseButtonDown(0))
-            {
-                SceneManager.LoadScene("TransitionSample");
-                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
-                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
-                FindObjectOfType<StoryManager>().currentDialogue++;
-            }
-        }
-
-        else
-        {
-            if (c1CurrentHp <= 0 && c2CurrentHp <= 0 && c3CurrentHp <= 0)
-                gameState = -1;
-
-            else if(enemyCurrentHp <= 0)
-            {
-                gameState = 1;
-            }
-
-
-            if(gameState != 0 && hasEnded == false)
-            {
-                if(gameState == 1)
-                {
-                    OnWin();
-                }
-
-                else if(gameState == -1)
-                {
-                    OnLose();
-                }
-            }
-        }
+        
 
         
 
@@ -839,10 +900,10 @@ public class GameManager : MonoBehaviour
         GameObject newPiece;
 
         if(x%2 == 0)
-            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) -0.925f, (0.3f * y) + 0.25f, 0.0f), Quaternion.identity, null);
+            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.2965f * x) -0.925f, (0.3225f * y) + 0.2875f, 0.0f), Quaternion.identity, null);
 
         else
-            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.3f * x) - 0.925f, (0.3f * y) + 0.35f, 0.0f), Quaternion.identity, null);
+            newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.2965f * x) - 0.925f, (0.3225f * y) + 0.4490f, 0.0f), Quaternion.identity, null);
 
         if(newPiece.TryGetComponent(out PieceBehavior PB))
             PB.SetValues(pieceIndex, x, y);
@@ -1028,30 +1089,77 @@ public class GameManager : MonoBehaviour
                 break;
             case 6:
                 {
+                    //-----------patterned clearing-----------\\
+                    //int xIndex = selected[i].GetComponent<PieceBehavior>().x;
+                    //int yIndex = selected[i].GetComponent<PieceBehavior>().y;
+
+                    //nBoard[xIndex, yIndex] = -1;
+
+                    //if (xIndex+1 <= xDimension - 1 && yIndex+1 <= yDimension - 1)
+                    //{
+                    //    nBoard[xIndex + 1, yIndex + 1] = -1;
+                    //}
+
+                    //if(xIndex + 2 <= xDimension - 1&& yIndex + 2 <= yDimension - 1)
+                    //{
+                    //    nBoard[xIndex + 2, yIndex + 2] = -1;
+                    //}
+
+                    //if (xIndex - 1 > 0 && yIndex - 1 > 0)
+                    //{
+                    //    nBoard[xIndex - 1, yIndex - 1] = -1;
+                    //}
+
+                    //if (xIndex - 2 > 0 && yIndex - 2 > 0)
+                    //{
+                    //    nBoard[xIndex - 2, yIndex -  2] = -1;
+                    //}
+
+                    //--------------------------------------------\\
+
+
+                    //-----------Heal allies for %hp-----------\\
+
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
-
                     nBoard[xIndex, yIndex] = -1;
 
-                    if (xIndex+1 <= xDimension - 1 && yIndex+1 <= yDimension - 1)
+                    if(c1CurrentHp > 0)
                     {
-                        nBoard[xIndex + 1, yIndex + 1] = -1;
+                        c1CurrentHp += (c1MaxHp * 0.075f);
+
+                        if(c1CurrentHp > c1MaxHp)
+                        {
+                            c1CurrentHp = c1MaxHp;
+                        }    
+
                     }
 
-                    if(xIndex + 2 <= xDimension - 1&& yIndex + 2 <= yDimension - 1)
+                    if (c2CurrentHp > 0)
                     {
-                        nBoard[xIndex + 2, yIndex + 2] = -1;
+                        c2CurrentHp += (c2MaxHp * 0.075f);
+
+                        if (c2CurrentHp > c2MaxHp)
+                        {
+                            c2CurrentHp = c2MaxHp;
+                        }
+
                     }
 
-                    if (xIndex - 1 > 0 && yIndex - 1 > 0)
+                    if (c3CurrentHp > 0)
                     {
-                        nBoard[xIndex - 1, yIndex - 1] = -1;
+                        c3CurrentHp += (c3MaxHp * 0.075f);
+
+                        if (c3CurrentHp > c3MaxHp)
+                        {
+                            c3CurrentHp = c3MaxHp;
+                        }
+
                     }
 
-                    if (xIndex - 2 > 0 && yIndex - 2 > 0)
-                    {
-                        nBoard[xIndex - 2, yIndex -  2] = -1;
-                    }
+                    Debug.Log("Healing allies");
+
+
                 }
                 break;
         }
@@ -1100,9 +1208,9 @@ public class GameManager : MonoBehaviour
                             gBoard[i, k].GetComponent<PieceBehavior>().y = k;
 
                             if (gBoard[i, k].GetComponent<PieceBehavior>().x % 2 == 0)
-                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.25f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.2875f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
                             else
-                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.35f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.4490f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
 
                             nBoard[i, k - (k - l)] = -1;
                             gBoard[i, k - (k - l)] = null;
@@ -1468,7 +1576,7 @@ public class GameManager : MonoBehaviour
         {
 
             Color currentColor = piece.GetComponent<SpriteRenderer>().color;
-            currentColor.a = 1.0f;
+            currentColor.a = 0.98039215686f;
             piece.GetComponent<SpriteRenderer>().color = currentColor;
 
         }
@@ -1498,6 +1606,8 @@ public class GameManager : MonoBehaviour
             helpDialogue2.SetActive(false);
             helpDialogue3.SetActive(false);
             helpDialogue4.SetActive(false);
+            helpDialogue5.SetActive(false);
+
 
             arrowGroup1.SetActive(true);
             arrowGroup2.SetActive(false);
@@ -1510,6 +1620,8 @@ public class GameManager : MonoBehaviour
             helpDialogue2.SetActive(true);
             helpDialogue3.SetActive(false);
             helpDialogue4.SetActive(false);
+            helpDialogue5.SetActive(false);
+
 
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(true);
@@ -1522,6 +1634,8 @@ public class GameManager : MonoBehaviour
             helpDialogue2.SetActive(false);
             helpDialogue3.SetActive(true);
             helpDialogue4.SetActive(false);
+            helpDialogue5.SetActive(false);
+
 
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(false);
@@ -1535,6 +1649,8 @@ public class GameManager : MonoBehaviour
             helpDialogue2.SetActive(false);
             helpDialogue3.SetActive(false);
             helpDialogue4.SetActive(true);
+            helpDialogue5.SetActive(false);
+
 
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(false);
@@ -1543,17 +1659,39 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 5 && !(endText.activeInHierarchy))
+        if (tutorialPhase == 5 && !(helpDialogue5.activeInHierarchy))
         {
             helpDialogue1.SetActive(false);
             helpDialogue2.SetActive(false);
             helpDialogue3.SetActive(false);
             helpDialogue4.SetActive(false);
+            helpDialogue5.SetActive(true);
+
 
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(false);
             arrowGroup3.SetActive(false);
             arrowGroup4.SetActive(false);
+            arrowGroup5.SetActive(true);
+
+
+        }
+
+        if (tutorialPhase == 6 && !(endText.activeInHierarchy))
+        {
+            helpDialogue1.SetActive(false);
+            helpDialogue2.SetActive(false);
+            helpDialogue3.SetActive(false);
+            helpDialogue4.SetActive(false);
+            helpDialogue5.SetActive(false);
+
+
+            arrowGroup1.SetActive(false);
+            arrowGroup2.SetActive(false);
+            arrowGroup3.SetActive(false);
+            arrowGroup4.SetActive(false);
+            arrowGroup5.SetActive(false);
+
 
 
             endText.SetActive(true);
@@ -1565,10 +1703,11 @@ public class GameManager : MonoBehaviour
     private void OnWin()
     {
         Values.Player.gold += 25;
+        Debug.Log("Win");
     }
 
     private void OnLose()
     {
-        
+        Debug.Log("Lose");
     }
 }
