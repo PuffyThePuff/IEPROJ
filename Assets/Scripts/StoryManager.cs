@@ -216,7 +216,7 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[6] = new Dialogue();
         StoryChapters[0].ChapterDialogues[6].name = "MC";
         StoryChapters[0].ChapterDialogues[6].otherName = "Alice";
-        StoryChapters[0].ChapterDialogues[6].sentences = new string[5];
+        StoryChapters[0].ChapterDialogues[6].sentences = new string[3];
         StoryChapters[0].ChapterDialogues[6].speaker1Lines = new int[] { 1,2 };
         StoryChapters[0].ChapterDialogues[6].speaker2Lines = new int[] { 0};
         StoryChapters[0].ChapterDialogues[6].speaker1Sprites = new Sprite[] { };
