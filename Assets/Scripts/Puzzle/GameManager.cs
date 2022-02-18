@@ -29,6 +29,11 @@ public class GameManager : MonoBehaviour
     public Image c2ChargeBar;
     public Image c3ChargeBar;
 
+    public Image c1Sprite;
+    public Image c2Sprite;
+    public Image c3Sprite;
+
+    public Image SpeakerPortrait;
     //tutorial help dialogues ui
     public GameObject helpDialogue1;
     public GameObject helpDialogue2;
@@ -36,6 +41,13 @@ public class GameManager : MonoBehaviour
     public GameObject helpDialogue4;
     public GameObject helpDialogue5;
     public GameObject endText;
+
+    public Text charDialogue1;
+    public Text charDialogue2;
+    public Text charDialogue3;
+
+    public float catchphraseDuration = 3.5f;
+    public float catchPhraseTick = 0.0f;
 
     //tutorial arrow ui
     public GameObject mainArrow;
@@ -152,6 +164,9 @@ public class GameManager : MonoBehaviour
             c3Index = Values.Player.equippedChar3.index;
             c3MaxHp = Values.Player.equippedChar3.hp;
             c3CurrentHp = c3MaxHp;
+            charDialogue1.text = Values.Player.equippedChar1.catchPhrase;
+            charDialogue2.text = Values.Player.equippedChar2.catchPhrase;
+            charDialogue3.text = Values.Player.equippedChar3.catchPhrase;
             enemyMaxHp = Values.Enemy.maxHP;
             enemyCurrentHp = enemyMaxHp;
             enemyDmg = Values.Enemy.dmg;
@@ -410,6 +425,7 @@ public class GameManager : MonoBehaviour
 
         else
         {
+            UpdateCatchphraseDialogue();
             if (c1CurrentHp <= 0 && c2CurrentHp <= 0 && c3CurrentHp <= 0)
                 gameState = -1;
 
@@ -972,6 +988,12 @@ public class GameManager : MonoBehaviour
             specialPiecesCount--;
             c1CurrentCharge = 0;
             UpdateChargeBars(i);
+            charDialogue1.gameObject.SetActive(true);
+
+            if (c1Sprite != null)
+            {
+                SpeakerPortrait.sprite = c1Sprite.sprite;
+            }
         }
 
         else if (specialPiece.GetComponent<PieceBehavior>().ID == c2Index)
@@ -980,6 +1002,13 @@ public class GameManager : MonoBehaviour
             specialPiecesCount--;
             c2CurrentCharge = 0;
             UpdateChargeBars(i);
+            charDialogue2.gameObject.SetActive(true);
+
+            if (c2Sprite != null)
+            {
+                SpeakerPortrait.sprite = c2Sprite.sprite;
+            }
+
         }
 
         else if (specialPiece.GetComponent<PieceBehavior>().ID == c3Index)
@@ -989,6 +1018,13 @@ public class GameManager : MonoBehaviour
             specialPiecesCount--;
             c3CurrentCharge = 0;
             UpdateChargeBars(i);
+            charDialogue3.gameObject.SetActive(true);
+
+            if(c3Sprite != null)
+            {
+                SpeakerPortrait.sprite = c3Sprite.sprite;
+            }
+
         }
 
         //else if (specialPiece.GetComponent<PieceBehavior>().ID == c3Index)
@@ -1712,6 +1748,21 @@ public class GameManager : MonoBehaviour
         }
 
 
+    }
+
+    private void UpdateCatchphraseDialogue()
+    {
+        if (charDialogue1.gameObject.activeInHierarchy || charDialogue2.gameObject.activeInHierarchy || charDialogue3.gameObject.activeInHierarchy)
+            catchPhraseTick += Time.deltaTime;
+
+        if(catchPhraseTick > catchphraseDuration)
+        {
+            charDialogue1.gameObject.SetActive(false);
+            charDialogue2.gameObject.SetActive(false);
+            charDialogue3.gameObject.SetActive(false);
+            catchPhraseTick = 0.0f;
+
+        }
     }
 
     private void OnWin()

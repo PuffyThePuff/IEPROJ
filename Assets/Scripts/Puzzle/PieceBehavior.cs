@@ -312,8 +312,21 @@ public class PieceBehavior : MonoBehaviour
                             if (this.GetComponent<PieceBehavior>().ID >= 3)
                             {
                                 Debug.Log(GameManager.Instance.powerups.Count);
-                                if (GameManager.Instance.powerups.Count < 2)
+                                if (this.GetComponent<PieceBehavior>().ID == Values.Characters.c1.index && latestSelected.GetComponent<PieceBehavior>().ID == 0)
                                 {
+
+                                    GameManager.Instance.powerups.Add(gameObject);
+                                }
+
+                                else if (this.GetComponent<PieceBehavior>().ID == Values.Characters.c2.index && latestSelected.GetComponent<PieceBehavior>().ID == 1)
+                                {
+
+                                    GameManager.Instance.powerups.Add(gameObject);
+                                }
+
+                                else if (this.GetComponent<PieceBehavior>().ID == Values.Characters.c3.index && latestSelected.GetComponent<PieceBehavior>().ID == 2)
+                                {
+
                                     GameManager.Instance.powerups.Add(gameObject);
                                 }
 
