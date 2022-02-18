@@ -5,10 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class StartCutScene : MonoBehaviour
 {
-    public AudioSource otaconnect;
     public void playOtaconnect()
     {
-        otaconnect.Play();
+        AudioManager.Instance.Play("Otakonekto");
     }
     public void LoadScene()
     {
