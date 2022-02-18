@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     public GameObject endText;
 
     //tutorial arrow ui
+    public GameObject mainArrow;
     public GameObject arrowGroup1;
     public GameObject arrowGroup2;
     public GameObject arrowGroup3;
@@ -93,8 +94,6 @@ public class GameManager : MonoBehaviour
     private bool bIncreaseRate = false;
     private bool specialPieceDecreaseRate = false;
 
-    
-
     //enemy stats
     public float enemyMaxHp = 100;
     private float enemyCurrentHp = 100;
@@ -131,6 +130,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
 
     }
+
     void Start()
     {
         //debug
@@ -138,6 +138,7 @@ public class GameManager : MonoBehaviour
 
         //setting up stats accoroding to values.cs
         isTutorial = Values.Puzzle.isTutorial;
+
 
         if(!isTutorial)
         {
@@ -577,6 +578,8 @@ public class GameManager : MonoBehaviour
                 {
                     GameManager.Instance.Attack();  //delete normal pieces and trigger special pieces effects
                     GameManager.Instance.InstantRefreshBoard(); //replace deleted pieces
+
+                    
                 }
 
                 else
@@ -597,6 +600,8 @@ public class GameManager : MonoBehaviour
                         {
                             selectedPiece.GetComponent<LineRenderer>().positionCount = 0;
                         }
+
+                        selectedPiece.transform.localScale /= 1.10f;
 
 
                         //Debug.Log("after: " + GameManager.Instance.selected.Count);
@@ -646,7 +651,7 @@ public class GameManager : MonoBehaviour
                             selectedPiece.GetComponent<LineRenderer>().positionCount = 0;
                         }
 
-
+                        selectedPiece.transform.localScale /= 1.10f;
                         //Debug.Log("after: " + GameManager.Instance.selected.Count);
 
                     }
@@ -950,6 +955,9 @@ public class GameManager : MonoBehaviour
         powerups.Clear();   //clear reference list of selected powerups
         DestroyDamagedPieces(); //destroy game object pieces that have been set to -1 value
         isBoardInteractable = false;
+
+        AnimationManager.Instance.PlayHitAnimation();
+        Debug.Log("Attack");
     }
 
     
@@ -1457,7 +1465,7 @@ public class GameManager : MonoBehaviour
                     }
                     //-------------------------------------------------------\\
 
-                    else if (n > 0 || specialPiecesCount >= 3)
+                    else if (specialPiecesCount >= 3)
                     {
                             //Debug.Log("spawning normal piece");
                         if(!manipulatedSpawnRates)
@@ -1608,10 +1616,12 @@ public class GameManager : MonoBehaviour
             helpDialogue4.SetActive(false);
             helpDialogue5.SetActive(false);
 
-
-            arrowGroup1.SetActive(true);
+            mainArrow.SetActive(true);
+            //arrowGroup1.SetActive(true);
             arrowGroup2.SetActive(false);
             arrowGroup3.SetActive(false);
+
+            AnimationManager.Instance.PlayTutorialAnimation1();
         }
 
         if (tutorialPhase == 2 && !(helpDialogue2.activeInHierarchy))
@@ -1622,10 +1632,11 @@ public class GameManager : MonoBehaviour
             helpDialogue4.SetActive(false);
             helpDialogue5.SetActive(false);
 
-
+            mainArrow.SetActive(false);
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(true);
             arrowGroup3.SetActive(false);
+
         }
 
         if (tutorialPhase == 3 && !(helpDialogue3.activeInHierarchy))
@@ -1651,11 +1662,14 @@ public class GameManager : MonoBehaviour
             helpDialogue4.SetActive(true);
             helpDialogue5.SetActive(false);
 
-
+            mainArrow.SetActive(true);
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(false);
             arrowGroup3.SetActive(false);
-            arrowGroup4.SetActive(true);
+            //arrowGroup4.SetActive(true);
+            arrowGroup5.SetActive(false);
+
+            AnimationManager.Instance.PlayTutorialAnimation2();
 
         }
 
@@ -1667,7 +1681,7 @@ public class GameManager : MonoBehaviour
             helpDialogue4.SetActive(false);
             helpDialogue5.SetActive(true);
 
-
+            mainArrow.SetActive(false);
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(false);
             arrowGroup3.SetActive(false);

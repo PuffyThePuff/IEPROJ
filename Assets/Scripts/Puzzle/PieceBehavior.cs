@@ -79,7 +79,7 @@ public class PieceBehavior : MonoBehaviour
                 }
 
 
-                
+                this.gameObject.transform.localScale *= 1.10f;
                 GameManager.Instance.selected.Add(gameObject); //add selected object to selected objects list
                 Instantiate(Border, this.transform);    //create border around piece for visual aid
                 lineRenderer.positionCount = 9;
@@ -95,11 +95,6 @@ public class PieceBehavior : MonoBehaviour
                 lineRenderer.SetPosition(8, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.05f, gameObject.transform.position.z - 0.0001f));
 
 
-
-
-
-
-
                 //lineRenderer.SetPosition(3, gameObject.)
             }
 
@@ -109,6 +104,8 @@ public class PieceBehavior : MonoBehaviour
                 {
                     if (((this.x == 3 && this.y == 1) || (this.x == 1 && this.y == 1)) && !GameManager.Instance.selected.Contains(this.gameObject))
                     {
+                        this.gameObject.transform.localScale *= 1.10f;
+
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
                         lineRenderer.positionCount = 9;
@@ -129,6 +126,8 @@ public class PieceBehavior : MonoBehaviour
                 {
                     if ((this.x == 2 && this.y == 3) || ((this.x == 2 && this.y == 2)) || (this.x == 3 && this.y == 2) || (this.x == 3 && this.y == 1) || (this.x == 4 && this.y == 1) || (this.x == 3 && this.y == 0))
                     {
+                        this.gameObject.transform.localScale *= 1.10f;
+
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
                         lineRenderer.positionCount = 9;
@@ -257,6 +256,8 @@ public class PieceBehavior : MonoBehaviour
                         }
                     }
 
+                    this.gameObject.transform.localScale *= 1.10f;
+
                     GameManager.Instance.selected.Add(gameObject);
                     Instantiate(Border, this.transform);
                     lineRenderer.positionCount = 9;
@@ -294,6 +295,8 @@ public class PieceBehavior : MonoBehaviour
                         }
 
                         lineRenderer.positionCount = 0;
+                        this.gameObject.transform.localScale /= 1.10f;
+
                     }
 
 
@@ -320,6 +323,9 @@ public class PieceBehavior : MonoBehaviour
                                 }
 
                             }
+
+                            this.gameObject.transform.localScale *= 1.10f;
+
                             GameManager.Instance.selected.Add(gameObject);
                             Instantiate(Border, this.transform);
 
@@ -360,7 +366,8 @@ public class PieceBehavior : MonoBehaviour
                     }
 
                     lineRenderer.positionCount = 0;
-                    
+                    this.gameObject.transform.localScale /= 1.10f;
+
                 }
 
                 else if (GameManager.tutorialPhase == 1)
@@ -371,6 +378,8 @@ public class PieceBehavior : MonoBehaviour
                         || ((this.x == 1 && this.y == 1) && (GameManager.Instance.selected.Contains(GameManager.Instance.gBoard[2, 2]) || GameManager.Instance.selected.Count == 0))))
                         && !(GameManager.Instance.selected.Contains(this.gameObject)))
                     {
+                        this.gameObject.transform.localScale *= 1.10f;
+
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
 
@@ -400,6 +409,8 @@ public class PieceBehavior : MonoBehaviour
                         || (this.x == 4 && this.y == 1)
                         || (this.x == 3 && this.y == 0))
                     {
+                        this.gameObject.transform.localScale *= 1.10f;
+
                         GameManager.Instance.selected.Add(gameObject);
                         Instantiate(Border, this.transform);
                         if (latestSelected != null)
