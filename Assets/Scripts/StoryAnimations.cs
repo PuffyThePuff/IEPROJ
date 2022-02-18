@@ -7,6 +7,7 @@ public class StoryAnimations : MonoBehaviour
 {
     public Animator MoveToSchoolAnim;
     public Animator FadeBlackTransition;
+    public GameObject AlphaPopUp;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +45,7 @@ public class StoryAnimations : MonoBehaviour
             {
                 FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered = true;
                 StartCoroutine(FadeTransition("Puzzle"));
+                Values.Puzzle.isTutorial = true;
             }
 
         }
@@ -68,7 +70,12 @@ public class StoryAnimations : MonoBehaviour
             }
 
         }
-        
+        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].isDone &&
+            !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered)
+        {
+            AlphaPopUp.SetActive(true);
+        }
+
 
 
     }
@@ -94,5 +101,25 @@ public class StoryAnimations : MonoBehaviour
             }
 
         }
+    }
+
+    public void AlphaPopUpButton()
+    {
+        Debug.Log("outside");
+        if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered)
+        {
+            Debug.Log("Inside trigger");
+            if (FadeBlackTransition != null)
+            {
+                Debug.Log("Inside fade");
+                AlphaPopUp.SetActive(false);
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered = true;
+                StartCoroutine(FadeTransition("LevelSetupTest"));
+
+            }
+
+        }
+
     }
 }
