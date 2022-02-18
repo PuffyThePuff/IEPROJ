@@ -1528,7 +1528,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: bd23a8b9cdfdab84ea236449654bc304, type: 3}
   - {fileID: 21300000, guid: f6d891e91b350584dbc691d4f01d9392, type: 3}
   NFSprites:
-  - {fileID: 21300000, guid: c958100078a89f049a657ccacdb330ba, type: 3}
+  - {fileID: 21300000, guid: 4a8e7bb60bbf71d48875860029dc47ac, type: 3}
   AliceSprites:
   - {fileID: 21300000, guid: 02555a493fe139249ac8932c54a57581, type: 3}
   - {fileID: 21300000, guid: cd422f4d0f763624e97ad8d331d52171, type: 3}
@@ -1679,7 +1679,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f078a02b6ba3e7347becc4a2f1d1969a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 89e18d8d7a66dc44e90e34cd8209c780, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2294,6 +2294,10 @@ PrefabInstance:
     - target: {fileID: 6149904301371145483, guid: 2ea36d0bc1039de43b32c7c011d82e3c, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149904301371145483, guid: 2ea36d0bc1039de43b32c7c011d82e3c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6149904301371145485, guid: 2ea36d0bc1039de43b32c7c011d82e3c, type: 3}
       propertyPath: m_Sprite
@@ -3710,6 +3714,10 @@ PrefabInstance:
     - target: {fileID: 4625303058610494300, guid: 68d62c73c975666478741ea6a41fb727, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -260
+      objectReference: {fileID: 0}
+    - target: {fileID: 4625303058610494303, guid: 68d62c73c975666478741ea6a41fb727, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4625303058911658007, guid: 68d62c73c975666478741ea6a41fb727, type: 3}
       propertyPath: m_AnchorMax.y

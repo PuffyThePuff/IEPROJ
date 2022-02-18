@@ -47,6 +47,8 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[0].sentences[5] = "Time for school I guess.";
         StoryChapters[0].ChapterDialogues[0].speaker1Sprites = new Sprite[] {};
         StoryChapters[0].ChapterDialogues[0].speaker1Sprites = McSprites;
+        StoryChapters[0].ChapterDialogues[0].chapterNum = 0;
+        StoryChapters[0].ChapterDialogues[0].dialogueIndex = 0;
         //fade to black i guess...
 
         //goes to school and meets new friend 
@@ -63,6 +65,8 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[1].speaker1Sprites = McSprites;
         StoryChapters[0].ChapterDialogues[1].speaker2Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[1].speaker2Sprites = NFSprites;
+        StoryChapters[0].ChapterDialogues[1].chapterNum = 0;
+        StoryChapters[0].ChapterDialogues[1].dialogueIndex = 1;
         //narration [] = 25
 
 
@@ -139,6 +143,8 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[2].speaker1Sprites = McSprites;
         StoryChapters[0].ChapterDialogues[2].speaker2Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[2].speaker2Sprites = AliceSprites;
+        StoryChapters[0].ChapterDialogues[2].chapterNum = 0;
+        StoryChapters[0].ChapterDialogues[2].dialogueIndex = 2;
 
         StoryChapters[0].ChapterDialogues[2].sentences[0] = "...And it's done.";
         StoryChapters[0].ChapterDialogues[2].sentences[1] = "Still, the game is relatively light for a gacha game.";
@@ -183,6 +189,8 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[4].speaker1Sprites = McSprites;
         StoryChapters[0].ChapterDialogues[4].speaker2Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[4].speaker2Sprites = AliceSprites;
+        StoryChapters[0].ChapterDialogues[4].chapterNum = 0;
+        StoryChapters[0].ChapterDialogues[4].dialogueIndex = 4;
 
         StoryChapters[0].ChapterDialogues[4].sentences[0] = "Whew, Thanks Hero. If it wasn’t for you, we would’ve been lost.";
         StoryChapters[0].ChapterDialogues[4].sentences[1] = "H-How did I know your name?";
@@ -198,6 +206,8 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[5].speaker1Lines = new int[] { 0, 1 };
         StoryChapters[0].ChapterDialogues[5].speaker1Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[5].speaker1Sprites = AliceSprites;
+        StoryChapters[0].ChapterDialogues[5].chapterNum = 0;
+        StoryChapters[0].ChapterDialogues[5].dialogueIndex = 5;
 
         StoryChapters[0].ChapterDialogues[5].sentences[0] = "We got lucky earlier. Help is needed for us to handle the upcoming battles.";
         StoryChapters[0].ChapterDialogues[5].sentences[1] = "Well, you know the drill, kiss the hand of the maiden!";
@@ -213,6 +223,8 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[6].speaker1Sprites = McSprites;
         StoryChapters[0].ChapterDialogues[6].speaker2Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[6].speaker2Sprites = AliceSprites;
+        StoryChapters[0].ChapterDialogues[6].chapterNum = 0;
+        StoryChapters[0].ChapterDialogues[6].dialogueIndex = 6;
 
         StoryChapters[0].ChapterDialogues[6].sentences[0] = "Okay, we have what we need now. Don’t forget to select the princesses you want in our adventure!";
         StoryChapters[0].ChapterDialogues[6].sentences[1] = "Well, that’s enough for tonight… I have to go to sleep tomorrow…";

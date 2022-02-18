@@ -28,4 +28,7 @@ public class Dialogue
 
     public bool isDone = false;
     public bool hasTriggered = false;
+
+    public int chapterNum;
+    public int dialogueIndex;
 }

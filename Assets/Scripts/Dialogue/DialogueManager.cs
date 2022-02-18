@@ -23,6 +23,12 @@ public class DialogueManager : MonoBehaviour
     private bool isStoryDialogue = false;
     private int dequeueIndex = 0;
 
+    private string currentSentence;
+    private bool isFullSentence = false;
+
+    private int ChapterNum;
+    private int DialogueNum;
+
     void Awake()
     {
         /*if (instanceRef == null)
@@ -58,6 +64,14 @@ public class DialogueManager : MonoBehaviour
 
         name1Text.text = dialogue.name;
         Speaker1Image.sprite = dialogue.speaker1Sprites[0];
+
+        ChapterNum = dialogue.chapterNum;
+        DialogueNum = dialogue.dialogueIndex;
+        if (ChapterNum == 0 && DialogueNum == 0)
+        {
+            Speaker1Image.gameObject.SetActive(false);
+        }
+       
         if (dialogue.otherName != "")
         {
             name2Text.text = dialogue.otherName;
@@ -94,6 +108,11 @@ public class DialogueManager : MonoBehaviour
         StopAllCoroutines();
         string sentence = sentences.Dequeue();
         Speaker1Image.gameObject.SetActive(true);
+        if (ChapterNum == 0 && DialogueNum == 0)
+        {
+            Speaker1Image.gameObject.SetActive(false);
+        }
+
         if (name2Text.text != "")
             Speaker2Image.gameObject.SetActive(true);
 
@@ -134,6 +153,7 @@ public class DialogueManager : MonoBehaviour
         }
         dequeueIndex++;
 
+        currentSentence = sentence;
         StartCoroutine(TypeSentence(sentence));
     }
 
@@ -154,6 +174,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+
     void EndDialogue()
     {
         FindObjectOfType<StoryManager>().isOnDialogue = false;
@@ -165,7 +186,7 @@ public class DialogueManager : MonoBehaviour
                 .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
             FindObjectOfType<StoryManager>().currentDialogue++;
         }
-        bottomRightMC.SetActive(true);
+        //bottomRightMC.SetActive(true);
         isStoryDialogue = false;
     }
 
@@ -176,8 +197,17 @@ public class DialogueManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                StopAllCoroutines();
-                DisplayNextSentence();
+                if (isFullSentence == false)
+                {
+                    StopAllCoroutines();
+                    dialogueText.text = currentSentence;
+                    isFullSentence = true;
+                }
+                else
+                {
+                    DisplayNextSentence();
+                    isFullSentence = false;
+                }
             }
         }
     }
