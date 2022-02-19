@@ -56,3 +56,21 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: ClassroomBGM
+    clip: {fileID: 8300000, guid: 99748f690d82215479a67cf66000a6be, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: BattleBGM
+    clip: {fileID: 8300000, guid: 686a2f240c51fed4e83a66162b9ffb64, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: RoomBGM
+    clip: {fileID: 8300000, guid: bd70bfc9a0011064181da7137a8ff052, type: 3}
+    volume: 0.75
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
