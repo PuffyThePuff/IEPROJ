@@ -47,6 +47,7 @@ public static class Values
                 
         };
 
+        public static int enemyLevel = 0;
         public static float maxHP = 500;
         public static float dmg = 10f;
         public static float attackInterval = 1.5f;
