@@ -146,8 +146,8 @@ public class EquipCharacter : MonoBehaviour
 
         Values.Enemy.enemyLevel = 1;
         Values.Enemy.maxHP = 100;
-        Values.Enemy.dmg = 10;
-        Values.Enemy.attackInterval = 1.5f;
+        Values.Enemy.dmg = 100;
+        Values.Enemy.attackInterval = 1.6f;
         Values.Puzzle.isTutorial = false;
         SceneManager.LoadScene("Puzzle");
         AudioManager.Instance.Play("BattleBGM");
@@ -168,7 +168,7 @@ public class EquipCharacter : MonoBehaviour
 
         Values.Enemy.enemyLevel = 2;
         Values.Enemy.maxHP = 200;
-        Values.Enemy.dmg = 10;
+        Values.Enemy.dmg = 100;
         Values.Enemy.attackInterval = 1.4f;
         Values.Puzzle.isTutorial = false;
         Values.Enemy.skill = Values.Enemy.SkillType.Freeze;
@@ -191,8 +191,8 @@ public class EquipCharacter : MonoBehaviour
 
         Values.Enemy.enemyLevel = 3;
         Values.Enemy.maxHP = 400;
-        Values.Enemy.dmg = 10;
-        Values.Enemy.attackInterval = 1.3f;
+        Values.Enemy.dmg = 100;
+        Values.Enemy.attackInterval = 1.2f;
         Values.Puzzle.isTutorial = false;
         SceneManager.LoadScene("Puzzle");
         AudioManager.Instance.Play("BattleBGM");
@@ -212,8 +212,8 @@ public class EquipCharacter : MonoBehaviour
 
         Values.Enemy.enemyLevel = 4;
         Values.Enemy.maxHP = 2700;
-        Values.Enemy.dmg = 10;
-        Values.Enemy.attackInterval = 1.2f;
+        Values.Enemy.dmg = 100;
+        Values.Enemy.attackInterval = 1.0f;
         Values.Puzzle.isTutorial = false;
         SceneManager.LoadScene("Puzzle");
         AudioManager.Instance.Play("BattleBGM");
@@ -234,7 +234,7 @@ public class EquipCharacter : MonoBehaviour
         }
         Values.Enemy.enemyLevel = 4;
         Values.Enemy.maxHP = 8100;
-        Values.Enemy.dmg = 10;
+        Values.Enemy.dmg = 100;
         Values.Enemy.attackInterval = 1.1f;
         Values.Puzzle.isTutorial = false;
         SceneManager.LoadScene("Puzzle");
