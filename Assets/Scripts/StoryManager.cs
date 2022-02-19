@@ -326,6 +326,7 @@ public class StoryManager : MonoBehaviour
         setAllChapters();
         setAllDialogues();
         FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[0], true);
+        FindObjectOfType<AudioManager>().Play("Birds",true);
     }
 
     // Update is called once per frame
@@ -334,10 +335,13 @@ public class StoryManager : MonoBehaviour
         if (FindObjectOfType<StoryManager>().currentDialogue == 1 &&
             FindObjectOfType<StoryManager>().currentChapter == 0)
         {
+
             if (SceneManager.GetActiveScene().name == "DestinationSample" 
                 && !isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].isDone)
             {
                 FindObjectOfType<StoryManager>().Chapter1Dialogue2();
+                FindObjectOfType<AudioManager>().Stop("Birds");
+                FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
             }
 
         }
@@ -348,6 +352,8 @@ public class StoryManager : MonoBehaviour
                 && !isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].isDone)
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[2], true);
+                FindObjectOfType<AudioManager>().Stop("ClassroomBGM");
+                FindObjectOfType<AudioManager>().Play("RoomBGM", true);
             }
         }
         if (FindObjectOfType<StoryManager>().currentChapter == 0 &&

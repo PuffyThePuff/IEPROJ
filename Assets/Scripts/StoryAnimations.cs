@@ -45,6 +45,8 @@ public class StoryAnimations : MonoBehaviour
             {
                 FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered = true;
                 StartCoroutine(FadeTransition("Puzzle"));
+                FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                FindObjectOfType<AudioManager>().Play("BattleBGM",true);
                 Values.Puzzle.isTutorial = true;
             }
 
@@ -56,6 +58,8 @@ public class StoryAnimations : MonoBehaviour
             {
                 FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[3].hasTriggered = true;
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4], true);
+                FindObjectOfType<AudioManager>().Stop("BattleBGM");
+                FindObjectOfType<AudioManager>().Play("RoomBGM", true);
             }
 
         }
@@ -105,18 +109,15 @@ public class StoryAnimations : MonoBehaviour
 
     public void AlphaPopUpButton()
     {
-        Debug.Log("outside");
         if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].isDone &&
-                 !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered)
+            !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered)
         {
-            Debug.Log("Inside trigger");
             if (FadeBlackTransition != null)
             {
-                Debug.Log("Inside fade");
                 AlphaPopUp.SetActive(false);
                 FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered = true;
                 StartCoroutine(FadeTransition("LevelSetupTest"));
-
+                FindObjectOfType<AudioManager>().Stop("RoomBGM");
             }
 
         }
