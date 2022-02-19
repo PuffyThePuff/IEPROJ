@@ -32,11 +32,28 @@ public class AnimationManager : MonoBehaviour
 
     public void PlayTutorialAnimation1()
     {
+        //if (ArrowAnimator != null && ArrowAnimator.gameObject.activeSelf && ArrowAnimator.isActiveAndEnabled)
+        //{
+        //    ArrowAnimator.Play("Idle", 0, 0.0f);
+        //}
+
+        // ArrowAnimator.SetTrigger("TutorialPhase1Start");
+
         ArrowAnimator.Play("ArrowTutorialAnimation1");
+    }
+
+    public void StopTutorialAnimation1()
+    {
+        ArrowAnimator.Play("Idle");
     }
     public void PlayTutorialAnimation2()
     {
         ArrowAnimator.Play("ArrowTutorialAnimation2");
+    }
+
+    public void StopTutorialAnimation2()
+    {
+        ArrowAnimator.Play("Idle");
     }
 
     public void PlayHitAnimation()

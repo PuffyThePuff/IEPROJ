@@ -172,6 +172,7 @@ public class GameManager : MonoBehaviour
             enemyDmg = Values.Enemy.dmg;
             basicDamage = Values.Player.basicDamage;
             enhancedDamage = Values.Player.enhancedDmaage;
+            enemyAttackInterval = Values.Enemy.attackInterval;
         }
 
 
@@ -378,7 +379,7 @@ public class GameManager : MonoBehaviour
     {
         UpdateHpBars();
         UpdatePlayerStatusEffects();
-        //Debug.Log(tutorialPhase);
+        Debug.Log(tutorialPhase);
 
         if (isTutorial)
         {
@@ -992,10 +993,7 @@ public class GameManager : MonoBehaviour
             if(!isTutorial)
                 charDialogue1.gameObject.SetActive(true);
 
-            if (c1Sprite != null)
-            {
-                SpeakerPortrait.sprite = c1Sprite.sprite;
-            }
+           
         }
 
         else if (specialPiece.GetComponent<PieceBehavior>().ID == c2Index)
@@ -1008,10 +1006,7 @@ public class GameManager : MonoBehaviour
             if (!isTutorial)
                 charDialogue2.gameObject.SetActive(true);
 
-            if (c2Sprite != null)
-            {
-                SpeakerPortrait.sprite = c2Sprite.sprite;
-            }
+            
 
         }
 
@@ -1026,10 +1021,7 @@ public class GameManager : MonoBehaviour
             if (!isTutorial)
                 charDialogue3.gameObject.SetActive(true);
 
-            if(c3Sprite != null)
-            {
-                SpeakerPortrait.sprite = c3Sprite.sprite;
-            }
+            
 
         }
 
@@ -1672,7 +1664,6 @@ public class GameManager : MonoBehaviour
 
         if (tutorialPhase == 2 && !(helpDialogue2.activeInHierarchy))
         {
-            helpDialogue1.SetActive(false);
             helpDialogue2.SetActive(true);
             helpDialogue3.SetActive(false);
             helpDialogue4.SetActive(false);
@@ -1682,6 +1673,9 @@ public class GameManager : MonoBehaviour
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(true);
             arrowGroup3.SetActive(false);
+            AnimationManager.Instance.StopTutorialAnimation1();
+            helpDialogue1.SetActive(false);
+
 
         }
 
@@ -1716,6 +1710,7 @@ public class GameManager : MonoBehaviour
             arrowGroup5.SetActive(false);
 
             AnimationManager.Instance.PlayTutorialAnimation2();
+            Debug.Log("Playing animtion 2");
 
         }
 
@@ -1727,12 +1722,15 @@ public class GameManager : MonoBehaviour
             helpDialogue4.SetActive(false);
             helpDialogue5.SetActive(true);
 
-            mainArrow.SetActive(false);
             arrowGroup1.SetActive(false);
             arrowGroup2.SetActive(false);
             arrowGroup3.SetActive(false);
             arrowGroup4.SetActive(false);
             arrowGroup5.SetActive(true);
+
+            AnimationManager.Instance.StopTutorialAnimation2();
+            mainArrow.SetActive(false);
+
 
 
         }
@@ -1779,10 +1777,13 @@ public class GameManager : MonoBehaviour
     {
         Values.Player.gold += 25;
         Debug.Log("Win");
+        SceneManager.LoadScene("LevelSetupTest");
     }
 
     private void OnLose()
     {
         Debug.Log("Lose");
+        SceneManager.LoadScene("LevelSetupTest");
+
     }
 }
