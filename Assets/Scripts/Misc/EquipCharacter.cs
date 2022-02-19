@@ -134,77 +134,106 @@ public class EquipCharacter : MonoBehaviour
     {
         if(dropdowns[0].value != dropdowns[1].value && dropdowns[0].value != dropdowns[2].value && dropdowns[1].value != dropdowns[2].value)
         {
-            Values.Enemy.maxHP = 100;
-            Values.Enemy.dmg = 10;
             
-            SceneManager.LoadScene("Puzzle");
+
         }
-        
+
         else
         {
             Debug.Log("Cannot use a piece more than once");
         }
+
+        Values.Enemy.maxHP = 100;
+        Values.Enemy.dmg = 10;
+        Values.Enemy.attackInterval = 1.5f;
+
+        SceneManager.LoadScene("Puzzle");
+        AudioManager.Instance.Play("BattleBGM");
     }
 
     public void SelectLevel2()
     {
         if (dropdowns[0].value != dropdowns[1].value && dropdowns[0].value != dropdowns[2].value && dropdowns[1].value != dropdowns[2].value)
         {
-            Values.Enemy.maxHP = 300;
-            Values.Enemy.dmg = 30;
-            Values.Enemy.skill = Values.Enemy.SkillType.Freeze;
-            SceneManager.LoadScene("Puzzle");
+            
+
         }
 
         else
         {
             Debug.Log("Cannot use a piece more than once");
         }
+
+        Values.Enemy.maxHP = 200;
+        Values.Enemy.dmg = 10;
+        Values.Enemy.attackInterval = 1.4f;
+
+        Values.Enemy.skill = Values.Enemy.SkillType.Freeze;
+        SceneManager.LoadScene("Puzzle");
+        AudioManager.Instance.Play("BattleBGM");
     }
 
     public void SelectLevel3()
     {
         if (dropdowns[0].value != dropdowns[1].value && dropdowns[0].value != dropdowns[2].value && dropdowns[1].value != dropdowns[2].value)
         {
-            Values.Enemy.maxHP = 900;
-            Values.Enemy.dmg = 90;
-            SceneManager.LoadScene("Puzzle");
+            
+
         }
 
         else
         {
             Debug.Log("Cannot use a piece more than once");
         }
+
+        Values.Enemy.maxHP = 400;
+        Values.Enemy.dmg = 10;
+        Values.Enemy.attackInterval = 1.3f;
+
+        SceneManager.LoadScene("Puzzle");
+        AudioManager.Instance.Play("BattleBGM");
     }
 
     public void SelectLevel4()
     {
         if (dropdowns[0].value != dropdowns[1].value && dropdowns[0].value != dropdowns[2].value && dropdowns[1].value != dropdowns[2].value)
         {
-            Values.Enemy.maxHP = 2700;
-            Values.Enemy.dmg = 270;
-            SceneManager.LoadScene("Puzzle");
+           
         }
 
         else
         {
             Debug.Log("Cannot use a piece more than once");
         }
+
+        Values.Enemy.maxHP = 2700;
+        Values.Enemy.dmg = 10;
+        Values.Enemy.attackInterval = 1.2f;
+
+        SceneManager.LoadScene("Puzzle");
+        AudioManager.Instance.Play("BattleBGM");
     }
 
     public void SelectLevel5()
     {
         if (dropdowns[0].value != dropdowns[1].value && dropdowns[0].value != dropdowns[2].value && dropdowns[1].value != dropdowns[2].value)
         {
-            Values.Enemy.maxHP = 8100;
-            Values.Enemy.dmg = 810;
-            SceneManager.LoadScene("Puzzle");
+            
+
         }
+
 
         else
         {
             Debug.Log("Cannot use a piece more than once");
         }
+
+        Values.Enemy.maxHP = 8100;
+        Values.Enemy.dmg = 10;
+        Values.Enemy.attackInterval = 1.1f;
+
+        SceneManager.LoadScene("Puzzle");
+        AudioManager.Instance.Play("BattleBGM");
     }
 
     private void Start()
