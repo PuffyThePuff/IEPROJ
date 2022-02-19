@@ -378,7 +378,7 @@ public class GameManager : MonoBehaviour
     {
         UpdateHpBars();
         UpdatePlayerStatusEffects();
-        Debug.Log(tutorialPhase);
+        //Debug.Log(tutorialPhase);
 
         if (isTutorial)
         {
@@ -988,7 +988,9 @@ public class GameManager : MonoBehaviour
             specialPiecesCount--;
             c1CurrentCharge = 0;
             UpdateChargeBars(i);
-            charDialogue1.gameObject.SetActive(true);
+
+            if(!isTutorial)
+                charDialogue1.gameObject.SetActive(true);
 
             if (c1Sprite != null)
             {
@@ -1002,7 +1004,9 @@ public class GameManager : MonoBehaviour
             specialPiecesCount--;
             c2CurrentCharge = 0;
             UpdateChargeBars(i);
-            charDialogue2.gameObject.SetActive(true);
+
+            if (!isTutorial)
+                charDialogue2.gameObject.SetActive(true);
 
             if (c2Sprite != null)
             {
@@ -1018,7 +1022,9 @@ public class GameManager : MonoBehaviour
             specialPiecesCount--;
             c3CurrentCharge = 0;
             UpdateChargeBars(i);
-            charDialogue3.gameObject.SetActive(true);
+
+            if (!isTutorial)
+                charDialogue3.gameObject.SetActive(true);
 
             if(c3Sprite != null)
             {
@@ -1071,7 +1077,7 @@ public class GameManager : MonoBehaviour
                     //    if (yIndex + 1 < yDimension)
                     //        nBoard[xIndex - 1, yIndex + 1] = -1;
                     //}
-                    
+
                     //if(xIndex + 1 < xDimension)
                     //{
                     //    nBoard[xIndex + 1, yIndex] = -1;
@@ -1088,6 +1094,8 @@ public class GameManager : MonoBehaviour
 
 
                     //-----------stun boss-----------\\
+                    Debug.Log("Disable next enemy attack (stunned)");
+
                     enemyStunned = true;
                     enemyStunnedRounds = 1;
 
@@ -1110,6 +1118,8 @@ public class GameManager : MonoBehaviour
 
 
                     //-----------random piece rate boost-----------\\
+                    Debug.Log("Boost spawn rate effect");
+
                     int pieceBoostRateIndex = Random.Range(0, 3);
 
                     if (pieceBoostRateIndex == 0)
