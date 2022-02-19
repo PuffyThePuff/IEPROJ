@@ -390,6 +390,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6454145132978394032, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
+      propertyPath: sounds.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6454145132978394032, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
+      propertyPath: sounds.Array.data[4].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 2533b4661f987484e9fa1b6f4d9e972e, type: 3}
+    - target: {fileID: 6454145132978394032, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
+      propertyPath: sounds.Array.data[4].loop
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6454145132978394032, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
+      propertyPath: sounds.Array.data[4].name
+      value: RoomBGM
+      objectReference: {fileID: 0}
+    - target: {fileID: 6454145132978394032, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
+      propertyPath: sounds.Array.data[4].pitch
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6454145132978394032, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
+      propertyPath: sounds.Array.data[4].volume
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 6454145132978394033, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
       propertyPath: m_Name
       value: Audio Manager
