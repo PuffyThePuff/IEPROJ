@@ -1264,6 +1264,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 8368a8531314de24e8aa7fce9193246b, type: 3}
+    - target: {fileID: 536715917704356034, guid: f76f1b1558ac4264390073e20717792a, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1951410097943779500, guid: f76f1b1558ac4264390073e20717792a, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1327,6 +1331,10 @@ PrefabInstance:
     - target: {fileID: 6593817667265117464, guid: f76f1b1558ac4264390073e20717792a, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253586307458171953, guid: f76f1b1558ac4264390073e20717792a, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7582429565589893536, guid: f76f1b1558ac4264390073e20717792a, type: 3}
       propertyPath: m_IsActive
@@ -1541,6 +1549,16 @@ PrefabInstance:
 --- !u!95 &976875031 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5542162422608678673, guid: f76f1b1558ac4264390073e20717792a, type: 3}
+  m_PrefabInstance: {fileID: 976875030}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &976875032 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1155974738771898120, guid: f76f1b1558ac4264390073e20717792a, type: 3}
+  m_PrefabInstance: {fileID: 976875030}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &976875033 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7277042225817664798, guid: f76f1b1558ac4264390073e20717792a, type: 3}
   m_PrefabInstance: {fileID: 976875030}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1065050659
@@ -2411,6 +2429,8 @@ MonoBehaviour:
   helpDialogue4: {fileID: 1788192550}
   helpDialogue5: {fileID: 1620781137}
   endText: {fileID: 1960281192}
+  endTextWin: {fileID: 976875032}
+  endTextLose: {fileID: 976875033}
   charDialogue1: {fileID: 1392507245}
   charDialogue2: {fileID: 624653590}
   charDialogue3: {fileID: 1725291704}

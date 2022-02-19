@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
     public GameObject helpDialogue4;
     public GameObject helpDialogue5;
     public GameObject endText;
+    public GameObject endTextWin;
+    public GameObject endTextLose;
 
     public Text charDialogue1;
     public Text charDialogue2;
@@ -417,10 +419,17 @@ public class GameManager : MonoBehaviour
 
             else if (tutorialPhase == 6 && Input.GetMouseButtonUp(0))
             {
-                SceneManager.LoadScene("TransitionSample");
-                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
-                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
-                FindObjectOfType<StoryManager>().currentDialogue++;
+                if (FindObjectOfType<StoryManager>().currentDialogue == 3)
+                {
+                    SceneManager.LoadScene("TransitionSample");
+                    FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                        .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                    FindObjectOfType<StoryManager>().currentDialogue++;
+                }
+                else
+                {
+                    SceneManager.LoadScene("LevelSetupTest");
+                }
             }
         }
 
@@ -442,14 +451,22 @@ public class GameManager : MonoBehaviour
                 if (gameState == 1)
                 {
                     OnWin();
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        SceneManager.LoadScene("LevelSetupTest");
+                        hasEnded = true;
+                    }
                 }
-
                 else if (gameState == -1)
                 {
                     OnLose();
+                    if (Input.GetMouseButtonUp(0))
+                    {
+                        SceneManager.LoadScene("LevelSetupTest");
+                        hasEnded = true;
+                    }
                 }
 
-                hasEnded = true;
             }
         }
 
@@ -1777,13 +1794,12 @@ public class GameManager : MonoBehaviour
     {
         Values.Player.gold += 25;
         Debug.Log("Win");
-        SceneManager.LoadScene("LevelSetupTest");
+        endTextWin.SetActive(true);
     }
 
     private void OnLose()
     {
         Debug.Log("Lose");
-        SceneManager.LoadScene("LevelSetupTest");
-
+        endTextLose.SetActive(true);
     }
 }
