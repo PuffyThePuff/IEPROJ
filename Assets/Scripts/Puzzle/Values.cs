@@ -43,7 +43,8 @@ public static class Values
             None = 0,
             Burst = 1,
             Heal = 2,
-            Freeze = 3
+            Freeze = 3,
+            Poison = 4
                 
         };
 

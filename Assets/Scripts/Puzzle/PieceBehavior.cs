@@ -304,8 +304,25 @@ public class PieceBehavior : MonoBehaviour
                     else
                     {
                         //select if neighboring to last selected piece
-                        bool neighborInX = this.x <= latestSelected.GetComponent<PieceBehavior>().x + 1 && this.x >= latestSelected.GetComponent<PieceBehavior>().x - 1;
-                        bool neighborInY = this.y <= latestSelected.GetComponent<PieceBehavior>().y + 1 && this.y >= latestSelected.GetComponent<PieceBehavior>().y - 1;
+                        bool neighborInX = false;
+                        bool neighborInY = false;
+
+                        neighborInX = this.x <= latestSelected.GetComponent<PieceBehavior>().x + 1 && this.x >= latestSelected.GetComponent<PieceBehavior>().x - 1;
+
+                        if(this.x != latestSelected.GetComponent<PieceBehavior>().x)
+                        {
+                            if (latestSelected.GetComponent<PieceBehavior>().x % 2 == 0)
+                                neighborInY = this.y >= latestSelected.GetComponent<PieceBehavior>().y - 1 && this.y <= latestSelected.GetComponent<PieceBehavior>().y;
+
+                            else if (latestSelected.GetComponent<PieceBehavior>().x % 2 == 1)
+                                neighborInY = this.y <= latestSelected.GetComponent<PieceBehavior>().y + 1 && this.y >= latestSelected.GetComponent<PieceBehavior>().y;
+                        }
+
+                        else
+                        {
+                            neighborInY = this.y <= latestSelected.GetComponent<PieceBehavior>().y + 1 && this.y >= latestSelected.GetComponent<PieceBehavior>().y-1;
+                        }
+                        
 
                         if (neighborInX && neighborInY && !(GameManager.Instance.selected.Contains(this.gameObject)))
                         {
@@ -345,7 +362,7 @@ public class PieceBehavior : MonoBehaviour
                             lineRenderer.positionCount = 2;
                             lineRenderer.SetPosition(0, new Vector3( latestSelected.transform.position.x, latestSelected.transform.position.y, latestSelected.transform.position.z - 0.0001f));
                             lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
-                            Debug.Log("drawing line");
+                            //Debug.Log("drawing line");
                         }
                     }
 

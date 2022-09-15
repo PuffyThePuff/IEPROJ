@@ -17,45 +17,10 @@ public class GameManager : MonoBehaviour
     public List<GameObject> selected;   //list of selected pieces including powerups
     public List<GameObject> powerups;   //list of selected powerups
 
-    //enemy hp bar ui
-    public Image enemyHpBar;    
-
-    //characters hp bar ui
-    public Image c1HpBar;
-    public Image c2HpBar;
-    public Image c3HpBar;
-
-    public Image c1ChargeBar;
-    public Image c2ChargeBar;
-    public Image c3ChargeBar;
-
-    public Image c1Sprite;
-    public Image c2Sprite;
-    public Image c3Sprite;
-
-    public Image SpeakerPortrait;
-    //tutorial help dialogues ui
-    public GameObject helpDialogue1;
-    public GameObject helpDialogue2;
-    public GameObject helpDialogue3;
-    public GameObject helpDialogue4;
-    public GameObject helpDialogue5;
-    public GameObject endText;
-
-    public Text charDialogue1;
-    public Text charDialogue2;
-    public Text charDialogue3;
 
     public float catchphraseDuration = 3.5f;
     public float catchPhraseTick = 0.0f;
 
-    //tutorial arrow ui
-    public GameObject mainArrow;
-    public GameObject arrowGroup1;
-    public GameObject arrowGroup2;
-    public GameObject arrowGroup3;
-    public GameObject arrowGroup4;
-    public GameObject arrowGroup5;
 
     //hold timer
     private float holdTime = 5.0f;
@@ -87,6 +52,10 @@ public class GameManager : MonoBehaviour
     public bool playerIsFrozen = false;
     public float playerFrozenDuration = 1.5f;
     public float playerFrozenTick = 0.0f;
+    public bool playerIsPoisoned = false;
+    public float playerPoisonedDuration = 1.5f;
+    public float playerPoisonedTick = 0.0f;
+    public float playerPoisonedDamage = 1.0f;
     private float basicDamage = 10;
     private float enhancedDamage = 60;
 
@@ -164,15 +133,17 @@ public class GameManager : MonoBehaviour
             c3Index = Values.Player.equippedChar3.index;
             c3MaxHp = Values.Player.equippedChar3.hp;
             c3CurrentHp = c3MaxHp;
-            charDialogue1.text = Values.Player.equippedChar1.catchPhrase;
-            charDialogue2.text = Values.Player.equippedChar2.catchPhrase;
-            charDialogue3.text = Values.Player.equippedChar3.catchPhrase;
+            PuzzleUIManager.Instance.charDialogue1.text = Values.Player.equippedChar1.catchPhrase;
+            PuzzleUIManager.Instance.charDialogue2.text = Values.Player.equippedChar2.catchPhrase;
+            PuzzleUIManager.Instance.charDialogue3.text = Values.Player.equippedChar3.catchPhrase;
             enemyMaxHp = Values.Enemy.maxHP;
             enemyCurrentHp = enemyMaxHp;
             enemyDmg = Values.Enemy.dmg;
             basicDamage = Values.Player.basicDamage;
             enhancedDamage = Values.Player.enhancedDmaage;
             enemyAttackInterval = Values.Enemy.attackInterval;
+
+
         }
 
 
@@ -379,7 +350,7 @@ public class GameManager : MonoBehaviour
     {
         UpdateHpBars();
         UpdatePlayerStatusEffects();
-        Debug.Log(tutorialPhase);
+        //Debug.Log(tutorialPhase);
 
         if (isTutorial)
         {
@@ -427,30 +398,8 @@ public class GameManager : MonoBehaviour
         else
         {
             UpdateCatchphraseDialogue();
-            if (c1CurrentHp <= 0 && c2CurrentHp <= 0 && c3CurrentHp <= 0)
-                gameState = -1;
 
-            else if (enemyCurrentHp <= 0)
-            {
-                gameState = 1;
-            }
-
-
-            if (gameState != 0 && hasEnded == false)
-            {
-
-                if (gameState == 1)
-                {
-                    OnWin();
-                }
-
-                else if (gameState == -1)
-                {
-                    OnLose();
-                }
-
-                hasEnded = true;
-            }
+            UpdateGameState();
         }
 
 
@@ -461,128 +410,22 @@ public class GameManager : MonoBehaviour
             {
                 if (!isTutorial)
                 {
-                    if(!enemyStunned)
-                    {
-                        int charToAttack = Random.Range(0, 2);
-                        switch (charToAttack)
-                        {
-
-                            case 0: // prioritize attack on char1
-                                {
-                                    if (c1CurrentHp > 0)
-                                        c1CurrentHp -= enemyDmg;
-
-                                    else if (c2CurrentHp > 0)
-                                        c2CurrentHp -= enemyDmg;
-
-                                    else if (c3CurrentHp > 0)
-                                        c3CurrentHp -= enemyDmg;
-                                }
-                                break;
-                            case 1: // prioritize attack on char2
-                                {
-                                    if (c2CurrentHp > 0)
-                                        c2CurrentHp -= enemyDmg;
-
-                                    else if (c3CurrentHp > 0)
-                                        c3CurrentHp -= enemyDmg;
-
-                                    else if (c1CurrentHp > 0)
-                                        c1CurrentHp -= enemyDmg;
-                                }
-                                break;
-                            case 2: // prioritize attack on char3
-                                {
-                                    if (c3CurrentHp > 0)
-                                        c3CurrentHp -= enemyDmg;
-
-                                    else if (c1CurrentHp > 0)
-                                        c1CurrentHp -= enemyDmg;
-
-                                    else if (c2CurrentHp > 0)
-                                        c2CurrentHp -= enemyDmg;
-                                }
-                                break;
-                        }
-
-                        if(Values.Enemy.skill == Values.Enemy.SkillType.Burst)
-                        {
-                            int charToBurst = Random.Range(0, 2);
-                            switch (charToBurst)
-                            {
-
-                                case 0: // prioritize attack on char1
-                                    {
-                                        if (c1CurrentHp > 0)
-                                            c1CurrentHp -= enemyDmg*3;
-
-                                        else if (c2CurrentHp > 0)
-                                            c2CurrentHp -= enemyDmg*3;
-
-                                        else if (c3CurrentHp > 0)
-                                            c3CurrentHp -= enemyDmg*3;
-                                    }
-                                    break;
-                                case 1: // prioritize attack on char2
-                                    {
-                                        if (c2CurrentHp > 0)
-                                            c2CurrentHp -= enemyDmg*3;
-
-                                        else if (c3CurrentHp > 0)
-                                            c3CurrentHp -= enemyDmg*3;
-
-                                        else if (c1CurrentHp > 0)
-                                            c1CurrentHp -= enemyDmg*3;
-                                    }
-                                    break;
-                                case 2: // prioritize attack on char3
-                                    {
-                                        if (c3CurrentHp > 0)
-                                            c3CurrentHp -= enemyDmg*3;
-
-                                        else if (c1CurrentHp > 0)
-                                            c1CurrentHp -= enemyDmg*3;
-
-                                        else if (c2CurrentHp > 0)
-                                            c2CurrentHp -= enemyDmg*3;
-                                    }
-                                    break;
-                            }
-                        }
-
-                        else if(Values.Enemy.skill == Values.Enemy.SkillType.Freeze)
-                        {
-                            if(!playerIsFrozen)
-                            {
-                                playerIsFrozen = true;
-                                isBoardInteractable = false;
-                                Debug.Log("Freeze player");
-                            }
-                                
-                        }
-                    }
-
-                    else
-                    {
-                        Debug.Log("Enemy is stunned and cannot attack");
-                        enemyStunnedRounds--;
-
-                        if (enemyStunnedRounds == 0)
-                            enemyStunned = false;
-                    }
                     
+                    EnemyPerformAttack();
+                    EnemyPerformSkill();
 
                     enemyAttackTick = 0.0f;
                 }
-
-               
-
             }
         }
 
         else
         {
-            
+            Debug.Log("Enemy is stunned and cannot attack");
+            enemyStunnedRounds--;
+
+            if (enemyStunnedRounds == 0)
+                enemyStunned = false;
 
         }
         
@@ -601,48 +444,7 @@ public class GameManager : MonoBehaviour
 
                 else
                 {
-                    foreach (GameObject selectedPiece in GameManager.Instance.selected) //for each selected piece
-                    {
-                        //unselect
-                        //Debug.Log("before: " + GameManager.Instance.selected.Count);
-                        Destroy(selectedPiece.transform.GetChild(0).gameObject);
-
-
-                        if (selectedPiece.GetComponent<PieceBehavior>().ID >= 3)
-                        {
-                            GameManager.Instance.powerups.Remove(selectedPiece);
-                        }
-
-                        if(selectedPiece.GetComponent<LineRenderer>() != null)
-                        {
-                            selectedPiece.GetComponent<LineRenderer>().positionCount = 0;
-                        }
-
-                        selectedPiece.transform.localScale /= 1.10f;
-
-
-                        //Debug.Log("after: " + GameManager.Instance.selected.Count);
-
-                    }
-
-                    //clear slected list
-                    GameManager.Instance.selected.Clear();
-                    //if (GameManager.Instance.selected.Count == 1)
-                    //{
-                    //    Destroy(GameManager.Instance.selected[0].transform.GetChild(0).gameObject);
-                    //    GameManager.Instance.selected.Remove(GameManager.Instance.selected[0]);
-
-
-                    //    if (GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID >= 3)
-                    //    {
-                    //        GameManager.Instance.powerups.Remove(GameManager.Instance.selected[0]);
-                    //    }
-
-                    //    GameManager.Instance.InstantRefreshBoard();
-                    //}
-
-                    //undo transparency effect
-                    GameManager.Instance.InstantRefreshBoard();
+                    UnselectAllPieces();
                 }
             }
 
@@ -683,7 +485,7 @@ public class GameManager : MonoBehaviour
                     GameManager.Instance.Attack();
                     GameManager.Instance.InstantRefreshBoard();
                     c2CurrentCharge = c2MaxCharge;
-                    c2ChargeBar.fillAmount = c2MaxCharge / c2CurrentCharge;
+                    PuzzleUIManager.Instance.c2ChargeBar.fillAmount = c2MaxCharge / c2CurrentCharge;
                     Debug.Log("true3");
                 }
 
@@ -696,74 +498,235 @@ public class GameManager : MonoBehaviour
             }
             
         }
+    }
 
-        //if(selected.Count > 0)
+    private static void UnselectAllPieces()
+    {
+        foreach (GameObject selectedPiece in GameManager.Instance.selected) //for each selected piece
+        {
+            //unselect
+            //Debug.Log("before: " + GameManager.Instance.selected.Count);
+            Destroy(selectedPiece.transform.GetChild(0).gameObject);
+
+
+            if (selectedPiece.GetComponent<PieceBehavior>().ID >= 3)
+            {
+                GameManager.Instance.powerups.Remove(selectedPiece);
+            }
+
+            if (selectedPiece.GetComponent<LineRenderer>() != null)
+            {
+                selectedPiece.GetComponent<LineRenderer>().positionCount = 0;
+            }
+
+            selectedPiece.transform.localScale /= 1.10f;
+
+
+            //Debug.Log("after: " + GameManager.Instance.selected.Count);
+        }
+
+        //clear slected list
+        GameManager.Instance.selected.Clear();
+        //if (GameManager.Instance.selected.Count == 1)
         //{
-        //    holdTick += Time.deltaTime;
+        //    Destroy(GameManager.Instance.selected[0].transform.GetChild(0).gameObject);
+        //    GameManager.Instance.selected.Remove(GameManager.Instance.selected[0]);
 
-        //    if (holdTick >= holdTime)
+
+        //    if (GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID >= 3)
         //    {
-        //        holdTick = 0.0f;
-
-        //        while (selected.Count > 0)
-        //        {
-        //            Debug.Log("inside");
-        //            Destroy(selected[0].transform.GetChild(0).gameObject);
-        //            selected.Remove(selected[0]);
-
-        //            if (selected[0].GetComponent<PieceBehavior>().ID >= 3)
-        //            {
-        //                powerups.Remove(selected[0]);
-        //            }
-
-        //            if (selected.Count == 0)
-        //            {
-        //                InstantRefreshBoard();
-                        
-        //            }
-
-
-        //        }
+        //        GameManager.Instance.powerups.Remove(GameManager.Instance.selected[0]);
         //    }
 
-            
+        //    GameManager.Instance.InstantRefreshBoard();
         //}
 
-        //else
-        //{
-        //    holdTick = 0.0f;
-        //}
+        //undo transparency effect
+        GameManager.Instance.InstantRefreshBoard();
+    }
 
-        
+    private void UpdateGameState()
+    {
+        if (c1CurrentHp <= 0 && c2CurrentHp <= 0 && c3CurrentHp <= 0)
+            gameState = -1;
 
-        
+        else if (enemyCurrentHp <= 0)
+        {
+            gameState = 1;
+        }
 
+
+        if (gameState != 0 && hasEnded == false)
+        {
+            if (gameState == 1)
+            {
+                OnWin();
+            }
+
+            else if (gameState == -1)
+            {
+                OnLose();
+            }
+
+            hasEnded = true;
+        }
+    }
+
+    private void EnemyPerformSkill()
+    {
+        bool performSkill = false;
+        if (Random.Range(0, 5) == 4)
+            performSkill = true;
+
+        if(performSkill)
+        {
+            Debug.Log("Performing enemy skill");
+            if (Values.Enemy.skill == Values.Enemy.SkillType.Burst)
+            {
+                int charToBurst = Random.Range(0, 2);
+                switch (charToBurst)
+                {
+
+                    case 0: // prioritize attack on char1
+                        {
+                            if (c1CurrentHp > 0)
+                                c1CurrentHp -= enemyDmg * 3;
+
+                            else if (c2CurrentHp > 0)
+                                c2CurrentHp -= enemyDmg * 3;
+
+                            else if (c3CurrentHp > 0)
+                                c3CurrentHp -= enemyDmg * 3;
+                        }
+                        break;
+                    case 1: // prioritize attack on char2
+                        {
+                            if (c2CurrentHp > 0)
+                                c2CurrentHp -= enemyDmg * 3;
+
+                            else if (c3CurrentHp > 0)
+                                c3CurrentHp -= enemyDmg * 3;
+
+                            else if (c1CurrentHp > 0)
+                                c1CurrentHp -= enemyDmg * 3;
+                        }
+                        break;
+                    case 2: // prioritize attack on char3
+                        {
+                            if (c3CurrentHp > 0)
+                                c3CurrentHp -= enemyDmg * 3;
+
+                            else if (c1CurrentHp > 0)
+                                c1CurrentHp -= enemyDmg * 3;
+
+                            else if (c2CurrentHp > 0)
+                                c2CurrentHp -= enemyDmg * 3;
+                        }
+                        break;
+                }
+            }
+
+            else if (Values.Enemy.skill == Values.Enemy.SkillType.Freeze)
+            {
+                if (!playerIsFrozen)
+                {
+                    playerIsFrozen = true;
+                    isBoardInteractable = false;
+                    Debug.Log("Freeze player");
+                    UnselectAllPieces();
+
+                }
+
+            }
+
+            else if (Values.Enemy.skill == Values.Enemy.SkillType.Poison)
+            {
+                if (!playerIsPoisoned)
+                {
+                    playerIsPoisoned = true;
+                    Debug.Log("Poision player");
+                }
+
+            }
+        }
+
+        else
+        {
+            Debug.Log("Not performing enemy skill");
+
+        }
+
+    }
+
+    private void EnemyPerformAttack()
+    {
+        int charToAttack = Random.Range(0, 2);
+        switch (charToAttack)
+        {
+
+            case 0: // prioritize attack on char1
+                {
+                    if (c1CurrentHp > 0)
+                        c1CurrentHp -= enemyDmg;
+
+                    else if (c2CurrentHp > 0)
+                        c2CurrentHp -= enemyDmg;
+
+                    else if (c3CurrentHp > 0)
+                        c3CurrentHp -= enemyDmg;
+                }
+                break;
+            case 1: // prioritize attack on char2
+                {
+                    if (c2CurrentHp > 0)
+                        c2CurrentHp -= enemyDmg;
+
+                    else if (c3CurrentHp > 0)
+                        c3CurrentHp -= enemyDmg;
+
+                    else if (c1CurrentHp > 0)
+                        c1CurrentHp -= enemyDmg;
+                }
+                break;
+            case 2: // prioritize attack on char3
+                {
+                    if (c3CurrentHp > 0)
+                        c3CurrentHp -= enemyDmg;
+
+                    else if (c1CurrentHp > 0)
+                        c1CurrentHp -= enemyDmg;
+
+                    else if (c2CurrentHp > 0)
+                        c2CurrentHp -= enemyDmg;
+                }
+                break;
+        }
     }
 
     private void UpdateHpBars()
     {
-        if (enemyHpBar != null)
+        if (PuzzleUIManager.Instance.enemyHpBar != null)
         {
             //currentHP -= 0.25f;   //testing
-            enemyHpBar.fillAmount = enemyCurrentHp / enemyMaxHp;
+            PuzzleUIManager.Instance.enemyHpBar.fillAmount = enemyCurrentHp / enemyMaxHp;
         }
 
-        if (c1HpBar != null)
+        if (PuzzleUIManager.Instance.c1HpBar != null)
         {
             //currentHP -= 0.25f;   //testing
-            c1HpBar.fillAmount = c1CurrentHp / c1MaxHp;
+            PuzzleUIManager.Instance.c1HpBar.fillAmount = c1CurrentHp / c1MaxHp;
         }
 
-        if (c2HpBar != null)
+        if (PuzzleUIManager.Instance.c2HpBar != null)
         {
             //currentHP -= 0.25f;   //testing
-            c2HpBar.fillAmount = c2CurrentHp / c2MaxHp;
+            PuzzleUIManager.Instance.c2HpBar.fillAmount = c2CurrentHp / c2MaxHp;
         }
 
-        if (c3HpBar != null)
+        if (PuzzleUIManager.Instance.c3HpBar != null)
         {
             //currentHP -= 0.25f;   //testing
-            c3HpBar.fillAmount = c3CurrentHp / c3MaxHp;
+            PuzzleUIManager.Instance.c3HpBar.fillAmount = c3CurrentHp / c3MaxHp;
         }
     }
 
@@ -800,22 +763,22 @@ public class GameManager : MonoBehaviour
         }
 
 
-        if (c1ChargeBar != null)
+        if (PuzzleUIManager.Instance.c1ChargeBar != null)
         {
             //currentHP -= 0.25f;   //testing
-            c1ChargeBar.fillAmount = c1CurrentCharge / c1MaxCharge;
+            PuzzleUIManager.Instance.c1ChargeBar.fillAmount = c1CurrentCharge / c1MaxCharge;
         }
 
-        if (c2ChargeBar != null)
+        if (PuzzleUIManager.Instance.c2ChargeBar != null)
         {
             //currentHP -= 0.25f;   //testing
-            c2ChargeBar.fillAmount = c2CurrentCharge / c2MaxCharge;
+            PuzzleUIManager.Instance.c2ChargeBar.fillAmount = c2CurrentCharge / c2MaxCharge;
         }
 
-        if (c3ChargeBar != null)
+        if (PuzzleUIManager.Instance.c3ChargeBar != null)
         {
             //currentHP -= 0.25f;   //testing
-            c3ChargeBar.fillAmount = c3CurrentCharge / c3MaxCharge;
+            PuzzleUIManager.Instance.c3ChargeBar.fillAmount = c3CurrentCharge / c3MaxCharge;
         }
     }
 
@@ -829,6 +792,29 @@ public class GameManager : MonoBehaviour
                 playerFrozenTick = 0.0f;
                 isBoardInteractable = true;
                 Debug.Log("Unfreeze player");
+            }
+
+            else
+            {
+                playerFrozenTick += Time.deltaTime;
+            }
+        }
+
+        else if (playerIsPoisoned)
+        {
+            if (playerPoisonedTick > playerPoisonedDuration)
+            {
+                playerIsPoisoned = false;
+                playerPoisonedTick = 0.0f;
+                Debug.Log("Unpoison player");
+            }
+
+            else
+            {
+                playerPoisonedTick += Time.deltaTime;
+                if (c1CurrentHp > 0) c1CurrentHp -= playerPoisonedDamage; c1CurrentHp = Mathf.Max(0.0f, c1CurrentHp);
+                if (c2CurrentHp > 0) c2CurrentHp -= playerPoisonedDamage; c2CurrentHp = Mathf.Max(0.0f, c2CurrentHp);
+                if (c3CurrentHp > 0) c3CurrentHp -= playerPoisonedDamage; c3CurrentHp = Mathf.Max(0.0f, c3CurrentHp);
             }
         }
     }
@@ -947,7 +933,7 @@ public class GameManager : MonoBehaviour
             if(selected[i].GetComponent<PieceBehavior>().ID < 3)    //if normal piece
             {
                 //delete normal piece
-                Debug.Log("Deleting");
+                //Debug.Log("Deleting");
 
                 int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                 int yIndex = selected[i].GetComponent<PieceBehavior>().y;
@@ -991,7 +977,7 @@ public class GameManager : MonoBehaviour
             UpdateChargeBars(i);
 
             if(!isTutorial)
-                charDialogue1.gameObject.SetActive(true);
+                PuzzleUIManager.Instance.charDialogue1.gameObject.SetActive(true);
 
            
         }
@@ -1004,7 +990,7 @@ public class GameManager : MonoBehaviour
             UpdateChargeBars(i);
 
             if (!isTutorial)
-                charDialogue2.gameObject.SetActive(true);
+                PuzzleUIManager.Instance.charDialogue2.gameObject.SetActive(true);
 
             
 
@@ -1019,7 +1005,7 @@ public class GameManager : MonoBehaviour
             UpdateChargeBars(i);
 
             if (!isTutorial)
-                charDialogue3.gameObject.SetActive(true);
+                PuzzleUIManager.Instance.charDialogue3.gameObject.SetActive(true);
 
             
 
@@ -1470,10 +1456,23 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public IEnumerator delayRefresh(float secondsDelay)
+    {
+        yield return secondsDelay;
+    }
+
     //replace damaged pieces and undo transparency of pieces on board instantly
     //create new pieces in game object board where equivalent index in integer board is -1
     public void InstantRefreshBoard()
     {
+
+        StartCoroutine(DelaySpawnPieces(0.5f));
+        
+    }
+
+    private IEnumerator DelaySpawnPieces(float delaySeconds)
+    {
+        yield return new WaitForSeconds( delaySeconds);
         int clearedPieces = 0;
 
         for (int i = 0; i < xDimension; i++)
@@ -1489,12 +1488,12 @@ public class GameManager : MonoBehaviour
                     //----------manipulating spawning of new pieces in tutorial----------\\
                     if (isTutorial && tutorialPhase == 2)
                     {
-                        if(tutorialPhase == 2 && i == 3 && j == 0)
+                        if (tutorialPhase == 2 && i == 3 && j == 0)
                         {
-                            n = 4;
+                            n = 3;
                             newPiece = createPiece(n, i, j);
                         }
-                        
+
                         else
                         {
                             n = Random.Range(0, 3);
@@ -1505,26 +1504,26 @@ public class GameManager : MonoBehaviour
 
                     else if (specialPiecesCount >= 3)
                     {
-                            //Debug.Log("spawning normal piece");
-                        if(!manipulatedSpawnRates)
+                        //Debug.Log("spawning normal piece");
+                        if (!manipulatedSpawnRates)
                         {
                             n = Random.Range(0, 3);
                             newPiece = createPiece(n, i, j);
                         }
 
 
-                        else if(rIncreaseRate)  //boosted spawn rate red piece
+                        else if (rIncreaseRate)  //boosted spawn rate red piece
                         {
                             Debug.Log("Spawning pieces with increased spawn rates for red pieces for " + manipulatedSpawnRatesRounds + "rounds");
                             int m = Random.Range(0, 10);
 
-                            if(m == 1 || m==2)
+                            if (m == 1 || m == 2)
                                 newPiece = createPiece(m, i, j);
 
                             else
                                 newPiece = createPiece(0, i, j);
 
-                            
+
                         }
 
                         else if (gIncreaseRate)  //boosted spawn rate red piece
@@ -1536,7 +1535,7 @@ public class GameManager : MonoBehaviour
                                 newPiece = createPiece(m, i, j);
 
                             else
-                                newPiece = createPiece(1, i, j);                            
+                                newPiece = createPiece(1, i, j);
                         }
 
                         else if (bIncreaseRate)  //boosted spawn rate red piece
@@ -1562,7 +1561,7 @@ public class GameManager : MonoBehaviour
 
                     else
                     {
-                        
+
                         if (specialPiece1 == null && c1CurrentHp > 0 && c1CurrentCharge == c1MaxCharge)   //if no specialPiece1 on board & character 1 is alive
                         {
                             Debug.Log("creating special piece1");
@@ -1608,8 +1607,8 @@ public class GameManager : MonoBehaviour
                         }
                     }
 
-                
-                
+
+
 
                     nBoard[i, j] = n;
                     gBoard[i, j] = newPiece;
@@ -1627,7 +1626,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if(clearedPieces >= 3)
+        if (clearedPieces >= 3)
         {
             if (manipulatedSpawnRates) //if manipulated spawn rates
             {
@@ -1637,122 +1636,130 @@ public class GameManager : MonoBehaviour
                     manipulatedSpawnRates = false;
             }
         }
-        isBoardInteractable = true;
+
+        if(!playerIsFrozen)
+            isBoardInteractable = true;
+
         currentTurn++;
 
         //if (currentTurn > maxTurn)
         //    isBoardInteractable = false;
     }
 
+    private void SetAsSpeakerPortrait(Image _speakerPortrait)
+    {
+        PuzzleUIManager.Instance.speakerPortrait.sprite = _speakerPortrait.sprite;
+    }
+
     private void UpdateHelpDialogue()
     {
-        if(tutorialPhase == 1 && !(helpDialogue1.activeInHierarchy))
+        if(tutorialPhase == 1 && !(PuzzleUIManager.Instance.helpDialogue1.activeInHierarchy))
         {
-            helpDialogue1.SetActive(true);
-            helpDialogue2.SetActive(false);
-            helpDialogue3.SetActive(false);
-            helpDialogue4.SetActive(false);
-            helpDialogue5.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue1.SetActive(true);
+            PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue3.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue4.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue5.SetActive(false);
 
-            mainArrow.SetActive(true);
+            PuzzleUIManager.Instance.mainArrow.SetActive(true);
             //arrowGroup1.SetActive(true);
-            arrowGroup2.SetActive(false);
-            arrowGroup3.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup2.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup3.SetActive(false);
 
             AnimationManager.Instance.PlayTutorialAnimation1();
         }
 
-        if (tutorialPhase == 2 && !(helpDialogue2.activeInHierarchy))
+        if (tutorialPhase == 2 && !(PuzzleUIManager.Instance.helpDialogue2.activeInHierarchy))
         {
-            helpDialogue2.SetActive(true);
-            helpDialogue3.SetActive(false);
-            helpDialogue4.SetActive(false);
-            helpDialogue5.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue2.SetActive(true);
+            PuzzleUIManager.Instance.helpDialogue3.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue4.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue5.SetActive(false);
 
-            mainArrow.SetActive(false);
-            arrowGroup1.SetActive(false);
-            arrowGroup2.SetActive(true);
-            arrowGroup3.SetActive(false);
+            PuzzleUIManager.Instance.mainArrow.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup1.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup2.SetActive(true);
+            PuzzleUIManager.Instance.arrowGroup3.SetActive(false);
             AnimationManager.Instance.StopTutorialAnimation1();
-            helpDialogue1.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
 
 
         }
 
-        if (tutorialPhase == 3 && !(helpDialogue3.activeInHierarchy))
+        if (tutorialPhase == 3 && !(PuzzleUIManager.Instance.helpDialogue3.activeInHierarchy))
         {
-            helpDialogue1.SetActive(false);
-            helpDialogue2.SetActive(false);
-            helpDialogue3.SetActive(true);
-            helpDialogue4.SetActive(false);
-            helpDialogue5.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue3.SetActive(true);
+            PuzzleUIManager.Instance.helpDialogue4.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue5.SetActive(false);
 
 
-            arrowGroup1.SetActive(false);
-            arrowGroup2.SetActive(false);
-            arrowGroup3.SetActive(true);
+            PuzzleUIManager.Instance.arrowGroup1.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup2.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup3.SetActive(true);
 
         }
 
-        if (tutorialPhase == 4 && !(helpDialogue4.activeInHierarchy))
+        if (tutorialPhase == 4 && !(PuzzleUIManager.Instance.helpDialogue4.activeInHierarchy))
         {
-            helpDialogue1.SetActive(false);
-            helpDialogue2.SetActive(false);
-            helpDialogue3.SetActive(false);
-            helpDialogue4.SetActive(true);
-            helpDialogue5.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue3.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue4.SetActive(true);
+            PuzzleUIManager.Instance.helpDialogue5.SetActive(false);
 
-            mainArrow.SetActive(true);
-            arrowGroup1.SetActive(false);
-            arrowGroup2.SetActive(false);
-            arrowGroup3.SetActive(false);
+            PuzzleUIManager.Instance.mainArrow.SetActive(true);
+            PuzzleUIManager.Instance.arrowGroup1.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup2.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup3.SetActive(false);
             //arrowGroup4.SetActive(true);
-            arrowGroup5.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup5.SetActive(false);
 
             AnimationManager.Instance.PlayTutorialAnimation2();
             Debug.Log("Playing animtion 2");
 
         }
 
-        if (tutorialPhase == 5 && !(helpDialogue5.activeInHierarchy))
+        if (tutorialPhase == 5 && !(PuzzleUIManager.Instance.helpDialogue5.activeInHierarchy))
         {
-            helpDialogue1.SetActive(false);
-            helpDialogue2.SetActive(false);
-            helpDialogue3.SetActive(false);
-            helpDialogue4.SetActive(false);
-            helpDialogue5.SetActive(true);
+            PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue3.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue4.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue5.SetActive(true);
 
-            arrowGroup1.SetActive(false);
-            arrowGroup2.SetActive(false);
-            arrowGroup3.SetActive(false);
-            arrowGroup4.SetActive(false);
-            arrowGroup5.SetActive(true);
+            PuzzleUIManager.Instance.arrowGroup1.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup2.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup3.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup4.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup5.SetActive(true);
 
             AnimationManager.Instance.StopTutorialAnimation2();
-            mainArrow.SetActive(false);
+            PuzzleUIManager.Instance.mainArrow.SetActive(false);
 
 
 
         }
 
-        if (tutorialPhase == 6 && !(endText.activeInHierarchy))
+        if (tutorialPhase == 6 && !(PuzzleUIManager.Instance.endText.activeInHierarchy))
         {
-            helpDialogue1.SetActive(false);
-            helpDialogue2.SetActive(false);
-            helpDialogue3.SetActive(false);
-            helpDialogue4.SetActive(false);
-            helpDialogue5.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue3.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue4.SetActive(false);
+            PuzzleUIManager.Instance.helpDialogue5.SetActive(false);
 
 
-            arrowGroup1.SetActive(false);
-            arrowGroup2.SetActive(false);
-            arrowGroup3.SetActive(false);
-            arrowGroup4.SetActive(false);
-            arrowGroup5.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup1.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup2.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup3.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup4.SetActive(false);
+            PuzzleUIManager.Instance.arrowGroup5.SetActive(false);
 
 
 
-            endText.SetActive(true);
+            PuzzleUIManager.Instance.endText.SetActive(true);
         }
 
 
@@ -1760,14 +1767,21 @@ public class GameManager : MonoBehaviour
 
     private void UpdateCatchphraseDialogue()
     {
-        if (charDialogue1.gameObject.activeInHierarchy || charDialogue2.gameObject.activeInHierarchy || charDialogue3.gameObject.activeInHierarchy)
+        if (
+            PuzzleUIManager.Instance.charDialogue1.gameObject.activeInHierarchy
+            || 
+            PuzzleUIManager.Instance.charDialogue2.gameObject.activeInHierarchy
+            || 
+            PuzzleUIManager.Instance.charDialogue3.gameObject.activeInHierarchy
+            )
+
             catchPhraseTick += Time.deltaTime;
 
         if(catchPhraseTick > catchphraseDuration)
         {
-            charDialogue1.gameObject.SetActive(false);
-            charDialogue2.gameObject.SetActive(false);
-            charDialogue3.gameObject.SetActive(false);
+            PuzzleUIManager.Instance.charDialogue1.gameObject.SetActive(false);
+            PuzzleUIManager.Instance.charDialogue2.gameObject.SetActive(false);
+            PuzzleUIManager.Instance.charDialogue3.gameObject.SetActive(false);
             catchPhraseTick = 0.0f;
 
         }
