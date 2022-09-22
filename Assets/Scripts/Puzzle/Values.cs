@@ -79,6 +79,7 @@ public static class Values
     public class Puzzle
     {
         public static bool isTutorial = false;
+        public static int hexBlockerCount = 3;
     }
 }
     

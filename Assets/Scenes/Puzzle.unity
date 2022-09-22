@@ -2499,6 +2499,8 @@ MonoBehaviour:
   - {fileID: 1419615688283129769, guid: 0e04d5fbeb04d1c43bce172b2878668f, type: 3}
   - {fileID: 7359447925368236498, guid: 15070ef1c6710814cb9b0eb0540493dd, type: 3}
   - {fileID: 1653820301624255641, guid: f1865015f245c364bb123c63c2164198, type: 3}
+  neutrals:
+  - {fileID: 2566131838594102925, guid: 46a4b70cc0263084dbe1b764d653e2ec, type: 3}
   isBoardInteractable: 1
   selected: []
   powerups: []
@@ -2508,6 +2510,9 @@ MonoBehaviour:
   specialPiece1: {fileID: 0}
   specialPiece2: {fileID: 0}
   specialPiece3: {fileID: 0}
+  neutralPiece1: {fileID: 0}
+  neutralPiece2: {fileID: 0}
+  neutralPiece3: {fileID: 0}
   c1Index: 3
   c2Index: 4
   c3Index: 5

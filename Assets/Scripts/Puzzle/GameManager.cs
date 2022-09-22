@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance; //instance that can be called anywhere
     public List<GameObject> pieces; //list of all piece gameobjects where index 0-2 are plain pieces
+    public List<GameObject> neutrals; //neutral pieces template;
     public int[,] nBoard;   //integer representation of board
     public GameObject[,] gBoard;    //gameobject board with reference to each piece
     public bool isBoardInteractable = true; // pieces can be selected if true
@@ -26,12 +27,18 @@ public class GameManager : MonoBehaviour
     private float holdTime = 5.0f;
     private float holdTick = 0.0f;
 
-    //special piece count and references
+    
+    //player special piece count and references
     public int specialPiecesCount = 0;
     public GameObject specialPiece1 = null;
     public GameObject specialPiece2 = null;
     public GameObject specialPiece3 = null;
-   
+
+    //neutral pieces reference
+    public GameObject neutralPiece1 = null;
+    public GameObject neutralPiece2 = null;
+    public GameObject neutralPiece3 = null;
+
 
     //special pieces index and characters hp
     public int c1Index = 3;
@@ -900,6 +907,30 @@ public class GameManager : MonoBehaviour
                 gBoard[i, j] = newPiece;
             }
         }
+
+        for (int i = 0; i < Values.Puzzle.hexBlockerCount; i++)
+        {
+
+            int blockerXIndex = 0;
+            int blockerYIndex = 0;
+
+            do
+            {
+                blockerXIndex = Random.Range(0, xDimension);
+                blockerYIndex = Random.Range(0, yDimension);
+                Debug.Log(blockerXIndex + " " + blockerYIndex);
+            } while (newBoard[blockerXIndex, blockerYIndex] == -2);
+            
+
+            Destroy(gBoard[blockerXIndex, blockerYIndex]);
+
+            newBoard[blockerXIndex, blockerYIndex] = -2;
+
+            GameObject hexBlockerObj;
+            createNeutral(0, blockerXIndex, blockerYIndex);
+
+            
+        }
         return newBoard;
     }
 
@@ -913,12 +944,39 @@ public class GameManager : MonoBehaviour
         else
             newPiece = Instantiate(pieces[pieceIndex], new Vector3((0.2965f * x) - 0.925f, (0.3225f * y) + 0.4490f, 0.0f), Quaternion.identity, null);
 
-        if(newPiece.TryGetComponent(out PieceBehavior PB))
+        if (newPiece.TryGetComponent(out PieceBehavior PB))
+        {
             PB.SetValues(pieceIndex, x, y);
+        }
+            
 
         return newPiece;
     }
 
+    GameObject createNeutral(int pieceIndex, int x, int y)
+    {
+        GameObject newPiece;
+
+        if (x % 2 == 0)
+            newPiece = Instantiate(neutrals[pieceIndex], new Vector3((0.2965f * x) - 0.925f, (0.3225f * y) + 0.2875f, 0.0f), Quaternion.identity, null);
+
+        else
+            newPiece = Instantiate(neutrals[pieceIndex], new Vector3((0.2965f * x) - 0.925f, (0.3225f * y) + 0.4490f, 0.0f), Quaternion.identity, null);
+
+        if (newPiece.TryGetComponent(out PieceBehavior PB))
+        {
+            switch (pieceIndex)
+            {
+                case 0:
+                {
+                    PB.SetValues(-2, x, y);
+                }
+                    break;
+            }
+        }
+            
+        return newPiece;
+    }
 
     public bool isWithinBounds(int x, int y)
     {
@@ -1199,6 +1257,11 @@ public class GameManager : MonoBehaviour
         
     }
 
+    private void PerformNeutralPieceEffects(int i)
+    {
+
+    }
+
     //destroy pieces from game object board where equivalent index in integer board is -1
     public void DestroyDamagedPieces()
     {
@@ -1216,7 +1279,7 @@ public class GameManager : MonoBehaviour
                     int k = j;
                     int l = j;
 
-                    while(nBoard[i, l] == -1 )
+                    while(nBoard[i, l] == -1 || nBoard[i, k] != -2)
                     {
                         if (l - 1 == -1)
                         {
@@ -1233,7 +1296,7 @@ public class GameManager : MonoBehaviour
                     //{
                         //Debug.Log(k - (k - l));
 
-                        if (nBoard[i, k - (k - l)] != -1)
+                        if (nBoard[i, k - (k - l)] != -1 && nBoard[i, k - (k - l)] != -2)
                         {
                             nBoard[i, k] = nBoard[i, k - (k - l)];
                             gBoard[i, k] = gBoard[i, k - (k - l)];
