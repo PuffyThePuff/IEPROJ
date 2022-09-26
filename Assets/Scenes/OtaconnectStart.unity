@@ -404,7 +404,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: b79c98dd7b1d62347854687d16bfe63d, type: 3}
     - target: {fileID: 6454145132978394032, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
       propertyPath: music.Array.data[0].name
-      value: "\u30AA\u30BF\u30B3\u30CD\u30AF\u30C8"
+      value: Otakonekto
       objectReference: {fileID: 0}
     - target: {fileID: 6454145132978394032, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
       propertyPath: music.Array.data[1].clip
@@ -416,7 +416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6454145132978394032, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
       propertyPath: music.Array.data[1].name
-      value: Birbs
+      value: Birds
       objectReference: {fileID: 0}
     - target: {fileID: 6454145132978394032, guid: 4e77a1015b191fd479c9f5f3f9777f9f, type: 3}
       propertyPath: music.Array.data[2].clip
