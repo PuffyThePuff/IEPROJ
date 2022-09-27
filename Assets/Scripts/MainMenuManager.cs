@@ -15,6 +15,10 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
         fullscreenToggle.isOn = Screen.fullScreen;
+
+        Screen.SetResolution(1920, 1080, Screen.fullScreen);
+        resolutionDropdown.value = 0;
+
         masterSlider.value = 1.0f;
         musicSlider.value = 1.0f;
         sfxSlider.value = 1.0f;

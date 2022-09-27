@@ -40,15 +40,17 @@ public class AudioManager : MonoBehaviour
 
     private void AdjustVolume()
     {
-        for (int i = 0; i < music.Length; i++)
+        foreach(Sounds s in music)
         {
-            music[i].source.volume = masterVolume * musicVolume * music[i].source.volume;
+            s.source.volume = (0.75f * masterVolume * musicVolume);
         }
 
-        for (int i = 0; i < soundEffects.Length; i++)
+        /*
+        foreach(Sounds s in soundEffects)
         {
-            soundEffects[i].source.volume = masterVolume * sfxVolume * soundEffects[i].source.volume;
+            s.source.volume = (0.75f * masterVolume * sfxVolume);
         }
+        */
     }
 
     public void UpdateMasterVolume(float newMasterVolume)
