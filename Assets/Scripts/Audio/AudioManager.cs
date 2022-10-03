@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public Sounds[] sounds;
+    public Sounds[] music;
+    public Sounds[] soundEffects;
 
     public static AudioManager Instance;
+
+    [Range(0f, 1f)] private float masterVolume = 1.0f;
+    [Range(0f, 1f)] private float musicVolume = 1.0f;
+    [Range(0f, 1f)] private float sfxVolume = 1.0f;
 
     private void Awake()
     {
@@ -22,7 +27,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        foreach (Sounds s in sounds)
+        foreach (Sounds s in music)
         {
             s.source = gameObject.AddComponent<AudioSource>();
             s.source.clip = s.clip;
@@ -33,9 +38,42 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    private void AdjustVolume()
+    {
+        foreach(Sounds s in music)
+        {
+            s.source.volume = (0.75f * masterVolume * musicVolume);
+        }
+
+        /*
+        foreach(Sounds s in soundEffects)
+        {
+            s.source.volume = (0.75f * masterVolume * sfxVolume);
+        }
+        */
+    }
+
+    public void UpdateMasterVolume(float newMasterVolume)
+    {
+        masterVolume = newMasterVolume;
+        AdjustVolume();
+    }
+
+    public void UpdateMusicVolume(float newMusicVolume)
+    {
+        musicVolume = newMusicVolume;
+        AdjustVolume();
+    }
+
+    public void UpdateSFXVolume(float newSFXVolume)
+    {
+        sfxVolume = newSFXVolume;
+        AdjustVolume();
+    }
+
     public void Play(string name, bool isLoop = true)
     {
-        Sounds s = Array.Find(sounds, sound => sound.name == name);
+        Sounds s = Array.Find(music, sound => sound.name == name);
 
         if (s == null)
         {
@@ -49,7 +87,7 @@ public class AudioManager : MonoBehaviour
 
     public void Stop(string name)
     {
-        Sounds s = Array.Find(sounds, sound => sound.name == name);
+        Sounds s = Array.Find(music, sound => sound.name == name);
 
         if (s == null)
         {
