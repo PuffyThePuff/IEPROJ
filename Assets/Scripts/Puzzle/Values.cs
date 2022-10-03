@@ -43,7 +43,8 @@ public static class Values
             None = 0,
             Burst = 1,
             Heal = 2,
-            Freeze = 3
+            Freeze = 3,
+            Poison = 4
                 
         };
 
@@ -78,6 +79,7 @@ public static class Values
     public class Puzzle
     {
         public static bool isTutorial = false;
+        public static int hexBlockerCount = 3;
     }
 }
     
