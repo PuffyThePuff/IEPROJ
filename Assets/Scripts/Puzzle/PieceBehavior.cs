@@ -6,7 +6,7 @@ using UnityEngine;
 public class PieceBehavior : MonoBehaviour
 {
     
-    public int ID { get; private set; } = -1;
+    [SerializeField] public int ID /*{ get; private set; }*/ = -1;
     /*
      * 0,1,2 = normal pieces
      * 3,4,5 = special piecs
@@ -79,7 +79,7 @@ public class PieceBehavior : MonoBehaviour
                 GameObject[] allPieces = GameObject.FindGameObjectsWithTag("Piece");
                 foreach (GameObject piece in allPieces)
                 {
-                    if (piece.GetComponent<PieceBehavior>().ID != this.ID && piece.GetComponent<PieceBehavior>().ID < 3)
+                    if (piece.GetComponent<PieceBehavior>().ID != this.ID && piece.GetComponent<PieceBehavior>().ID != this.ID + 3 && piece.GetComponent<PieceBehavior>().ID != -3)
                     {
                         Color currentColor = piece.GetComponent<SpriteRenderer>().color;
                         currentColor.a = 0.5f;
@@ -290,7 +290,7 @@ public class PieceBehavior : MonoBehaviour
                     GameObject[] allPieces = GameObject.FindGameObjectsWithTag("Piece");
                     foreach (GameObject piece in allPieces)
                     {
-                        if (piece.GetComponent<PieceBehavior>().ID != this.ID && piece.GetComponent<PieceBehavior>().ID < 3)
+                        if (piece.GetComponent<PieceBehavior>().ID != this.ID && piece.GetComponent<PieceBehavior>().ID < 3 && piece.GetComponent<PieceBehavior>().ID != -3)
                         {
                             Color currentColor = piece.GetComponent<SpriteRenderer>().color;
                             currentColor.a = 0.5f;
@@ -318,7 +318,7 @@ public class PieceBehavior : MonoBehaviour
 
                 }
 
-                else if (this.ID == GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID || this.GetComponent<PieceBehavior>().ID >= 3)
+                else if (this.ID == GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID || this.GetComponent<PieceBehavior>().ID >= 3 || this.GetComponent<PieceBehavior>().ID == -3)
                 {
 
                     GameObject latestSelected = GameManager.Instance.selected[GameManager.Instance.selected.Count - 1];
@@ -370,7 +370,7 @@ public class PieceBehavior : MonoBehaviour
 
                         if (neighborInX && neighborInY && !(GameManager.Instance.selected.Contains(this.gameObject)))
                         {
-                            if (this.GetComponent<PieceBehavior>().ID >= 3)
+                            if (this.GetComponent<PieceBehavior>().ID >= 3) //if not basic piece
                             {
                                 Debug.Log(GameManager.Instance.powerups.Count);
                                 if (this.GetComponent<PieceBehavior>().ID == Values.Characters.c1.index && latestSelected.GetComponent<PieceBehavior>().ID == 0)

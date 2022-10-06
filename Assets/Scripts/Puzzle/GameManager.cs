@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour
     public float playerPoisonedDamage = 1.0f;
     private float basicDamage = 10;
     private float enhancedDamage = 60;
+    private float damageMultiplier = 0.0f;
 
     //player stats
 
@@ -972,6 +974,12 @@ public class GameManager : MonoBehaviour
                     PB.SetValues(-2, x, y);
                 }
                     break;
+
+                case 1:
+                {
+                    PB.SetValues(-3, x, y);
+                    }
+                    break;
             }
         }
             
@@ -988,7 +996,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < selected.Count; i++)    //for all selected piece
         {
-            if(selected[i].GetComponent<PieceBehavior>().ID < 3)    //if normal piece
+            if(selected[i].GetComponent<PieceBehavior>().ID < 3 && selected[i].GetComponent<PieceBehavior>().ID >= 0)    //if normal piece
             {
                 //delete normal piece
                 //Debug.Log("Deleting");
@@ -1003,7 +1011,12 @@ public class GameManager : MonoBehaviour
                 }
 
             }
-            
+
+            else if(selected[i].GetComponent<PieceBehavior>().ID < 0)   //if special piece
+            {
+                //perform special piece effect
+                PerformNeutralPieceEffects(i);
+            }
 
             else    //if special piece
             {
@@ -1259,7 +1272,42 @@ public class GameManager : MonoBehaviour
 
     private void PerformNeutralPieceEffects(int i)
     {
+        GameObject neutralPiece = selected[i];
 
+        switch (neutralPiece.GetComponent<PieceBehavior>().ID)
+        {
+            case -3:
+            {
+                int charToSelfHurt = -1;
+                if (neutralPiece.GetComponent<PieceBehavior>().ID <= 0)
+                {
+                    charToSelfHurt = i % 3;
+                    if (charToSelfHurt == 0)
+                    {
+                        c1CurrentHp = Mathf.Max(c1CurrentHp - 100, 0);
+                    }
+
+                    else if (charToSelfHurt == 1)
+                    {
+                        c2CurrentHp = Mathf.Max(c2CurrentHp - 100, 0);
+                    }
+
+                    else if (charToSelfHurt == 2)
+                    {
+                        c3CurrentHp = Mathf.Max(c3CurrentHp - 100, 0);
+                    }
+
+                    Debug.Log("chartohurt:" + charToSelfHurt);
+                }
+                int xIndex = selected[i].GetComponent<PieceBehavior>().x;
+                int yIndex = selected[i].GetComponent<PieceBehavior>().y;
+
+                nBoard[xIndex, yIndex] = -1;
+                }
+                break;
+        }
+
+        
     }
 
     //destroy pieces from game object board where equivalent index in integer board is -1
@@ -1570,8 +1618,19 @@ public class GameManager : MonoBehaviour
                         //Debug.Log("spawning normal piece");
                         if (!manipulatedSpawnRates)
                         {
-                            n = Random.Range(0, 3);
-                            newPiece = createPiece(n, i, j);
+                            int rng = Random.Range(0, 5);
+                            if (rng < 4)
+                            {
+                                n = Random.Range(0, 3);
+                                newPiece = createPiece(n, i, j);
+                            }
+
+                            else
+                            {
+                                newPiece = createNeutral(1, i, j);
+                            }
+
+                            Debug.Log("rng: " + rng);
                         }
 
 
@@ -1615,8 +1674,19 @@ public class GameManager : MonoBehaviour
 
                         else //same as default
                         {
-                            n = Random.Range(0, 3);
-                            newPiece = createPiece(n, i, j);
+                            int rng = Random.Range(0, 5);
+                            if (rng < 4)
+                            {
+                                n = Random.Range(0, 3);
+                                newPiece = createPiece(n, i, j);
+                            }
+
+                            else
+                            {
+                                newPiece = createNeutral(1, i, j);
+                            }
+                            
+                            Debug.Log("rng: " + rng);
                         }
 
 
@@ -1665,8 +1735,19 @@ public class GameManager : MonoBehaviour
 
                         else
                         {
-                            n = Random.Range(0, 3);
-                            newPiece = createPiece(n, i, j);
+                            int rng = Random.Range(0, 5);
+                            if (rng < 4)
+                            {
+                                n = Random.Range(0, 3);
+                                newPiece = createPiece(n, i, j);
+                            }
+
+                            else
+                            {
+                                newPiece = createNeutral(1, i, j);
+                            }
+
+                            Debug.Log("rng: " + rng);
                         }
                     }
 

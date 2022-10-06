@@ -2501,6 +2501,7 @@ MonoBehaviour:
   - {fileID: 1653820301624255641, guid: f1865015f245c364bb123c63c2164198, type: 3}
   neutrals:
   - {fileID: 2566131838594102925, guid: 46a4b70cc0263084dbe1b764d653e2ec, type: 3}
+  - {fileID: 2566131838594102925, guid: d21d03ee789b961439193a7e895ac1b5, type: 3}
   isBoardInteractable: 1
   selected: []
   powerups: []
