@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -229,11 +229,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BossImage: {fileID: 1849823144}
-  Slime: {fileID: 21300000, guid: b3c39c33bcc7f3546a90e221d1e3e49d, type: 3}
-  Rat: {fileID: 21300000, guid: 4504ab0dead1e9749aedbbcc4acde5b5, type: 3}
-  Imp: {fileID: 21300000, guid: 16857f34d358f63498d41b05fcf0b69c, type: 3}
-  Plant: {fileID: 21300000, guid: db21c310ead36e24b99251c5fcc36ec1, type: 3}
-  Orge: {fileID: 21300000, guid: dfac7b28469c9e048a8d69d90ef00380, type: 3}
+  Slime: {fileID: 21300000, guid: 354612e9eae0f7a449f6bcfedc334330, type: 3}
+  Rat: {fileID: 21300000, guid: ca3ec4832e68e2c46a6e055a3475d615, type: 3}
+  Imp: {fileID: 21300000, guid: eedc0221315b14147a119b983e3a143e, type: 3}
+  Plant: {fileID: 21300000, guid: 152e6d365c09ce44b82878a44675698d, type: 3}
+  Orge: {fileID: 21300000, guid: 27ccc1ac451ac244898dc0d832026244, type: 3}
 --- !u!4 &119975170
 Transform:
   m_ObjectHideFlags: 0
@@ -1339,6 +1339,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 536715917704356034, guid: f76f1b1558ac4264390073e20717792a, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 1932083297567811171, guid: f76f1b1558ac4264390073e20717792a, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1430,6 +1434,10 @@ PrefabInstance:
     - target: {fileID: 6789073459845271701, guid: f76f1b1558ac4264390073e20717792a, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7253586307458171953, guid: f76f1b1558ac4264390073e20717792a, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 7582429565589893536, guid: f76f1b1558ac4264390073e20717792a, type: 3}
       propertyPath: m_IsActive
@@ -3196,7 +3204,7 @@ Transform:
   m_GameObject: {fileID: 1849823142}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 12.24, y: 0.81, z: -916.11}
-  m_LocalScale: {x: 9.353074, y: 9.353074, z: 9.353074}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children: []
   m_Father: {fileID: 1680528155}
   m_RootOrder: 3
@@ -3241,7 +3249,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b3c39c33bcc7f3546a90e221d1e3e49d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 354612e9eae0f7a449f6bcfedc334330, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
