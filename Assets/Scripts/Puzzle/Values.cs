@@ -48,7 +48,7 @@ public static class Values
                 
         };
 
-        public static int enemyLevel = 0;
+        public static int enemyLevel = 1;
         public static float maxHP = 500;
         public static float dmg = 10f;
         public static float attackInterval = 1.5f;
@@ -80,6 +80,8 @@ public static class Values
     {
         public static bool isTutorial = false;
         public static int hexBlockerCount = 3;
+        public static float BlackHexDamage = 50.0f;
+        public static float PainHexDamage = 10.0f;
     }
 }
     

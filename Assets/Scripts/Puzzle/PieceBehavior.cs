@@ -25,6 +25,13 @@ public class PieceBehavior : MonoBehaviour
 
 
     private bool isSelected = false;    //is piece currenly part of selected list
+
+    private bool isMovingUp = false;
+    private float lerpCurrentTime = 0.0f;
+    private const float lerpEndTime = 1.0f;
+
+    Vector3 lerpOldPos = Vector3.zero;
+    Vector3 lerpNewPos = Vector3.zero;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +51,18 @@ public class PieceBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(isMovingUp)
+        {
+            lerpCurrentTime += Time.deltaTime;
+            if(lerpCurrentTime >= lerpEndTime)
+            {
+                lerpCurrentTime = lerpEndTime;
+                isMovingUp = false;
+                
+            }
+            gameObject.transform.position = Vector3.Lerp(lerpOldPos, lerpNewPos, (lerpEndTime -(lerpEndTime - lerpCurrentTime)) / lerpEndTime);
+            
+        }
     }
 
     public void SetValues(int ID, int x, int y)
@@ -502,6 +520,14 @@ public class PieceBehavior : MonoBehaviour
                 
             }
         }
+    }
+
+    public void MoveUp(Vector3 oldPos, Vector3 newPos)
+    {
+        lerpOldPos = oldPos;
+        lerpNewPos = newPos;
+        isMovingUp = true;
+        lerpCurrentTime = 0.0f;
     }
     //public void OnMouseOver()
     //{

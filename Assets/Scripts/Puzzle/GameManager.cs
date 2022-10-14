@@ -152,6 +152,7 @@ public class GameManager : MonoBehaviour
             enhancedDamage = Values.Player.enhancedDmaage;
             enemyAttackInterval = Values.Enemy.attackInterval;
 
+            PuzzleUIManager.Instance.SetEnemyBossSprite(Values.Enemy.enemyLevel - 1);
 
         }
 
@@ -1351,9 +1352,19 @@ public class GameManager : MonoBehaviour
                             gBoard[i, k].GetComponent<PieceBehavior>().y = k;
 
                             if (gBoard[i, k].GetComponent<PieceBehavior>().x % 2 == 0)
-                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.2875f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                        {
+                            Vector3 currentPos = gBoard[i, k].transform.position;
+                            Vector3 newPos = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.2875f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                            gBoard[i, k].GetComponent<PieceBehavior>().MoveUp(currentPos, newPos);
+                        }
+                                //gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.2875f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
                             else
-                                gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.4490f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                        {
+                            Vector3 currentPos = gBoard[i, k].transform.position;
+                            Vector3 newPos = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.4490f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                            gBoard[i, k].GetComponent<PieceBehavior>().MoveUp(currentPos, newPos);
+                        }
+                        //gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.4490f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
 
                             nBoard[i, k - (k - l)] = -1;
                             gBoard[i, k - (k - l)] = null;

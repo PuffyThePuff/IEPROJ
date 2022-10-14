@@ -51,6 +51,14 @@ public class PuzzleUIManager : MonoBehaviour
     public GameObject arrowGroup5;
 
 
+    //enemy
+    public SpriteRenderer enemyBoss;
+
+    //mob sprites
+    public Sprite[] enemySprites;
+
+
+
     private void Awake()
     {
         if (Instance == null)
@@ -58,6 +66,11 @@ public class PuzzleUIManager : MonoBehaviour
         else
             Destroy(gameObject);
 
+    }
+
+    public void SetEnemyBossSprite(int index)
+    {
+        enemyBoss.sprite = enemySprites[index];
     }
 
 }
