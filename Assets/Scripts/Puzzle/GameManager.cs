@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("c1 index: " + Values.Player.equippedChar1.index + ", c2 Index: " + Values.Player.equippedChar2.index + ", c3 Index: " + Values.Player.equippedChar3.index);
 
         //setting up stats accoroding to values.cs
-        isTutorial = Values.Puzzle.isTutorial;
+        //isTutorial = Values.Puzzle.isTutorial;
 
 
         if(!isTutorial)
