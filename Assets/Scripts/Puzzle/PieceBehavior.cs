@@ -89,7 +89,7 @@ public class PieceBehavior : MonoBehaviour
 
         if (GameManager.Instance.selected.Count == 0)   //if no other selected piece
         {
-            if (this.GetComponent<PieceBehavior>().ID >= 3)
+            if (this.GetComponent<PieceBehavior>().ID >= 3 || this.ID < 0)
                 return;
             if(!GameManager.isTutorial)
             {
@@ -336,7 +336,9 @@ public class PieceBehavior : MonoBehaviour
 
                 }
 
-                else if (this.ID == GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID || this.GetComponent<PieceBehavior>().ID >= 3 || this.GetComponent<PieceBehavior>().ID == -3)
+                else if (this.ID == GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID || this.GetComponent<PieceBehavior>().ID >= 3 ||
+                    (this.GetComponent<PieceBehavior>().ID == -3 && GameManager.Instance.selected.Count >= 1) ||
+                    (this.GetComponent<PieceBehavior>().ID == -4 && GameManager.Instance.selected.Count >= 1))
                 {
 
                     GameObject latestSelected = GameManager.Instance.selected[GameManager.Instance.selected.Count - 1];

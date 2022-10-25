@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     //neutral pieces reference
     public GameObject neutralPiece1 = null;
     public GameObject neutralPiece2 = null;
-    public GameObject neutralPiece3 = null;
+    public GameObject PainHex = null;
 
 
     //special pieces index and characters hp
@@ -68,6 +68,8 @@ public class GameManager : MonoBehaviour
     private float enhancedDamage = 60;
     private float damageMultiplier = 0.0f;
 
+    
+
     //player stats
 
     //status effects
@@ -90,6 +92,11 @@ public class GameManager : MonoBehaviour
     private float enemyDmg = 10;
     private float enemyAttackInterval = 1.5f;
     private float enemyAttackTick = 0.0f;
+
+    private int bossExtraAttackRoundTrigger = 4;
+    private int bossExtraAttackRoundCurrent = 0;
+    private int bossExtraAttackAccumulated = 0;
+    private int bossExtraAttackPerStack = 25;
 
     public int gameState = 0;
     public bool hasEnded = false;
@@ -711,6 +718,21 @@ public class GameManager : MonoBehaviour
                 }
                 break;
         }
+
+        if(PainHex != null)
+        {
+            if (bossExtraAttackRoundCurrent >= bossExtraAttackRoundTrigger)
+            {
+                c1CurrentHp = Mathf.Max(0, c1CurrentHp - bossExtraAttackAccumulated);
+                c2CurrentHp = Mathf.Max(0, c1CurrentHp - bossExtraAttackAccumulated);
+                c3CurrentHp = Mathf.Max(0, c1CurrentHp - bossExtraAttackAccumulated);
+                bossExtraAttackRoundCurrent = 0;
+            }
+
+            bossExtraAttackAccumulated += bossExtraAttackPerStack;
+            bossExtraAttackRoundCurrent++;
+        }
+        
     }
 
     private void UpdateHpBars()
@@ -979,7 +1001,13 @@ public class GameManager : MonoBehaviour
                 case 1:
                 {
                     PB.SetValues(-3, x, y);
-                    }
+                }
+                    break;
+
+                case 2:
+                {
+                    PB.SetValues(-4, x, y);
+                }
                     break;
             }
         }
@@ -1029,6 +1057,7 @@ public class GameManager : MonoBehaviour
         selected.Clear();   //clear reference list of selected pieces
         powerups.Clear();   //clear reference list of selected powerups
         DestroyDamagedPieces(); //destroy game object pieces that have been set to -1 value
+        RearrangePieces();
         isBoardInteractable = false;
 
         AnimationManager.Instance.PlayHitAnimation();
@@ -1306,6 +1335,16 @@ public class GameManager : MonoBehaviour
                 nBoard[xIndex, yIndex] = -1;
                 }
                 break;
+
+            case -4:
+            {
+                ResetPainHexDamageCounter();
+                int xIndex = selected[i].GetComponent<PieceBehavior>().x;
+                int yIndex = selected[i].GetComponent<PieceBehavior>().y;
+
+                nBoard[xIndex, yIndex] = -1;
+                }
+                break;
         }
 
         
@@ -1323,52 +1362,55 @@ public class GameManager : MonoBehaviour
                 {
                     
                     enemyCurrentHp -= basicDamage;
-                    Destroy(gBoard[i, j]);
+                    Destroy(gBoard[i, j].gameObject);
+                    gBoard[i, j] = null;
 
-                    int k = j;
-                    int l = j;
+                    
+                    
+                    //int k = j;
+                    //int l = j;
 
-                    while(nBoard[i, l] == -1 || nBoard[i, k] != -2)
-                    {
-                        if (l - 1 == -1)
-                        {
-                            break;
-                        }
+                    //while(nBoard[i, l] == -1 || nBoard[i, k] != -2)
+                    //{
+                    //    if (l - 1 == -1)
+                    //    {
+                    //        break;
+                    //    }
 
-                        l = l - 1;
+                    //    l = l - 1;
 
                         
                             
-                    }
+                    //}
 
-                    //while(l >= 0)
-                    //{
-                        //Debug.Log(k - (k - l));
+                    ////while(l >= 0)
+                    ////{
+                    //    //Debug.Log(k - (k - l));
 
-                        if (nBoard[i, k - (k - l)] != -1 && nBoard[i, k - (k - l)] != -2)
-                        {
-                            nBoard[i, k] = nBoard[i, k - (k - l)];
-                            gBoard[i, k] = gBoard[i, k - (k - l)];
-                            gBoard[i, k].GetComponent<PieceBehavior>().y = k;
+                    //    if (nBoard[i, k - (k - l)] != -1 && nBoard[i, k - (k - l)] != -2)
+                    //    {
+                    //        nBoard[i, k] = nBoard[i, k - (k - l)];
+                    //        gBoard[i, k] = gBoard[i, k - (k - l)];
+                    //        gBoard[i, k].GetComponent<PieceBehavior>().y = k;
 
-                            if (gBoard[i, k].GetComponent<PieceBehavior>().x % 2 == 0)
-                        {
-                            Vector3 currentPos = gBoard[i, k].transform.position;
-                            Vector3 newPos = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.2875f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
-                            gBoard[i, k].GetComponent<PieceBehavior>().MoveUp(currentPos, newPos);
-                        }
-                                //gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.2875f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
-                            else
-                        {
-                            Vector3 currentPos = gBoard[i, k].transform.position;
-                            Vector3 newPos = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.4490f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
-                            gBoard[i, k].GetComponent<PieceBehavior>().MoveUp(currentPos, newPos);
-                        }
-                        //gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.4490f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                    //        if (gBoard[i, k].GetComponent<PieceBehavior>().x % 2 == 0)
+                    //    {
+                    //        Vector3 currentPos = gBoard[i, k].transform.position;
+                    //        Vector3 newPos = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.2875f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                    //        gBoard[i, k].GetComponent<PieceBehavior>().MoveUp(currentPos, newPos);
+                    //    }
+                    //            //gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.2875f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                    //        else
+                    //    {
+                    //        Vector3 currentPos = gBoard[i, k].transform.position;
+                    //        Vector3 newPos = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.4490f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                    //        gBoard[i, k].GetComponent<PieceBehavior>().MoveUp(currentPos, newPos);
+                    //    }
+                    //    //gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.4490f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
 
-                            nBoard[i, k - (k - l)] = -1;
-                            gBoard[i, k - (k - l)] = null;
-                        }
+                    //        nBoard[i, k - (k - l)] = -1;
+                    //        gBoard[i, k - (k - l)] = null;
+                    //    }
                         
                         
 
@@ -1383,6 +1425,57 @@ public class GameManager : MonoBehaviour
                     //    gBoard[i, m] = null;
                     //}
                     
+                }
+            }
+        }
+    }
+
+    public void RearrangePieces()
+    {
+        for (int i = xDimension - 1; i >= 0; i--)
+        {
+            for (int j = yDimension - 1; j >= 0; j--)
+            {
+
+                if (gBoard[i, j] == null && nBoard[i,j] != -2)
+                {
+                    int k = j;
+                    while(k > 0)
+                    {
+                        k--;
+                        if (gBoard[i, k] != null && gBoard[i, k].GetComponent<PieceBehavior>().ID != -2)
+                        {
+                            gBoard[i, j] = gBoard[i, k];
+                            gBoard[i, k] = null;
+                            nBoard[i, j] = nBoard[i, k];
+                            nBoard[i, k] = -1;
+
+                            gBoard[i, j].GetComponent<PieceBehavior>().y = j;
+
+                            if (gBoard[i, j].GetComponent<PieceBehavior>().x % 2 == 0)
+                            {
+                                Vector3 currentPos = gBoard[i, j].transform.position;
+                                Vector3 newPos = new Vector3(gBoard[i, j].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, j].GetComponent<PieceBehavior>().y) + 0.2875f, gBoard[i, j].GetComponent<PieceBehavior>().transform.position.z);
+                                gBoard[i, j].GetComponent<PieceBehavior>().MoveUp(currentPos, newPos);
+                            }
+                            //gBoard[i, k].GetComponent<PieceBehavior>().transform.position = new Vector3(gBoard[i, k].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, k].GetComponent<PieceBehavior>().y) + 0.2875f, gBoard[i, k].GetComponent<PieceBehavior>().transform.position.z);
+                            else
+                            {
+                                Vector3 currentPos = gBoard[i, j].transform.position;
+                                Vector3 newPos = new Vector3(gBoard[i, j].GetComponent<PieceBehavior>().transform.position.x, (0.3225f * gBoard[i, j].GetComponent<PieceBehavior>().y) + 0.4490f, gBoard[i, j].GetComponent<PieceBehavior>().transform.position.z);
+                                gBoard[i, j].GetComponent<PieceBehavior>().MoveUp(currentPos, newPos);
+                            }
+                            //gBoard[
+                            break;
+                        }
+                    }
+                    if (j > 0)
+                    {
+                        
+                    }
+
+                    
+
                 }
             }
         }
@@ -1638,6 +1731,13 @@ public class GameManager : MonoBehaviour
 
                             else
                             {
+                                if (PainHex == null)
+                                {
+                                    newPiece = createNeutral(2, i, j);
+                                    PainHex = newPiece;
+                                }
+
+                                else
                                 newPiece = createNeutral(1, i, j);
                             }
 
@@ -1694,7 +1794,13 @@ public class GameManager : MonoBehaviour
 
                             else
                             {
-                                newPiece = createNeutral(1, i, j);
+                                if(PainHex == null)
+                                {
+                                    newPiece = createNeutral(2, i, j);
+                                    PainHex = newPiece;
+                                }
+                                else
+                                    newPiece = createNeutral(1, i, j);
                             }
                             
                             Debug.Log("rng: " + rng);
@@ -1755,6 +1861,12 @@ public class GameManager : MonoBehaviour
 
                             else
                             {
+                                if (PainHex == null)
+                                {
+                                    newPiece = createNeutral(2, i, j);
+                                    PainHex = newPiece;
+                                }
+                                else
                                 newPiece = createNeutral(1, i, j);
                             }
 
@@ -1799,6 +1911,11 @@ public class GameManager : MonoBehaviour
 
         //if (currentTurn > maxTurn)
         //    isBoardInteractable = false;
+    }
+
+    public void ResetPainHexDamageCounter()
+    {
+        bossExtraAttackAccumulated = 0;
     }
 
     private void SetAsSpeakerPortrait(Image _speakerPortrait)
