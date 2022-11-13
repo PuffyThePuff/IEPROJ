@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -187,7 +187,7 @@ MonoBehaviour:
   arrowGroup5: {fileID: 1496552717}
   enemyBoss: {fileID: 1849823144}
   enemySprites:
-  - {fileID: 21300000, guid: b3c39c33bcc7f3546a90e221d1e3e49d, type: 3}
+  - {fileID: 21300000, guid: 7609a86688a61054ea3ea96fa77fb262, type: 3}
   - {fileID: 21300000, guid: cc5126d9108e7ac4eb2e707dfd3253af, type: 3}
   - {fileID: 21300000, guid: 4a6c6f9ebae39cb489023deccd7be528, type: 3}
   - {fileID: 21300000, guid: 48ec63b85af5ed8448df180edcd074f3, type: 3}
@@ -663,7 +663,11 @@ PrefabInstance:
     - target: {fileID: 1266619622799032442, guid: 5df970af88fe85b45ba7db36f7830b2e, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b4bcfddba355ddd4aa7c4855e62c7801, type: 3}
+      objectReference: {fileID: 21300000, guid: ae3465202684db941b615f308e55e3a9, type: 3}
+    - target: {fileID: 1266619622799032442, guid: 5df970af88fe85b45ba7db36f7830b2e, type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1634429406853941517, guid: 5df970af88fe85b45ba7db36f7830b2e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3217,7 +3221,7 @@ Transform:
   m_GameObject: {fileID: 1849823142}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 12.24, y: 0.81, z: -916.11}
-  m_LocalScale: {x: 9.353074, y: 9.353074, z: 9.353074}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1680528155}
   m_RootOrder: 3
