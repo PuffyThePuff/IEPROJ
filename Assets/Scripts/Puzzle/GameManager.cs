@@ -95,8 +95,10 @@ public class GameManager : MonoBehaviour
 
     private int bossExtraAttackRoundTrigger = 4;
     private int bossExtraAttackRoundCurrent = 0;
-    private int bossExtraAttackAccumulated = 0;
-    private int bossExtraAttackPerStack = 25;
+    private float bossExtraAttackAccumulated = 0;
+    private float bossExtraAttackPerStack = 25;
+
+    private float selfHurtDamage = 0.0f;
 
     public int gameState = 0;
     public bool hasEnded = false;
@@ -159,13 +161,12 @@ public class GameManager : MonoBehaviour
             enhancedDamage = Values.Player.enhancedDmaage;
             enemyAttackInterval = Values.Enemy.attackInterval;
 
+            bossExtraAttackPerStack = Values.Puzzle.PainHexDamage;
+            selfHurtDamage = Values.Puzzle.BlackHexDamage;
+
             PuzzleUIManager.Instance.SetEnemyBossSprite(Values.Enemy.enemyLevel - 1);
 
         }
-
-
-        
-        
 
 
         if (!isTutorial)
@@ -1731,14 +1732,22 @@ public class GameManager : MonoBehaviour
 
                             else
                             {
-                                if (PainHex == null)
+                                if (PainHex == null && bossExtraAttackPerStack != 0)
                                 {
                                     newPiece = createNeutral(2, i, j);
                                     PainHex = newPiece;
                                 }
 
+                                else if(selfHurtDamage != 0)
+                                {
+                                    newPiece = createNeutral(1, i, j);
+                                }
+                                
                                 else
-                                newPiece = createNeutral(1, i, j);
+                                {
+                                    n = Random.Range(0, 3);
+                                    newPiece = createPiece(n, i, j);
+                                }
                             }
 
                             Debug.Log("rng: " + rng);
@@ -1794,13 +1803,22 @@ public class GameManager : MonoBehaviour
 
                             else
                             {
-                                if(PainHex == null)
+                                if (PainHex == null && bossExtraAttackPerStack != 0)
                                 {
                                     newPiece = createNeutral(2, i, j);
                                     PainHex = newPiece;
                                 }
-                                else
+
+                                else if (selfHurtDamage != 0)
+                                {
                                     newPiece = createNeutral(1, i, j);
+                                }
+
+                                else
+                                {
+                                    n = Random.Range(0, 3);
+                                    newPiece = createPiece(n, i, j);
+                                }
                             }
                             
                             Debug.Log("rng: " + rng);
@@ -1861,13 +1879,22 @@ public class GameManager : MonoBehaviour
 
                             else
                             {
-                                if (PainHex == null)
+                                if (PainHex == null && bossExtraAttackPerStack != 0)
                                 {
                                     newPiece = createNeutral(2, i, j);
                                     PainHex = newPiece;
                                 }
+
+                                else if (selfHurtDamage != 0)
+                                {
+                                    newPiece = createNeutral(1, i, j);
+                                }
+
                                 else
-                                newPiece = createNeutral(1, i, j);
+                                {
+                                    n = Random.Range(0, 3);
+                                    newPiece = createPiece(n, i, j);
+                                }
                             }
 
                             Debug.Log("rng: " + rng);

@@ -300,6 +300,7 @@ public class PieceBehavior : MonoBehaviour
 
             if (!(GameManager.isTutorial))
             {
+                //select first piece
                 if (GameManager.Instance.selected.Count == 0)
                 {
                     if (this.GetComponent<PieceBehavior>().ID >= 3)
@@ -336,21 +337,23 @@ public class PieceBehavior : MonoBehaviour
 
                 }
 
+                //
                 else if (this.ID == GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID || this.GetComponent<PieceBehavior>().ID >= 3 ||
                     (this.GetComponent<PieceBehavior>().ID == -3 && GameManager.Instance.selected.Count >= 1) ||
                     (this.GetComponent<PieceBehavior>().ID == -4 && GameManager.Instance.selected.Count >= 1))
                 {
 
                     GameObject latestSelected = GameManager.Instance.selected[GameManager.Instance.selected.Count - 1];
-                    if (this.gameObject == latestSelected)
+                    GameObject secondLatestSelected = null; if (GameManager.Instance.selected.Count >= 2) secondLatestSelected = GameManager.Instance.selected[GameManager.Instance.selected.Count - 2];
+                    if (this.gameObject == secondLatestSelected)
                     {
                         //unselect
-                        Destroy(this.transform.GetChild(0).gameObject);
-                        GameManager.Instance.selected.Remove(this.gameObject);
+                        Destroy(latestSelected.transform.GetChild(0).gameObject);
+                        GameManager.Instance.selected.Remove(latestSelected);
 
                         if (this.GetComponent<PieceBehavior>().ID >= 3)
                         {
-                            GameManager.Instance.powerups.Remove(this.gameObject);
+                            GameManager.Instance.powerups.Remove(latestSelected);
                         }
 
                         if (GameManager.Instance.selected.Count == 0)
@@ -358,12 +361,10 @@ public class PieceBehavior : MonoBehaviour
                             GameManager.Instance.InstantRefreshBoard();
                         }
 
-                        lineRenderer.positionCount = 0;
-                        this.gameObject.transform.localScale /= 1.10f;
+                        latestSelected.GetComponent<LineRenderer>().positionCount = 0;
+                        latestSelected.transform.localScale /= 1.10f;
 
                     }
-
-
 
                     else
                     {
@@ -531,133 +532,5 @@ public class PieceBehavior : MonoBehaviour
         isMovingUp = true;
         lerpCurrentTime = 0.0f;
     }
-    //public void OnMouseOver()
-    //{
-    //    Ray ray;
-    //    RaycastHit hit;
-
-    //    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-    //    if (Physics.Raycast(ray, out hit))
-    //    {
-
-    //        if(Input.GetMouseButton(0))
-    //        {
-
-    //            if (gameObject == null)
-    //                return;
-
-    //            if (!GameManager.Instance.isBoardInteractable)
-    //                return;
-    //            if (!(GameManager.isTutorial))
-    //            {
-    //                if (GameManager.Instance.selected.Count == 0)
-    //                {
-    //                    if (this.GetComponent<PieceBehavior>().ID >= 3)
-    //                        return;
-
-    //                    GameObject[] allPieces = GameObject.FindGameObjectsWithTag("Piece");
-    //                    foreach (GameObject piece in allPieces)
-    //                    {
-    //                        if (piece.GetComponent<PieceBehavior>().ID != this.ID && piece.GetComponent<PieceBehavior>().ID < 3)
-    //                        {
-    //                            Color currentColor = piece.GetComponent<SpriteRenderer>().color;
-    //                            currentColor.a = 0.5f;
-    //                            piece.GetComponent<SpriteRenderer>().color = currentColor;
-    //                        }
-    //                    }
-
-    //                    GameManager.Instance.selected.Add(gameObject);
-    //                    Instantiate(Border, this.transform);
-    //                }
-
-    //                else if (this.ID == GameManager.Instance.selected[0].GetComponent<PieceBehavior>().ID || this.GetComponent<PieceBehavior>().ID >= 3)
-    //                {
-
-    //                    GameObject latestSelected = GameManager.Instance.selected[GameManager.Instance.selected.Count - 1];
-    //                    if (this.gameObject == latestSelected)
-    //                    {
-
-    //                    }
-
-    //                    else if(GameManager.Instance.selected.Contains(this.gameObject))
-    //                    {
-
-    //                    }
-
-    //                    else
-    //                    {
-    //                        bool neighborInX = this.x <= latestSelected.GetComponent<PieceBehavior>().x + 1 && this.x >= latestSelected.GetComponent<PieceBehavior>().x - 1;
-    //                        bool neighborInY = this.y <= latestSelected.GetComponent<PieceBehavior>().y + 1 && this.y >= latestSelected.GetComponent<PieceBehavior>().y - 1;
-
-    //                        if (neighborInX && neighborInY)
-    //                        {
-    //                            if (this.GetComponent<PieceBehavior>().ID >= 3)
-    //                            {
-    //                                Debug.Log(GameManager.Instance.powerups.Count);
-    //                                if (GameManager.Instance.powerups.Count < 2)
-    //                                {
-    //                                    GameManager.Instance.powerups.Add(gameObject);
-    //                                }
-
-    //                                else
-    //                                {
-    //                                    return;
-    //                                }
-
-    //                            }
-    //                            GameManager.Instance.selected.Add(gameObject);
-    //                            Instantiate(Border, this.transform);
-    //                        }
-    //                    }
-
-
-    //                }
-    //            }
-
-
-    //            else
-    //            {
-    //                if (GameManager.tutorialPhase == 1)
-    //                {
-    //                    if ((this.x == 2 && this.y == 2) || ((this.x == 3 && this.y == 1)))
-    //                    {
-    //                        GameManager.Instance.selected.Add(gameObject);
-    //                        Instantiate(Border, this.transform);
-    //                    }
-    //                }
-
-    //                if (GameManager.tutorialPhase == 2)
-    //                {
-    //                    if ((this.x == 2 && this.y == 3) || ((this.x == 2 && this.y == 2)) || (this.x == 3 && this.y == 2) || (this.x == 3 && this.y == 1) || (this.x == 4 && this.y == 1) || (this.x == 3 && this.y == 0))
-    //                    {
-    //                        GameManager.Instance.selected.Add(gameObject);
-    //                        Instantiate(Border, this.transform);
-    //                    }
-    //                }
-    //            }
-    //        }
-
-    //    }
-    //}
-
-    //public static void DrawCircle(this GameObject container, float radius, float lineWidth)
-    //{
-    //    var segments = 360;
-    //    var line = container.AddComponent<LineRenderer>();
-    //    line.useWorldSpace = false;
-    //    line.startWidth = lineWidth;
-    //    line.endWidth = lineWidth;
-    //    line.positionCount = segments + 1;
-
-    //    var pointCount = segments + 1; // add extra point to make startpoint and endpoint the same to close the circle
-    //    var points = new Vector3[pointCount];
-
-    //    for (int i = 0; i < pointCount; i++)
-    //    {
-    //        var rad = Mathf.Deg2Rad * (i * 360f / segments);
-    //        points[i] = new Vector3(Mathf.Sin(rad) * radius, 0, Mathf.Cos(rad) * radius);
-    //    }
-
-    //    line.SetPositions(points);
-    //}
+    
 }
