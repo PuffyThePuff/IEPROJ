@@ -236,11 +236,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BossImage: {fileID: 1849823144}
-  Slime: {fileID: 21300000, guid: b3c39c33bcc7f3546a90e221d1e3e49d, type: 3}
-  Rat: {fileID: 21300000, guid: 4504ab0dead1e9749aedbbcc4acde5b5, type: 3}
-  Imp: {fileID: 21300000, guid: 16857f34d358f63498d41b05fcf0b69c, type: 3}
-  Plant: {fileID: 21300000, guid: db21c310ead36e24b99251c5fcc36ec1, type: 3}
-  Orge: {fileID: 21300000, guid: dfac7b28469c9e048a8d69d90ef00380, type: 3}
+  TutorialMob: {fileID: 21300000, guid: 7609a86688a61054ea3ea96fa77fb262, type: 3}
+  BlackHexMob: {fileID: 21300000, guid: cc5126d9108e7ac4eb2e707dfd3253af, type: 3}
+  LockHexMob: {fileID: 21300000, guid: 4a6c6f9ebae39cb489023deccd7be528, type: 3}
+  PainHexMob: {fileID: 21300000, guid: 48ec63b85af5ed8448df180edcd074f3, type: 3}
+  FinalBoss: {fileID: 21300000, guid: a7474701d8d99ec4eacc3677528db936, type: 3}
 --- !u!4 &119975170
 Transform:
   m_ObjectHideFlags: 0
@@ -3266,7 +3266,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b3c39c33bcc7f3546a90e221d1e3e49d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: de338d26848a3744ea28af14977e90d4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

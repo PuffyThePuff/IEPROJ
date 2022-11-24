@@ -7,34 +7,34 @@ public class SpriteManager : MonoBehaviour
 {
     public SpriteRenderer BossImage;
 
-    public Sprite Slime;
-    public Sprite Rat;
-    public Sprite Imp;
-    public Sprite Plant;
-    public Sprite Orge;
+    public Sprite TutorialMob;
+    public Sprite BlackHexMob;
+    public Sprite LockHexMob;
+    public Sprite PainHexMob;
+    public Sprite FinalBoss;
 
     // Start is called before the first frame update
     void Start()
     {
         if (Values.Enemy.enemyLevel == 0)
         {
-            BossImage.sprite = Slime;
+            BossImage.sprite = TutorialMob;
         }
         else if (Values.Enemy.enemyLevel == 1)
         {
-            BossImage.sprite = Rat;
+            BossImage.sprite = BlackHexMob;
         }
         else if (Values.Enemy.enemyLevel == 2)
         {
-            BossImage.sprite = Imp;
+            BossImage.sprite = LockHexMob;
         }
         else if (Values.Enemy.enemyLevel == 3)
         {
-            BossImage.sprite = Plant;
+            BossImage.sprite = PainHexMob;
         }
         else if (Values.Enemy.enemyLevel == 4)
         {
-            BossImage.sprite = Orge;
+            BossImage.sprite = FinalBoss;
         }
 
     }

@@ -18,6 +18,7 @@ public class StoryAnimations : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //IF DIALOGUE HAS FINISHED, THEN DO THESE IF STATEMENTS DURING UPDATE
         if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].isDone &&
             !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].hasTriggered)
         {
@@ -77,7 +78,10 @@ public class StoryAnimations : MonoBehaviour
         else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].isDone &&
             !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered)
         {
+            //POP UP THE ALPHA BUILD TEXT
             AlphaPopUp.SetActive(true);
+            //TODO: PROCEED TO NEXT CHAPTER
+
         }
 
 

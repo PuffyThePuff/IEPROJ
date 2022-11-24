@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("c1 index: " + Values.Player.equippedChar1.index + ", c2 Index: " + Values.Player.equippedChar2.index + ", c3 Index: " + Values.Player.equippedChar3.index);
 
         //setting up stats accoroding to values.cs
-        //isTutorial = Values.Puzzle.isTutorial;
+        isTutorial = Values.Puzzle.isTutorial;
 
 
         if(!isTutorial)
@@ -161,10 +161,10 @@ public class GameManager : MonoBehaviour
             enhancedDamage = Values.Player.enhancedDmaage;
             enemyAttackInterval = Values.Enemy.attackInterval;
 
-            bossExtraAttackPerStack = Values.Puzzle.PainHexDamage;
-            selfHurtDamage = Values.Puzzle.BlackHexDamage;
+            bossExtraAttackPerStack = Values.Puzzle.BlackHexBurstDamage;
+            selfHurtDamage = Values.Puzzle.PainHexPosionDamage;
 
-            PuzzleUIManager.Instance.SetEnemyBossSprite(Values.Enemy.enemyLevel - 1);
+            PuzzleUIManager.Instance.SetEnemyBossSprite(Values.Enemy.enemyLevel);
 
         }
 
@@ -368,7 +368,7 @@ public class GameManager : MonoBehaviour
     {
         UpdateHpBars();
         UpdatePlayerStatusEffects();
-        //Debug.Log(tutorialPhase);
+        //Debug.Log(isTutorial);
 
         if (isTutorial)
         {
