@@ -126,6 +126,9 @@ public class EquipCharacter : MonoBehaviour
         Values.Enemy.enemyLevel = 0;
         Values.Enemy.maxHP = 100;
         Values.Enemy.dmg = 10;
+        Values.Puzzle.PainHexPosionDamage = 0;
+        Values.Puzzle.BlackHexBurstDamage = 0;
+        Values.Puzzle.hexBlockerCount = 0;
         Values.Puzzle.isTutorial = true;
         SceneManager.LoadScene("Puzzle");
 
@@ -145,10 +148,13 @@ public class EquipCharacter : MonoBehaviour
         }
 
         Values.Enemy.enemyLevel = 1;
-        Values.Enemy.maxHP = 100;
+        Values.Enemy.maxHP = 150;
         Values.Enemy.dmg = 100;
         Values.Enemy.attackInterval = 1.6f;
         Values.Puzzle.isTutorial = false;
+        Values.Puzzle.PainHexPosionDamage = 0.0f;
+        Values.Puzzle.BlackHexBurstDamage = 50.0f;
+        Values.Puzzle.hexBlockerCount = 0;
         SceneManager.LoadScene("Puzzle");
         AudioManager.Instance.Play("BattleBGM");
     }
@@ -171,6 +177,9 @@ public class EquipCharacter : MonoBehaviour
         Values.Enemy.dmg = 100;
         Values.Enemy.attackInterval = 1.4f;
         Values.Puzzle.isTutorial = false;
+        Values.Puzzle.PainHexPosionDamage = 0;
+        Values.Puzzle.BlackHexBurstDamage = 0;
+        Values.Puzzle.hexBlockerCount = 3;
         Values.Enemy.skill = Values.Enemy.SkillType.Freeze;
         SceneManager.LoadScene("Puzzle");
         AudioManager.Instance.Play("BattleBGM");
@@ -194,6 +203,9 @@ public class EquipCharacter : MonoBehaviour
         Values.Enemy.dmg = 100;
         Values.Enemy.attackInterval = 1.2f;
         Values.Puzzle.isTutorial = false;
+        Values.Puzzle.PainHexPosionDamage = 50.0f;
+        Values.Puzzle.BlackHexBurstDamage = 0.0f;
+        Values.Puzzle.hexBlockerCount = 0;
         SceneManager.LoadScene("Puzzle");
         AudioManager.Instance.Play("BattleBGM");
     }
@@ -215,6 +227,9 @@ public class EquipCharacter : MonoBehaviour
         Values.Enemy.dmg = 100;
         Values.Enemy.attackInterval = 1.0f;
         Values.Puzzle.isTutorial = false;
+        Values.Puzzle.PainHexPosionDamage = 50.0f;
+        Values.Puzzle.BlackHexBurstDamage = 10.0f;
+        Values.Puzzle.hexBlockerCount = 3;
         SceneManager.LoadScene("Puzzle");
         AudioManager.Instance.Play("BattleBGM");
     }

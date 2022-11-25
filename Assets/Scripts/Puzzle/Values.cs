@@ -80,8 +80,8 @@ public static class Values
     {
         public static bool isTutorial = false;
         public static int hexBlockerCount = 3;
-        public static float BlackHexDamage = 50.0f;
-        public static float PainHexDamage = 10.0f;
+        public static float PainHexPosionDamage = 50.0f;
+        public static float BlackHexBurstDamage = 10.0f;
     }
 }
     

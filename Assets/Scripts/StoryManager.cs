@@ -30,6 +30,10 @@ public class StoryManager : MonoBehaviour
     }
     public void setAllDialogues()
     {
+        #region Chapter0
+
+        //Denial - Start//
+        StoryChapters[0].ChapterTitle = "Denial - Start";
         StoryChapters[0].ChapterDialogues = new Dialogue[10];
 
         //along in dimly lit room
@@ -288,8 +292,36 @@ public class StoryManager : MonoBehaviour
             “Alright, time to go to bed…”
 
             The scene fades to black, and thats the end of the alpha
-
+        //Denial - End//
         */
+        #endregion
+
+        #region Chapter1
+        //Anger - Start//
+        StoryChapters[1].ChapterTitle = "Anger";
+        StoryChapters[1].ChapterDialogues = new Dialogue[10];
+
+        //along in dimly lit room
+        //chapter 1 - dialogue 1 - only 1 speaker
+        StoryChapters[1].ChapterDialogues[0] = new Dialogue();
+        StoryChapters[1].ChapterDialogues[0].name = "MC";
+        StoryChapters[1].ChapterDialogues[0].otherName = "";
+        StoryChapters[1].ChapterDialogues[0].sentences = new string[6];
+        StoryChapters[1].ChapterDialogues[0].speaker1Lines = new int[] { 0, 1, 2, 3, 4, 5 };
+        StoryChapters[1].ChapterDialogues[0].sentences[0] = "Well then… I guess that’s it for us then.";
+        StoryChapters[1].ChapterDialogues[0].sentences[1] = "Five years, gone, just like that.";
+        StoryChapters[1].ChapterDialogues[0].sentences[2] = "...";
+        StoryChapters[1].ChapterDialogues[0].sentences[3] = "It’s only been a week and...";
+        StoryChapters[1].ChapterDialogues[0].sentences[4] = "*sigh*";
+        StoryChapters[1].ChapterDialogues[0].sentences[5] = "Time for school I guess.";
+        StoryChapters[1].ChapterDialogues[0].speaker1Sprites = new Sprite[] { };
+        StoryChapters[1].ChapterDialogues[0].speaker1Sprites = McSprites;
+        StoryChapters[1].ChapterDialogues[0].chapterNum = 0;
+        StoryChapters[1].ChapterDialogues[0].dialogueIndex = 0;
+
+
+        #endregion
+
 
     }
 
@@ -332,6 +364,8 @@ public class StoryManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //IF DIALOGUE JUST INITIALIZED, THEN DO THESE IF STATEMENTS DURING UPDATE
         if (FindObjectOfType<StoryManager>().currentDialogue == 1 &&
             FindObjectOfType<StoryManager>().currentChapter == 0)
         {
