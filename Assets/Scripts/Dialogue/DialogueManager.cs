@@ -67,8 +67,11 @@ public class DialogueManager : MonoBehaviour
 
         ChapterNum = dialogue.chapterNum;
         DialogueNum = dialogue.dialogueIndex;
-        if (ChapterNum == 0 && DialogueNum == 0)
+        Speaker1Image.gameObject.SetActive(true);
+        if ((ChapterNum == 0 && DialogueNum == 0) || (ChapterNum == 0 && DialogueNum == 5))
         {
+            Debug.Log("mc false 1");
+
             Speaker1Image.gameObject.SetActive(false);
         }
        
@@ -108,8 +111,9 @@ public class DialogueManager : MonoBehaviour
         StopAllCoroutines();
         string sentence = sentences.Dequeue();
         Speaker1Image.gameObject.SetActive(true);
-        if (ChapterNum == 0 && DialogueNum == 0)
+        if ((ChapterNum == 0 && DialogueNum == 0) || (ChapterNum == 0 && DialogueNum == 5))
         {
+            Debug.Log("mc false 2");
             Speaker1Image.gameObject.SetActive(false);
         }
 
@@ -146,12 +150,15 @@ public class DialogueManager : MonoBehaviour
 
         if (!isSpeaker1 && !isSpeaker2)
         {
+            Debug.Log("mc false 3");
+
             name1TextBox.SetActive(false);
             name2TextBox.SetActive(false);
             Speaker1Image.gameObject.SetActive(false);
             Speaker2Image.gameObject.SetActive(false);
         }
         dequeueIndex++;
+        
 
         currentSentence = sentence;
         StartCoroutine(TypeSentence(sentence));
@@ -185,7 +192,14 @@ public class DialogueManager : MonoBehaviour
             FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
                 .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
             FindObjectOfType<StoryManager>().currentDialogue++;
+            if (FindObjectOfType<StoryManager>().currentDialogue >= FindObjectOfType<StoryManager>()
+                    .StoryChapters[FindObjectOfType<StoryManager>().currentChapter].ChapterDialogues.Length)
+            {
+                FindObjectOfType<StoryManager>().currentDialogue= 0;
+                FindObjectOfType<StoryManager>().currentChapter++;
+            }
         }
+        
         //bottomRightMC.SetActive(true);
         isStoryDialogue = false;
     }

@@ -85,6 +85,15 @@ public static class Values
         public static float PainHexPosionDamage = 50.0f;
         public static float BlackHexBurstDamage = 10.0f;
     }
+
+
+    public class SceneNames
+    {
+        public static string BedroomScene = "TransitionSample";
+        public static string ClassroomScene = "DestinationSample";
+        public static string PuzzleScene = "Puzzle";
+        public static string PhoneScene = "PhoneScene";
+    }
 }
     
 

@@ -9,6 +9,8 @@ public class StoryAnimations : MonoBehaviour
     public Animator FadeBlackTransition;
     public GameObject AlphaPopUp;
 
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +37,7 @@ public class StoryAnimations : MonoBehaviour
             if (FadeBlackTransition != null)
             {
                 FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].hasTriggered = true;
-                StartCoroutine(FadeTransition("TransitionSample"));
+                StartCoroutine(FadeTransition(Values.SceneNames.BedroomScene));
             }
 
         }
@@ -45,7 +47,7 @@ public class StoryAnimations : MonoBehaviour
             if (FadeBlackTransition != null)
             {
                 FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered = true;
-                StartCoroutine(FadeTransition("Puzzle"));
+                StartCoroutine(FadeTransition(Values.SceneNames.PuzzleScene));
                 FindObjectOfType<AudioManager>().Stop("RoomBGM");
                 FindObjectOfType<AudioManager>().Play("BattleBGM",true);
                 Values.Puzzle.isTutorial = true;
@@ -69,18 +71,54 @@ public class StoryAnimations : MonoBehaviour
         {
             if (FadeBlackTransition != null)
             {
-                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4].hasTriggered = true;
-                StartCoroutine(FadeTransition("GachaSample"));
-               
+                if (!FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4].hasTriggered)
+                {
+                    FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4].hasTriggered = true;
+                    //StartCoroutine(FadeBackgroundChange());
+                }
+            }
+
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5].isDone &&
+                  !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5].hasTriggered)
+        {
+            if (FadeBlackTransition != null)
+            {
+                if (!FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5].hasTriggered)
+                {
+                    FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5].hasTriggered = true;
+                    //StartCoroutine(FadeBackgroundChange());
+                }
             }
 
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].isDone &&
-            !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered)
+                 !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered)
         {
             //POP UP THE ALPHA BUILD TEXT
-            AlphaPopUp.SetActive(true);
+            //AlphaPopUp.SetActive(true);
             //TODO: PROCEED TO NEXT CHAPTER
+            Debug.Log("on ch0 done");
+            if (FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered = true;
+                StartCoroutine(FadeBackgroundChange());
+            }
+            
+            FindObjectOfType<AudioManager>().Play("Birds", true);
+            FindObjectOfType<AudioManager>().Stop("RoomBGM");
+
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].hasTriggered)
+        {
+            if (FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].hasTriggered = true;
+                StartCoroutine(FadeTransition(Values.SceneNames.ClassroomScene));
+            }
+            FindObjectOfType<AudioManager>().Play("Birds", true);
+            FindObjectOfType<AudioManager>().Stop("RoomBGM");
 
         }
 
@@ -96,6 +134,31 @@ public class StoryAnimations : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
     }
 
+    IEnumerator FadeBackgroundChange()
+    {
+        
+        FadeBlackTransition.SetTrigger("DramaticSceneEnter");
+        yield return new WaitForSeconds(1.0f);
+        if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 5)
+        {
+            FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+            FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
+            FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(false);
+            Debug.Log("stuck here at loop");
+            
+        }
+        else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 6)
+        {
+            FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(false);
+            FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
+            FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(true);
+            Debug.Log("stuck here at loop2");
+            
+        }
+        yield return new WaitForSeconds(1.0f);
+    }
+
+    //NOTE USED ANYMORE
     public void gachatutorReturnButton()
     {
         if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5].isDone &&

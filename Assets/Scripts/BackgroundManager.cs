@@ -6,6 +6,7 @@ public class BackgroundManager : MonoBehaviour
 {
     public GameObject EmptyBedroom;
     public GameObject CharacterBedroom;
+    public GameObject GachaBackground;
 
     // Start is called before the first frame update
     void Start()
@@ -21,11 +22,19 @@ public class BackgroundManager : MonoBehaviour
         {
             EmptyBedroom.SetActive(false);
             CharacterBedroom.SetActive(true);
+            GachaBackground.SetActive(false);
+        }
+        else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 5)
+        {
+            GachaBackground.SetActive(true);
+            EmptyBedroom.SetActive(false);
+            CharacterBedroom.SetActive(false);
         }
         else
         {
             EmptyBedroom.SetActive(true);
             CharacterBedroom.SetActive(false);
+            GachaBackground.SetActive(false);
         }
     }
 }
