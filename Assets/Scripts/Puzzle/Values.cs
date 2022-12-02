@@ -72,8 +72,10 @@ public static class Values
         public static Character equippedChar2 = Characters.c2;
         public static Character equippedChar3 = Characters.c3;
         public static int gold = 0;
-        public static float basicDamage = 2;
-        public static float enhancedDmaage = 15;
+        public static float basicDamage = 5;
+        public static float enhancedDamageMultiplier = 2;
+        public static float basicHeal = 0.01f;
+        public static float enhancedHealMultiplier = 5;
     }
     
     public class Puzzle

@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
     public bool isBoardInteractable = true; // pieces can be selected if true
     public List<GameObject> selected;   //list of selected pieces including powerups
     public List<GameObject> powerups;   //list of selected powerups
+    public List<GameObject> lockedHexes;
 
 
     public float catchphraseDuration = 3.5f;
@@ -65,12 +67,16 @@ public class GameManager : MonoBehaviour
     public float playerPoisonedTick = 0.0f;
     public float playerPoisonedDamage = 1.0f;
     private float basicDamage = 10;
-    private float enhancedDamage = 60;
+    private float enhancedDamageMultiplier = 60;
     private float damageMultiplier = 0.0f;
 
-    
+
 
     //player stats
+    private float currentDamageCounter = 0;
+    private float currentHealCounter = 0;
+    private float currentDamageMultiplier = 1;
+    private float currentHealMultiplier = 1;
 
     //status effects
     private bool enemyStunned = false;
@@ -132,6 +138,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        lockedHexes = new List<GameObject>();
         //debug
         Debug.Log("c1 index: " + Values.Player.equippedChar1.index + ", c2 Index: " + Values.Player.equippedChar2.index + ", c3 Index: " + Values.Player.equippedChar3.index);
 
@@ -158,7 +165,7 @@ public class GameManager : MonoBehaviour
             enemyCurrentHp = enemyMaxHp;
             enemyDmg = Values.Enemy.dmg;
             basicDamage = Values.Player.basicDamage;
-            enhancedDamage = Values.Player.enhancedDmaage;
+            enhancedDamageMultiplier = Values.Player.enhancedDamageMultiplier;
             enemyAttackInterval = Values.Enemy.attackInterval;
 
             bossExtraAttackPerStack = Values.Puzzle.BlackHexBurstDamage;
@@ -421,34 +428,34 @@ public class GameManager : MonoBehaviour
         }
 
 
-        if (!enemyStunned)
+        enemyAttackTick += Time.deltaTime;
+        if (enemyAttackTick >= enemyAttackInterval)
         {
-            enemyAttackTick += Time.deltaTime;
-            if (enemyAttackTick >= enemyAttackInterval)
+            if (!isTutorial)
             {
-                if (!isTutorial)
+                if (!enemyStunned)
                 {
-                    
                     EnemyPerformAttack();
                     EnemyPerformSkill();
-
-                    enemyAttackTick = 0.0f;
                 }
+
+                else
+                {
+                    Debug.Log("Enemy is stunned and cannot attack");
+                    enemyStunnedRounds--;
+
+                    if (enemyStunnedRounds == 0)
+                        enemyStunned = false;
+
+                }
+
+
+                enemyAttackTick = 0.0f;
             }
         }
 
-        else
-        {
-            Debug.Log("Enemy is stunned and cannot attack");
-            enemyStunnedRounds--;
 
-            if (enemyStunnedRounds == 0)
-                enemyStunned = false;
-
-        }
-        
-
-        if(Input.GetMouseButtonUp(0))   //if left mouse button released
+            if (Input.GetMouseButtonUp(0))   //if left mouse button released
         {
             if(!isTutorial)
             {
@@ -593,7 +600,7 @@ public class GameManager : MonoBehaviour
     private void EnemyPerformSkill()
     {
         bool performSkill = false;
-        if (Random.Range(0, 5) == 4)
+        if (UnityEngine.Random.Range(0, 5) == 4)
             performSkill = true;
 
         if(performSkill)
@@ -601,7 +608,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Performing enemy skill");
             if (Values.Enemy.skill == Values.Enemy.SkillType.Burst)
             {
-                int charToBurst = Random.Range(0, 2);
+                int charToBurst = UnityEngine.Random.Range(0, 2);
                 switch (charToBurst)
                 {
 
@@ -678,7 +685,7 @@ public class GameManager : MonoBehaviour
 
     private void EnemyPerformAttack()
     {
-        int charToAttack = Random.Range(0, 2);
+        int charToAttack = UnityEngine.Random.Range(0, 2);
         switch (charToAttack)
         {
 
@@ -866,12 +873,12 @@ public class GameManager : MonoBehaviour
             for(int j = 0; j < yDimension; j++)
             {
                 GameObject newPiece;
-                int n = Random.Range(0, 7); //2nd parameter dictates special piece rng: higher = more rare
+                int n = UnityEngine.Random.Range(0, 7); //2nd parameter dictates special piece rng: higher = more rare
 
                 if(n > 0 || specialPiecesCount >= 3)
                 {
                     //create normal piece
-                    n = Random.Range(0, 3); //randomize between normal pieces index (0-2)
+                    n = UnityEngine.Random.Range(0, 3); //randomize between normal pieces index (0-2)
                     newPiece = createPiece(n, i, j);
                 }
 
@@ -909,7 +916,7 @@ public class GameManager : MonoBehaviour
                         c3CurrentCharge = 0;
                     }   
 
-                    //int specialCharacterIndex = Random.Range(0, 2); // 0-1
+                    //int specialCharacterIndex = UnityEngine.Random.Range(0, 2); // 0-1
 
                     //switch(specialCharacterIndex)
                     //{
@@ -922,7 +929,7 @@ public class GameManager : MonoBehaviour
                     else
                     {
                         //Debug.Log("creating special piece4");
-                        n = Random.Range(0, 3);
+                        n = UnityEngine.Random.Range(0, 3);
                         newPiece = createPiece(n, i, j);
                     }
                 }
@@ -942,8 +949,8 @@ public class GameManager : MonoBehaviour
 
             do
             {
-                blockerXIndex = Random.Range(0, xDimension);
-                blockerYIndex = Random.Range(0, yDimension);
+                blockerXIndex = UnityEngine.Random.Range(0, xDimension);
+                blockerYIndex = UnityEngine.Random.Range(0, yDimension);
                 Debug.Log(blockerXIndex + " " + blockerYIndex);
             } while (newBoard[blockerXIndex, blockerYIndex] == -2);
             
@@ -952,11 +959,13 @@ public class GameManager : MonoBehaviour
 
             newBoard[blockerXIndex, blockerYIndex] = -2;
 
-            GameObject hexBlockerObj;
-            createNeutral(0, blockerXIndex, blockerYIndex);
+            GameObject hexBlockerObj = createNeutral(0, blockerXIndex, blockerYIndex);
 
-            
+            lockedHexes.Add(hexBlockerObj);
+            gBoard[blockerXIndex, blockerYIndex] = hexBlockerObj;
         }
+
+
         return newBoard;
     }
 
@@ -1030,6 +1039,27 @@ public class GameManager : MonoBehaviour
             {
                 //delete normal piece
                 //Debug.Log("Deleting");
+                if (selected[i].GetComponent<PieceBehavior>().ID == 0)
+                {
+                    currentDamageCounter += basicDamage * 1.0f;
+                }
+
+                if (selected[i].GetComponent<PieceBehavior>().ID == 1)
+                {
+                    currentHealCounter += 0.01f;
+                }
+
+                if (selected[i].GetComponent<PieceBehavior>().ID == 2)
+                {
+                    if (!enemyStunned)
+                    {
+                        enemyStunned = true;
+                    }
+
+                    enemyStunnedRounds++;
+                    currentDamageCounter += basicDamage * 0.7f;
+                }
+
 
                 int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                 int yIndex = selected[i].GetComponent<PieceBehavior>().y;
@@ -1062,6 +1092,17 @@ public class GameManager : MonoBehaviour
         isBoardInteractable = false;
 
         AnimationManager.Instance.PlayHitAnimation();
+        enemyCurrentHp = Math.Max(enemyCurrentHp - (currentDamageCounter * currentDamageMultiplier), 0);
+
+        c1CurrentHp = Math.Min(c1CurrentHp + (c1MaxHp * (currentHealCounter * currentHealMultiplier)), c1MaxHp);
+        c2CurrentHp = Math.Min(c2CurrentHp + (c2MaxHp * (currentHealCounter * currentHealMultiplier)), c2MaxHp);
+        c3CurrentHp = Math.Min(c3CurrentHp + (c3MaxHp * (currentHealCounter * currentHealMultiplier)), c3MaxHp);
+
+        currentDamageCounter = 0;
+        currentDamageMultiplier = 1;
+        currentHealCounter = 0;
+        currentHealMultiplier = 1;
+
         Debug.Log("Attack");
     }
 
@@ -1134,7 +1175,7 @@ public class GameManager : MonoBehaviour
 
                     //-----------deal huge damage to boss-----------\\
                     Debug.Log("Dealing enhanced damage to enemy");
-                    enemyCurrentHp -= enhancedDamage;
+                    currentDamageMultiplier = enhancedDamageMultiplier;
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
                     nBoard[xIndex, yIndex] = -1;
@@ -1173,16 +1214,17 @@ public class GameManager : MonoBehaviour
                     //nBoard[xIndex, yIndex] = -1;
 
 
-                    //-----------stun boss-----------\\
-                    Debug.Log("Disable next enemy attack (stunned)");
 
-                    enemyStunned = true;
-                    enemyStunnedRounds = 1;
+                    //-----------Heal allies for %hp-----------\\
 
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
                     nBoard[xIndex, yIndex] = -1;
-                    //--------------------------------------------\\
+
+                    currentHealMultiplier = 5;
+
+                    Debug.Log("Healing allies");
+
                 }
                 break;
 
@@ -1197,29 +1239,47 @@ public class GameManager : MonoBehaviour
                     //--------------------------------------------\\
 
 
-                    //-----------random piece rate boost-----------\\
-                    Debug.Log("Boost spawn rate effect");
+                    //-----------UnityEngine.Random piece rate boost-----------\\
+                    //Debug.Log("Boost spawn rate effect");
 
-                    int pieceBoostRateIndex = Random.Range(0, 3);
+                    //int pieceBoostRateIndex = UnityEngine.Random.Range(0, 3);
 
-                    if (pieceBoostRateIndex == 0)
-                        rIncreaseRate = true;
+                    //if (pieceBoostRateIndex == 0)
+                    //    rIncreaseRate = true;
 
-                    else if (pieceBoostRateIndex == 1)
-                        gIncreaseRate = true;
+                    //else if (pieceBoostRateIndex == 1)
+                    //    gIncreaseRate = true;
 
-                    else if (pieceBoostRateIndex == 2)
-                        bIncreaseRate = true;
+                    //else if (pieceBoostRateIndex == 2)
+                    //    bIncreaseRate = true;
 
-                    manipulatedSpawnRates = true;
-                    manipulatedSpawnRatesRounds = 5;
+                    //manipulatedSpawnRates = true;
+                    //manipulatedSpawnRatesRounds = 5;
+
+                    //int xIndex = selected[i].GetComponent<PieceBehavior>().x;
+                    //int yIndex = selected[i].GetComponent<PieceBehavior>().y;
+                    //nBoard[xIndex, yIndex] = -1;
+                    //--------------------------------------------\\
+
+                    //-----------stun boss-----------\\
+
+                    Debug.Log("Disable next enemy attack (stunned)");
+
+                    if (!enemyStunned)
+                        enemyStunned = true;
+
+                    enemyStunnedRounds += 3;
 
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
                     nBoard[xIndex, yIndex] = -1;
                     //--------------------------------------------\\
 
+
+
                 }
+
+
                 break;
             case 6:
                 {
@@ -1258,14 +1318,14 @@ public class GameManager : MonoBehaviour
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
                     nBoard[xIndex, yIndex] = -1;
 
-                    if(c1CurrentHp > 0)
+                    if (c1CurrentHp > 0)
                     {
                         c1CurrentHp += (c1MaxHp * 0.075f);
 
-                        if(c1CurrentHp > c1MaxHp)
+                        if (c1CurrentHp > c1MaxHp)
                         {
                             c1CurrentHp = c1MaxHp;
-                        }    
+                        }
 
                     }
 
@@ -1298,7 +1358,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        
+
     }
 
     private void PerformNeutralPieceEffects(int i)
@@ -1362,7 +1422,6 @@ public class GameManager : MonoBehaviour
                 if (nBoard[i, j] == -1)
                 {
                     
-                    enemyCurrentHp -= basicDamage;
                     Destroy(gBoard[i, j].gameObject);
                     gBoard[i, j] = null;
 
@@ -1497,16 +1556,16 @@ public class GameManager : MonoBehaviour
             {
                 if(nBoard[i, j] == -1)
                 {
-                    int n = Random.Range(0, 7);
+                    int n = UnityEngine.Random.Range(0, 7);
 
                     if (n > 0)
                     {
-                        n = Random.Range(0, 3);
+                        n = UnityEngine.Random.Range(0, 3);
                     }
 
                     else
                     {
-                        n = Random.Range(3, 5);
+                        n = UnityEngine.Random.Range(3, 5);
                     }
 
                     GameObject newPiece = createPiece(n, i, j);
@@ -1699,7 +1758,7 @@ public class GameManager : MonoBehaviour
                 {
                     clearedPieces++;
                     GameObject newPiece;
-                    int n = Random.Range(0, 7);
+                    int n = UnityEngine.Random.Range(0, 7);
 
                     //----------manipulating spawning of new pieces in tutorial----------\\
                     if (isTutorial && tutorialPhase == 2)
@@ -1712,7 +1771,7 @@ public class GameManager : MonoBehaviour
 
                         else
                         {
-                            n = Random.Range(0, 3);
+                            n = UnityEngine.Random.Range(0, 3);
                             newPiece = createPiece(n, i, j);
                         }
                     }
@@ -1723,10 +1782,10 @@ public class GameManager : MonoBehaviour
                         //Debug.Log("spawning normal piece");
                         if (!manipulatedSpawnRates)
                         {
-                            int rng = Random.Range(0, 5);
+                            int rng = UnityEngine.Random.Range(0, 5);
                             if (rng < 4)
                             {
-                                n = Random.Range(0, 3);
+                                n = UnityEngine.Random.Range(0, 3);
                                 newPiece = createPiece(n, i, j);
                             }
 
@@ -1745,7 +1804,7 @@ public class GameManager : MonoBehaviour
                                 
                                 else
                                 {
-                                    n = Random.Range(0, 3);
+                                    n = UnityEngine.Random.Range(0, 3);
                                     newPiece = createPiece(n, i, j);
                                 }
                             }
@@ -1757,7 +1816,7 @@ public class GameManager : MonoBehaviour
                         else if (rIncreaseRate)  //boosted spawn rate red piece
                         {
                             Debug.Log("Spawning pieces with increased spawn rates for red pieces for " + manipulatedSpawnRatesRounds + "rounds");
-                            int m = Random.Range(0, 10);
+                            int m = UnityEngine.Random.Range(0, 10);
 
                             if (m == 1 || m == 2)
                                 newPiece = createPiece(m, i, j);
@@ -1771,7 +1830,7 @@ public class GameManager : MonoBehaviour
                         else if (gIncreaseRate)  //boosted spawn rate red piece
                         {
                             Debug.Log("Spawning pieces with increased spawn rates for green pieces for " + manipulatedSpawnRatesRounds + "rounds");
-                            int m = Random.Range(0, 10);
+                            int m = UnityEngine.Random.Range(0, 10);
 
                             if (m == 0 || m == 2)
                                 newPiece = createPiece(m, i, j);
@@ -1783,7 +1842,7 @@ public class GameManager : MonoBehaviour
                         else if (bIncreaseRate)  //boosted spawn rate red piece
                         {
                             Debug.Log("Spawning pieces with increased spawn rates for blue pieces for " + manipulatedSpawnRatesRounds + "rounds");
-                            int m = Random.Range(0, 10);
+                            int m = UnityEngine.Random.Range(0, 10);
 
                             if (m == 0 || m == 1)
                                 newPiece = createPiece(m, i, j);
@@ -1794,10 +1853,10 @@ public class GameManager : MonoBehaviour
 
                         else //same as default
                         {
-                            int rng = Random.Range(0, 5);
+                            int rng = UnityEngine.Random.Range(0, 5);
                             if (rng < 4)
                             {
-                                n = Random.Range(0, 3);
+                                n = UnityEngine.Random.Range(0, 3);
                                 newPiece = createPiece(n, i, j);
                             }
 
@@ -1816,7 +1875,7 @@ public class GameManager : MonoBehaviour
 
                                 else
                                 {
-                                    n = Random.Range(0, 3);
+                                    n = UnityEngine.Random.Range(0, 3);
                                     newPiece = createPiece(n, i, j);
                                 }
                             }
@@ -1858,7 +1917,7 @@ public class GameManager : MonoBehaviour
                         }
 
 
-                        //int specialCharacterIndex = Random.Range(0, 2); // 0-1
+                        //int specialCharacterIndex = UnityEngine.Random.Range(0, 2); // 0-1
 
                         //switch(specialCharacterIndex)
                         //{
@@ -1870,10 +1929,10 @@ public class GameManager : MonoBehaviour
 
                         else
                         {
-                            int rng = Random.Range(0, 5);
+                            int rng = UnityEngine.Random.Range(0, 5);
                             if (rng < 4)
                             {
-                                n = Random.Range(0, 3);
+                                n = UnityEngine.Random.Range(0, 3);
                                 newPiece = createPiece(n, i, j);
                             }
 
@@ -1892,7 +1951,7 @@ public class GameManager : MonoBehaviour
 
                                 else
                                 {
-                                    n = Random.Range(0, 3);
+                                    n = UnityEngine.Random.Range(0, 3);
                                     newPiece = createPiece(n, i, j);
                                 }
                             }
@@ -1936,6 +1995,48 @@ public class GameManager : MonoBehaviour
 
         currentTurn++;
 
+        if(currentTurn % 3 == 0)
+        {
+            for (int i = 0; i < Values.Puzzle.hexBlockerCount; i++)
+            {
+
+                int newBlockerXIndex = 0;
+                int newBlockerYIndex = 0;
+
+                do
+                {
+                    newBlockerXIndex = UnityEngine.Random.Range(0, xDimension);
+                    newBlockerYIndex = UnityEngine.Random.Range(0, yDimension);
+                    Debug.Log(newBlockerXIndex + " " + newBlockerYIndex);
+                } while (nBoard[newBlockerXIndex, newBlockerYIndex] == -2);
+
+
+                Destroy(gBoard[newBlockerXIndex, newBlockerYIndex]);
+
+                nBoard[newBlockerXIndex, newBlockerYIndex] = -2;
+
+                GameObject newhexBlockerObj = createNeutral(0, newBlockerXIndex, newBlockerYIndex);
+                gBoard[newBlockerXIndex, newBlockerYIndex] = newhexBlockerObj;
+                
+
+
+
+                int oldBlockerXIndex = lockedHexes[i].GetComponent<PieceBehavior>().x;
+                int oldBlockerYIndex = lockedHexes[i].GetComponent<PieceBehavior>().y;
+                GameObject oldHexBlockerObj = gBoard[oldBlockerXIndex, oldBlockerYIndex];
+                Destroy(oldHexBlockerObj);
+
+
+                int n = UnityEngine.Random.Range(0, 3);
+                GameObject newPiece = createPiece(n, oldBlockerXIndex, oldBlockerYIndex);
+
+                nBoard[oldBlockerXIndex, oldBlockerYIndex] = n;
+                gBoard[oldBlockerXIndex, oldBlockerYIndex] = newPiece;
+
+                lockedHexes[i] = newhexBlockerObj;
+
+            }
+        }
         //if (currentTurn > maxTurn)
         //    isBoardInteractable = false;
     }
