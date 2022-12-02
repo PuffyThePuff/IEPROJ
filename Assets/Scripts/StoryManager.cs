@@ -259,7 +259,7 @@ public class StoryManager : MonoBehaviour
         #region Chapter1
         //Anger - Start//
         StoryChapters[1].ChapterTitle = "Anger";
-        StoryChapters[1].ChapterDialogues = new Dialogue[10];
+        StoryChapters[1].ChapterDialogues = new Dialogue[7];
 
         //along in dimly lit room
         //chapter 1 - dialogue 1 - only 1 speaker
@@ -323,11 +323,233 @@ public class StoryManager : MonoBehaviour
         StoryChapters[1].ChapterDialogues[1].sentences[19] = "Oh yeah! I accepted your friend request!";
         StoryChapters[1].ChapterDialogues[1].sentences[20] = "I hope you’ll use my support unit when you’re in trouble!";
         StoryChapters[1].ChapterDialogues[1].sentences[21] = "We then continued to hang out at lunchtime and eat.";
+
+        //At Home, 7:00 P.M.
+        int i = 2;
+        StoryChapters[1].ChapterDialogues[i] = new Dialogue();
+        StoryChapters[1].ChapterDialogues[i].name = mainCharacterName;
+        StoryChapters[1].ChapterDialogues[i].otherName = "";
+        StoryChapters[1].ChapterDialogues[i].sentences = new string[28];
+        StoryChapters[1].ChapterDialogues[i].speaker1Lines = new int[] { 0, 2, 7, 15 };
         
+        StoryChapters[1].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
+        StoryChapters[1].ChapterDialogues[i].speaker1Sprites = McSprites;
+        StoryChapters[1].ChapterDialogues[i].chapterNum = 1;
+        StoryChapters[1].ChapterDialogues[i].dialogueIndex = i;
+
+        StoryChapters[1].ChapterDialogues[i].sentences[0] = "Finally. Done with my homework.";
+        StoryChapters[1].ChapterDialogues[i].sentences[1] = "I looked over at the corner of my PC. The clock says 7:01 P.M.";
+        StoryChapters[1].ChapterDialogues[i].sentences[2] = "I guess I could grind some bo---";
+        StoryChapters[1].ChapterDialogues[i].sentences[3] = "I caught my cursor hovering over the icon of the game I once loved.";
+        StoryChapters[1].ChapterDialogues[i].sentences[4] = "Right.";
+        StoryChapters[1].ChapterDialogues[i].sentences[5] = "There’s no reason to log in to LL14.";
+        StoryChapters[1].ChapterDialogues[i].sentences[6] = "…";
+        StoryChapters[1].ChapterDialogues[i].sentences[7] = "I’ll check just in case.";
+        StoryChapters[1].ChapterDialogues[i].sentences[8] = "And… nothing.";
+        StoryChapters[1].ChapterDialogues[i].sentences[9] = "No notification.";
+        StoryChapters[1].ChapterDialogues[i].sentences[10] = "I felt hollow.";
+        StoryChapters[1].ChapterDialogues[i].sentences[11] = "Empty.";
+        StoryChapters[1].ChapterDialogues[i].sentences[12] = "Nothing but silence.";
+        StoryChapters[1].ChapterDialogues[i].sentences[13] = "I checked my friends list and…";
+        StoryChapters[1].ChapterDialogues[i].sentences[14] = "…The name’s gone.";
+        StoryChapters[1].ChapterDialogues[i].sentences[15] = "...Really?";
+        StoryChapters[1].ChapterDialogues[i].sentences[16] = "Tch.";
+        StoryChapters[1].ChapterDialogues[i].sentences[17] = "I shut off my PC and head to bed.";
+        StoryChapters[1].ChapterDialogues[i].sentences[18] = "I’ll play later when I get home.";
+        StoryChapters[1].ChapterDialogues[i].sentences[19] = "As I lay in silence, I remember the times we spent together.";
+        StoryChapters[1].ChapterDialogues[i].sentences[20] = "All those grinds. We had a million gold bars all up in our mines.";
+        StoryChapters[1].ChapterDialogues[i].sentences[21] = "And when we got to the end.";
+        StoryChapters[1].ChapterDialogues[i].sentences[22] = "Everything felt right.";
+        StoryChapters[1].ChapterDialogues[i].sentences[23] = "I wish you were here with me.";
+        StoryChapters[1].ChapterDialogues[i].sentences[24] = "…To grind.";
+        StoryChapters[1].ChapterDialogues[i].sentences[25] = "…";
+        StoryChapters[1].ChapterDialogues[i].sentences[26] = "I spent about an hour or so just…";
+        StoryChapters[1].ChapterDialogues[i].sentences[27] = "…Crying";
+
+        //===A week later, at School===
+        i = 3;
+        StoryChapters[1].ChapterDialogues[i] = new Dialogue();
+        StoryChapters[1].ChapterDialogues[i].name = mainCharacterName;
+        StoryChapters[1].ChapterDialogues[i].otherName = friendName;
+        StoryChapters[1].ChapterDialogues[i].sentences = new string[22];
+        StoryChapters[1].ChapterDialogues[i].speaker1Lines = new int[] { 3, 8, 12, 15, 19};
+        StoryChapters[1].ChapterDialogues[i].speaker2Lines = new int[] { 0, 1, 6, 7, 9, 10 ,11, 13, 14, 16, 17, 18, 20, 21};
+
+        StoryChapters[1].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
+        StoryChapters[1].ChapterDialogues[i].speaker1Sprites = McSprites;
+        StoryChapters[1].ChapterDialogues[i].speaker2Sprites = new Sprite[] { };
+        StoryChapters[1].ChapterDialogues[i].speaker2Sprites = NFSprites;
+        StoryChapters[1].ChapterDialogues[i].chapterNum = 1;
+        StoryChapters[1].ChapterDialogues[i].dialogueIndex = i;
+
+        StoryChapters[1].ChapterDialogues[i].sentences[0] = "Hey! I haven’t seen you log on since last week.";
+        StoryChapters[1].ChapterDialogues[i].sentences[1] = "You doin’ okay?";
+        StoryChapters[1].ChapterDialogues[i].sentences[2] = "My blurry vision slowly comes into focus as I hear a familiar voice.";
+        StoryChapters[1].ChapterDialogues[i].sentences[3] = "Ah, it’s you.";
+        StoryChapters[1].ChapterDialogues[i].sentences[4] = "My memory is foggy of the last week.";
+        StoryChapters[1].ChapterDialogues[i].sentences[5] = "I don’t remember much except…";
+        StoryChapters[1].ChapterDialogues[i].sentences[6] = "I hope you’ll get through this. Whatever it is you’re going through right now.";
+        StoryChapters[1].ChapterDialogues[i].sentences[7] = "Anyway, on another note, the event is out!";
+        StoryChapters[1].ChapterDialogues[i].sentences[8] = "Event?";
+        StoryChapters[1].ChapterDialogues[i].sentences[9] = "Yeah! The MagiHimeDive event is out.";
+        StoryChapters[1].ChapterDialogues[i].sentences[10] = "There’s also a rate up character banner! She looks pretty good too.";
+        StoryChapters[1].ChapterDialogues[i].sentences[11] = "She’s a red unit. So her primary focus is dealing damage.";
+        StoryChapters[1].ChapterDialogues[i].sentences[12] = "Ah, but I’d have to spend money on it, right?";
+        StoryChapters[1].ChapterDialogues[i].sentences[13] = "If you have free summons, you could spend that first.";
+        StoryChapters[1].ChapterDialogues[i].sentences[14] = "See if you get her earlier";
+        StoryChapters[1].ChapterDialogues[i].sentences[15] = "Alright. What’s the new mechanic?";
+        StoryChapters[1].ChapterDialogues[i].sentences[16] = "Ah, yeah. It’s the Black Hexes.";
+        StoryChapters[1].ChapterDialogues[i].sentences[17] = "You got to get rid of them before they stack up.";
+        StoryChapters[1].ChapterDialogues[i].sentences[18] = "Once they do, the Boss deals an immense amount of damage";
+        StoryChapters[1].ChapterDialogues[i].sentences[19] = "Okay. I’ll check it out later.";
+        StoryChapters[1].ChapterDialogues[i].sentences[20] = "Yeah. Oh! I have to go now, I got some assignments to work on.";
+        StoryChapters[1].ChapterDialogues[i].sentences[21] = "Till next time fam!";
+
+
+        //===At Home, 7:34 P.M.===
+        i = 4;
+        StoryChapters[1].ChapterDialogues[i] = new Dialogue();
+        StoryChapters[1].ChapterDialogues[i].name = mainCharacterName;
+        StoryChapters[1].ChapterDialogues[i].otherName = "";
+        StoryChapters[1].ChapterDialogues[i].sentences = new string[10];
+        StoryChapters[1].ChapterDialogues[i].speaker1Lines = new int[] { 2, 3, 9 };
+
+        StoryChapters[1].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
+        StoryChapters[1].ChapterDialogues[i].speaker1Sprites = McSprites;
+        StoryChapters[1].ChapterDialogues[i].chapterNum = 1;
+        StoryChapters[1].ChapterDialogues[i].dialogueIndex = i;
+
+        StoryChapters[1].ChapterDialogues[i].sentences[0] = "The sound of knuckles cracking can be heard reverberating in the silent room.";
+        StoryChapters[1].ChapterDialogues[i].sentences[1] = "I finish stretching and sit on my bed.";
+        StoryChapters[1].ChapterDialogues[i].sentences[2] = "Finally done with my assignment.";
+        StoryChapters[1].ChapterDialogues[i].sentences[3] = "As I grab my phone, I subconsciously check my notifications for any messages.";
+        StoryChapters[1].ChapterDialogues[i].sentences[4] = "Of course, knowing them, there isn’t one.";
+        StoryChapters[1].ChapterDialogues[i].sentences[5] = "Not even a full explanation of why they did what they did.";
+        StoryChapters[1].ChapterDialogues[i].sentences[6] = "Not even an apology.";
+        StoryChapters[1].ChapterDialogues[i].sentences[7] = "I felt my blood boiling at the thought, or lack thereof.";
+        StoryChapters[1].ChapterDialogues[i].sentences[8] = "So I left that with a sigh.";
+        StoryChapters[1].ChapterDialogues[i].sentences[9] = "Alright, I guess I’ll start the event.";
+
+
+        //World01 Boss, Attempt 01 - Leads to Failure//
+        i = 5;
+        StoryChapters[1].ChapterDialogues[i] = new Dialogue();
+        StoryChapters[1].ChapterDialogues[i].name = mainCharacterName;
+        StoryChapters[1].ChapterDialogues[i].otherName = "";
+        StoryChapters[1].ChapterDialogues[i].sentences = new string[16];
+        StoryChapters[1].ChapterDialogues[i].speaker1Lines = new int[] { 0,1,2,3,4,6, 7, 11, 12,13,14,15};
+
+        StoryChapters[1].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
+        StoryChapters[1].ChapterDialogues[i].speaker1Sprites = McSprites;
+        StoryChapters[1].ChapterDialogues[i].chapterNum = 1;
+        StoryChapters[1].ChapterDialogues[i].dialogueIndex = i;
+
+        StoryChapters[1].ChapterDialogues[i].sentences[0] = "Damn.";
+        StoryChapters[1].ChapterDialogues[i].sentences[1] = "This new mechanic is getting on my nerves.";
+        StoryChapters[1].ChapterDialogues[i].sentences[2] = "Who thought it was a good idea to just have a map filled almost entirely with black hexes?!";
+        StoryChapters[1].ChapterDialogues[i].sentences[3] = "Have like, what, only a few turns before the boss nukes my entire team?";
+        StoryChapters[1].ChapterDialogues[i].sentences[4] = "Ugh!!!";
+        StoryChapters[1].ChapterDialogues[i].sentences[5] = "As I fell to my bed, memories of the previous conversation with Hal rang in my head.";
+        StoryChapters[1].ChapterDialogues[i].sentences[6] = "It’s a new month.";
+        StoryChapters[1].ChapterDialogues[i].sentences[7] = "I have…";
+        StoryChapters[1].ChapterDialogues[i].sentences[8] = "I immediately scrolled through the menu of the game.";
+        StoryChapters[1].ChapterDialogues[i].sentences[9] = "Using the resources I got from playing through the tutorial to this point in the game, I tried pulling for the event character.";
+        StoryChapters[1].ChapterDialogues[i].sentences[10] = "No luck. But...";
+        StoryChapters[1].ChapterDialogues[i].sentences[11] = "With just a few more gems…"; 
+        //TODO: (a few minutes later) FADE TO BLACK AND BACK
+        StoryChapters[1].ChapterDialogues[i].sentences[12] = "Almost maxed out. But it should be strong enough.";
+        StoryChapters[1].ChapterDialogues[i].sentences[13] = "Her stuns should come much more frequently now.";
+        StoryChapters[1].ChapterDialogues[i].sentences[14] = "I also should try to chain Blue more often. She has a damage buff that makes her on par, or even stronger than the Red units.";
+        StoryChapters[1].ChapterDialogues[i].sentences[15] = "Im back.";
+
+        //World01 Boss, Attempt 02 - Post-fight//
+        i = 6;
+        StoryChapters[1].ChapterDialogues[i] = new Dialogue();
+        StoryChapters[1].ChapterDialogues[i].name = mainCharacterName;
+        StoryChapters[1].ChapterDialogues[i].otherName = "";
+        StoryChapters[1].ChapterDialogues[i].sentences = new string[19];
+        StoryChapters[1].ChapterDialogues[i].speaker1Lines = new int[] { 0, 1, 2, 4, 6, 7, 8, 18 };
+
+        StoryChapters[1].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
+        StoryChapters[1].ChapterDialogues[i].speaker1Sprites = McSprites;
+        StoryChapters[1].ChapterDialogues[i].chapterNum = 1;
+        StoryChapters[1].ChapterDialogues[i].dialogueIndex = i;
+
+        StoryChapters[1].ChapterDialogues[i].sentences[0] = "YES!";
+        StoryChapters[1].ChapterDialogues[i].sentences[1] = "HELL YEAH!!";
+        StoryChapters[1].ChapterDialogues[i].sentences[2] = "SUCK IT!!!";
+        StoryChapters[1].ChapterDialogues[i].sentences[3] = "Three knocks from my ceiling echoed throughout my room.";
+        StoryChapters[1].ChapterDialogues[i].sentences[4] = "SORRY!";
+        StoryChapters[1].ChapterDialogues[i].sentences[5] = "I let out a sigh of relief.";
+        StoryChapters[1].ChapterDialogues[i].sentences[6] = "Man, that’s fifteen dollars well spent.";
+        StoryChapters[1].ChapterDialogues[i].sentences[7] = "She made that fight so much easier.";
+        StoryChapters[1].ChapterDialogues[i].sentences[8] = "Her ability to clear those hexes saved me.";
+        StoryChapters[1].ChapterDialogues[i].sentences[9] = "We did it! Let’s go eat some hamburgers! I’ll cook some for ya!";//PHONE - G-UNIT01
+        StoryChapters[1].ChapterDialogues[i].sentences[10] = "As my eyes read the words on the screen, I am taken back to a time when I used to wait expectantly at a dinner table.";
+        StoryChapters[1].ChapterDialogues[i].sentences[11] = "Their cooking.";
+        StoryChapters[1].ChapterDialogues[i].sentences[12] = "Dinner dates with them in their home.";
+        StoryChapters[1].ChapterDialogues[i].sentences[13] = "Helping them out in the kitchen.";
+        StoryChapters[1].ChapterDialogues[i].sentences[14] = "Cutting onions.";
+        StoryChapters[1].ChapterDialogues[i].sentences[15] = "…";
+        StoryChapters[1].ChapterDialogues[i].sentences[16] = "As these memories rushed through my head, I closed my phone.";
+        StoryChapters[1].ChapterDialogues[i].sentences[17] = "Put my head to my pillow and just…";
+        StoryChapters[1].ChapterDialogues[i].sentences[18] = "GAAAAAAAAH!!!";
+
 
         #endregion
 
+        #region Chapter2
+        //Bargaining//
+        int j = 2;
+        StoryChapters[j].ChapterTitle = "Bargaining";
+        StoryChapters[j].ChapterDialogues = new Dialogue[10];
 
+        //===At Home, 11:30 A.M.===
+        i = 0;
+        StoryChapters[j].ChapterDialogues[i] = new Dialogue();
+        StoryChapters[j].ChapterDialogues[i].name = mainCharacterName;
+        StoryChapters[j].ChapterDialogues[i].otherName = "";
+        StoryChapters[j].ChapterDialogues[i].sentences = new string[12];
+        StoryChapters[j].ChapterDialogues[i].speaker1Lines = new int[] { 2 };
+        StoryChapters[j].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
+        StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
+        StoryChapters[j].ChapterDialogues[i].chapterNum = 1;
+        StoryChapters[j].ChapterDialogues[i].dialogueIndex = 0;
+
+        StoryChapters[j].ChapterDialogues[i].sentences[0] = "My eyes slowly open to the sound of an alarm.";
+        StoryChapters[j].ChapterDialogues[i].sentences[1] = "My hands immediately shoot up to grab my phone.";
+        StoryChapters[j].ChapterDialogues[i].sentences[2] = "Is it---?";
+        StoryChapters[j].ChapterDialogues[i].sentences[3] = "My morning alarm."; //NEED ALARM SOUND EX
+        StoryChapters[j].ChapterDialogues[i].sentences[4] = "I open my phone and check for any alerts or messages.";
+        StoryChapters[j].ChapterDialogues[i].sentences[5] = "None.";
+        StoryChapters[j].ChapterDialogues[i].sentences[6] = "I check my missed calls.";
+        StoryChapters[j].ChapterDialogues[i].sentences[7] = "Nothing.";
+        StoryChapters[j].ChapterDialogues[i].sentences[8] = "I then quickly went to turn on my PC.";
+        StoryChapters[j].ChapterDialogues[i].sentences[9] = "Logged in LL14 to check for any Whispers.";
+        StoryChapters[j].ChapterDialogues[i].sentences[10] = "Still nothing.";
+        StoryChapters[j].ChapterDialogues[i].sentences[11] = "And with a disappointed sigh, I prepare for school.";
+
+
+
+        #endregion
+
+        #region Chapter3
+
+
+
+        #endregion
+
+        #region Chapter4
+
+
+
+        #endregion
+
+        #region Epilogue
+
+
+
+        #endregion
     }
 
     public void setAllChapters()
