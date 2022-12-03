@@ -259,6 +259,18 @@ public class DialogueManager : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("Birds", true);
             FindObjectOfType<AudioManager>().Stop("RoomBGM");
         }
+        else if (FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 1)
+        {
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
+            //FindObjectOfType<AudioManager>().Play("Birds", true);
+            //FindObjectOfType<AudioManager>().Stop("BattleBGM");
+        }
+        else if (FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 2)
+        {
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
+            //FindObjectOfType<AudioManager>().Play("Birds", true);
+            //FindObjectOfType<AudioManager>().Stop("BattleBGM");
+        }
         //before chapter 4
         else if (FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 3)
         {
@@ -319,6 +331,33 @@ public class DialogueManager : MonoBehaviour
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[0].isDone)
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[0], true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 3 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 1)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[1].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[1], true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 3 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 2)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[2].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[2], true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 3 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 3)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3], true);
             }
         }
         if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
@@ -531,7 +570,60 @@ public class DialogueManager : MonoBehaviour
                 FindObjectOfType<AudioManager>().Play("BattleBGM", true);
             }
         }
-        
+        else if (FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[0].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[0].hasTriggered)
+        {
+            if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+            {
+                Values.Puzzle.isTutorial = false;
+                Values.Puzzle.isRigged = true;
+                Values.Enemy.enemyLevel = 3;
+                Values.Enemy.maxHP = 400;
+                Values.Enemy.dmg = 150;
+
+                //BUFFED ENEMY
+                Values.Enemy.attackInterval = 0.5f;//
+                Values.Puzzle.PainHexPosionDamage = 0.0f;
+                Values.Puzzle.BlackHexBurstDamage = 0.0f;
+                Values.Puzzle.hexBlockerCount = 5;//
+
+                //set normal values
+                Values.Player.setStunAmount = 1;
+                Values.Player.basicHeal = 0.01f;
+                Values.Player.basicDamage = 5;
+
+                FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[0].hasTriggered = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
+                FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+            }
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[2].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[2].hasTriggered)
+        {
+            if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+            {
+                Values.Puzzle.isTutorial = false;
+                Values.Puzzle.isRigged = true;
+                Values.Enemy.enemyLevel = 3;
+                Values.Enemy.maxHP = 400;
+                Values.Enemy.dmg = 150;
+
+                //BUFFED ENEMY
+                Values.Enemy.attackInterval = 1.5f;//
+                Values.Puzzle.PainHexPosionDamage = 0.0f;
+                Values.Puzzle.BlackHexBurstDamage = 0.0f;
+                Values.Puzzle.hexBlockerCount = 5;//
+
+                //buff player
+                Values.Player.basicDamage = 12;
+
+                FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[2].hasTriggered = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
+                FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+            }
+        }
 
     }
 
@@ -540,7 +632,9 @@ public class DialogueManager : MonoBehaviour
         if (!(FindObjectOfType<StoryManager>().currentChapter == 1 && FindObjectOfType<StoryManager>().currentDialogue == 4) && 
             !(FindObjectOfType<StoryManager>().currentChapter == 1 && FindObjectOfType<StoryManager>().currentDialogue == 5) &&
             !(FindObjectOfType<StoryManager>().currentChapter == 2 && FindObjectOfType<StoryManager>().currentDialogue == 2) &&
-            !(FindObjectOfType<StoryManager>().currentChapter == 2 && FindObjectOfType<StoryManager>().currentDialogue == 3))
+            !(FindObjectOfType<StoryManager>().currentChapter == 2 && FindObjectOfType<StoryManager>().currentDialogue == 3) &&
+            !(FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 0) &&
+            !(FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 2))
         {
             FindObjectOfType<StoryManager>().currentDialogue++;
         }

@@ -1346,6 +1346,28 @@ public class StoryManager : MonoBehaviour
                 //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
             }
         }
+        if (FindObjectOfType<StoryManager>().currentChapter == 3 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 1)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[1].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[1], true);
+                FindObjectOfType<AudioManager>().Stop("BattleBGM");
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 3 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 3)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3], true);
+                FindObjectOfType<AudioManager>().Stop("BattleBGM");
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
 
     }
 }
