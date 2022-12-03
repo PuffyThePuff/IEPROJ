@@ -1290,7 +1290,7 @@ public class StoryManager : MonoBehaviour
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[5].isDone)
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[5], true);
-                //FindObjectOfType<AudioManager>().Stop("ClassroomBGM");
+                FindObjectOfType<AudioManager>().Stop("BattleBGM");
                 //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
             }
         }

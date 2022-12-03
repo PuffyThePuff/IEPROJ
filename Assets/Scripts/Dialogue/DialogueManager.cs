@@ -184,7 +184,7 @@ public class DialogueManager : MonoBehaviour
             FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
                 .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
 
-            FindObjectOfType<StoryManager>().currentDialogue++;
+            IncrementDialogue();
 
             if (FindObjectOfType<StoryManager>().currentDialogue >= FindObjectOfType<StoryManager>()
                     .StoryChapters[FindObjectOfType<StoryManager>().currentChapter].ChapterDialogues.Length)
@@ -361,13 +361,26 @@ public class DialogueManager : MonoBehaviour
         {
             if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
             {
+                Values.Puzzle.isTutorial = false;
+                Values.Puzzle.isRigged = true;
+
                 FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[4].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
                 FindObjectOfType<AudioManager>().Stop("RoomBGM");
                 FindObjectOfType<AudioManager>().Play("BattleBGM", true);
-                Values.Puzzle.isTutorial = false;
-                Values.Puzzle.isRigged = true;
+                
             }
         }
+    }
+
+    void IncrementDialogue()
+    {
+        if (!(FindObjectOfType<StoryManager>().currentChapter == 1 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 4) )
+        {
+            FindObjectOfType<StoryManager>().currentDialogue++;
+        }
+        
+        
     }
 }
