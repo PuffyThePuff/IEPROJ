@@ -651,7 +651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aff9f9d4a2a683540990f98fefa6ad32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveToSchoolAnim: {fileID: 1715310702}
+  TempAnimator: {fileID: 1715310702}
   FadeBlackTransition: {fileID: 1259567422}
   AlphaPopUp: {fileID: 478876846}
 --- !u!4 &286268645

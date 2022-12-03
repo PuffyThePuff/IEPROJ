@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    public static DialogueManager instanceRef;
+    
     public GameObject dialogueUI;
 
     public Image Speaker1Image;
@@ -29,18 +30,7 @@ public class DialogueManager : MonoBehaviour
     private int ChapterNum;
     private int DialogueNum;
 
-    void Awake()
-    {
-        /*if (instanceRef == null)
-        {
-            instanceRef = this;
-            //DontDestroyOnLoad(gameObject);
-        }
-        else if (instanceRef != this)
-        {
-        }
-        //Destroy(gameObject);*/
-    }
+    
 
     // Start is called before the first frame update
     void Start()
@@ -49,6 +39,8 @@ public class DialogueManager : MonoBehaviour
 
     public void StartDialogue(Dialogue dialogue, bool isStoryRelated = false)
     {
+        
+
         bottomRightMC.SetActive(false);
         name1TextBox.SetActive(false);
         name2TextBox.SetActive(false);
@@ -70,8 +62,6 @@ public class DialogueManager : MonoBehaviour
         Speaker1Image.gameObject.SetActive(true);
         if ((ChapterNum == 0 && DialogueNum == 0) || (ChapterNum == 0 && DialogueNum == 5))
         {
-            Debug.Log("mc false 1");
-
             Speaker1Image.gameObject.SetActive(false);
         }
        
@@ -189,15 +179,22 @@ public class DialogueManager : MonoBehaviour
         dialogueUI.SetActive(false);
         if (isStoryDialogue)
         {
+            FadeToBlackTransitions(); //ALSO ADDS CURRENT DIALOGUE/CHAPTER
+
             FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
                 .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+
             FindObjectOfType<StoryManager>().currentDialogue++;
+
             if (FindObjectOfType<StoryManager>().currentDialogue >= FindObjectOfType<StoryManager>()
                     .StoryChapters[FindObjectOfType<StoryManager>().currentChapter].ChapterDialogues.Length)
             {
-                FindObjectOfType<StoryManager>().currentDialogue= 0;
+
+                FindObjectOfType<StoryManager>().currentDialogue = 0;
                 FindObjectOfType<StoryManager>().currentChapter++;
+
             }
+
         }
         
         //bottomRightMC.SetActive(true);
@@ -224,5 +221,63 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    void FadeToBlackTransitions()
+    {
+        if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 4)
+        {
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
+            
+        }
+        else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 5)
+        {
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
+            
+        }
+        //before chapter 1
+        else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 6)
+        {
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
+            FindObjectOfType<AudioManager>().Play("Birds", true);
+            FindObjectOfType<AudioManager>().Stop("RoomBGM");
+        }
+    }
+
+    public void StartNextDialogue()
+    {
+        
+        if (FindObjectOfType<StoryManager>().currentChapter == 0 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 5)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5].isDone
+                && FindObjectOfType<BackgroundManager>().GachaBackground.activeInHierarchy)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[5], true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 0 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 6)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6], true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 1 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 0)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].isDone)
+            {
+                FindObjectOfType<StoryManager>().currentChapter = 1;
+                FindObjectOfType<StoryManager>().currentDialogue = 0;
+
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0], true);
+            }
+        }
+        
     }
 }
