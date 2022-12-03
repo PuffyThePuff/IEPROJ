@@ -101,8 +101,13 @@ public class StoryAnimations : MonoBehaviour
             Debug.Log("on ch0 done");
             if (FadeBlackTransition != null)
             {
-                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered = true;
-                StartCoroutine(FadeBackgroundChange());
+                if (!FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered)
+                {
+                    FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered = true;
+                    FadeBlackTransition.SetTrigger("DramaticSceneEnter");
+                    
+                }
+                FadeBlackTransition.ResetTrigger("DramaticSceneEnter");
             }
             
             FindObjectOfType<AudioManager>().Play("Birds", true);

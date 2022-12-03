@@ -1767,6 +1767,26 @@ MonoBehaviour:
     ChapterScenes: []
     ChapterDialogues: []
     playerSpawn: {x: 0, y: 0, z: 0}
+  - ChapterNumber: 0
+    ChapterTitle: 
+    ChapterScenes: []
+    ChapterDialogues: []
+    playerSpawn: {x: 0, y: 0, z: 0}
+  - ChapterNumber: 0
+    ChapterTitle: 
+    ChapterScenes: []
+    ChapterDialogues: []
+    playerSpawn: {x: 0, y: 0, z: 0}
+  - ChapterNumber: 0
+    ChapterTitle: 
+    ChapterScenes: []
+    ChapterDialogues: []
+    playerSpawn: {x: 0, y: 0, z: 0}
+  - ChapterNumber: 0
+    ChapterTitle: 
+    ChapterScenes: []
+    ChapterDialogues: []
+    playerSpawn: {x: 0, y: 0, z: 0}
   isOnDialogue: 0
   currentChapter: 0
   currentDialogue: 0
