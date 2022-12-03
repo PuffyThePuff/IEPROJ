@@ -76,6 +76,8 @@ public static class Values
         public static float enhancedDamageMultiplier = 2;
         public static float basicHeal = 0.01f;
         public static float enhancedHealMultiplier = 5;
+        public static int setStunAmount = 1;
+        
     }
     
     public class Puzzle

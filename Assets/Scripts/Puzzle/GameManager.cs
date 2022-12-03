@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
     //status effects
     private bool enemyStunned = false;
     private int enemyStunnedRounds = 0;
+    private int enemyStunSetRounds = 1;
 
     private bool playerStunned = false;
     private int playerStunnedRounds = 0;
@@ -165,12 +166,15 @@ public class GameManager : MonoBehaviour
             PuzzleUIManager.Instance.charDialogue1.text = Values.Player.equippedChar1.catchPhrase;
             PuzzleUIManager.Instance.charDialogue2.text = Values.Player.equippedChar2.catchPhrase;
             PuzzleUIManager.Instance.charDialogue3.text = Values.Player.equippedChar3.catchPhrase;
+
             enemyMaxHp = Values.Enemy.maxHP;
             enemyCurrentHp = enemyMaxHp;
             enemyDmg = Values.Enemy.dmg;
+            enemyAttackInterval = Values.Enemy.attackInterval;
+
             basicDamage = Values.Player.basicDamage;
             enhancedDamageMultiplier = Values.Player.enhancedDamageMultiplier;
-            enemyAttackInterval = Values.Enemy.attackInterval;
+            enemyStunSetRounds = Values.Player.setStunAmount;
 
             bossExtraAttackPerStack = Values.Puzzle.BlackHexBurstDamage;
             selfHurtDamage = Values.Puzzle.PainHexPosionDamage;
@@ -1124,7 +1128,7 @@ public class GameManager : MonoBehaviour
                         enemyStunned = true;
                     }
 
-                    enemyStunnedRounds++;
+                    enemyStunnedRounds += enemyStunSetRounds;
                     currentDamageCounter += basicDamage * 0.7f;
                 }
 
@@ -1336,7 +1340,7 @@ public class GameManager : MonoBehaviour
                     if (!enemyStunned)
                         enemyStunned = true;
 
-                    enemyStunnedRounds += 3;
+                    enemyStunnedRounds += 3 + enemyStunSetRounds;
 
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
