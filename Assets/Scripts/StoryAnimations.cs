@@ -19,68 +19,10 @@ public class StoryAnimations : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //IF DIALOGUE HAS FINISHED, THEN DO THESE IF STATEMENTS DURING UPDATE
-        if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].isDone &&
-            !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].hasTriggered)
-        {
-            if (FadeBlackTransition != null)
-            {
-                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].hasTriggered = true;
-                StartCoroutine(FadeTransition(Values.SceneNames.ClassroomScene));
-            }
-        }
-        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].isDone &&
-            !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].hasTriggered)
-        {
-            if (FadeBlackTransition != null)
-            {
-                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].hasTriggered = true;
-                StartCoroutine(FadeTransition(Values.SceneNames.BedroomScene));
-            }
-
-        }
-        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].isDone &&
-                 !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered)
-        {
-            if (FadeBlackTransition != null)
-            {
-                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered = true;
-                StartCoroutine(FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                FindObjectOfType<AudioManager>().Play("BattleBGM",true);
-                Values.Puzzle.isTutorial = true;
-            }
-
-        }
-        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[3].isDone &&
-                 !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[3].hasTriggered)
-        {
-            if (FadeBlackTransition != null)
-            {
-                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[3].hasTriggered = true;
-                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4], true);
-                FindObjectOfType<AudioManager>().Stop("BattleBGM");
-                FindObjectOfType<AudioManager>().Play("RoomBGM", true);
-            }
-
-        }
-        else if (FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].isDone &&
-                 !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].hasTriggered)
-        {
-            if (FadeBlackTransition != null)
-            {
-                FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].hasTriggered = true;
-                StartCoroutine(FadeTransition(Values.SceneNames.ClassroomScene));
-            }
-            
-
-        }
-
-
 
     }
 
-    IEnumerator FadeTransition(string scenetoLoad)
+    public IEnumerator FadeTransition(string scenetoLoad)
     {
         FadeBlackTransition.SetTrigger("DramaticSceneEnter");
         SceneChange();

@@ -2529,6 +2529,7 @@ MonoBehaviour:
   isBoardInteractable: 1
   selected: []
   powerups: []
+  lockedHexes: []
   catchphraseDuration: 3.5
   catchPhraseTick: 0
   specialPiecesCount: 0

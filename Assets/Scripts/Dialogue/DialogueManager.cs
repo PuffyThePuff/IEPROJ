@@ -195,6 +195,8 @@ public class DialogueManager : MonoBehaviour
 
             }
 
+            onDialogueFinish();
+
         }
         
         //bottomRightMC.SetActive(true);
@@ -246,7 +248,7 @@ public class DialogueManager : MonoBehaviour
 
     public void StartNextDialogue()
     {
-        
+        //DO THIS ONLY IF NEXT DIALOGUE IS SAME SCENE
         if (FindObjectOfType<StoryManager>().currentChapter == 0 &&
             FindObjectOfType<StoryManager>().currentDialogue == 5)
         {
@@ -279,5 +281,93 @@ public class DialogueManager : MonoBehaviour
             }
         }
         
+
+    }
+
+    void onDialogueFinish()
+    {
+        //IF DIALOGUE HAS FINISHED, THEN DO THESE IF STATEMENTS DURING UPDATE
+        //DO THIS WHEN LOADING SCENES
+        if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].isDone &&
+            !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].hasTriggered)
+        {
+            if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].hasTriggered = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.ClassroomScene));
+            }
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].isDone &&
+            !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].hasTriggered)
+        {
+            if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[1].hasTriggered = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.BedroomScene));
+            }
+
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered)
+        {
+            if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
+                FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                FindObjectOfType<AudioManager>().Play("BattleBGM",true);
+                Values.Puzzle.isTutorial = true;
+            }
+
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].hasTriggered)
+        {
+            if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].hasTriggered = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.ClassroomScene));
+            }
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[1].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[1].hasTriggered)
+        {
+            if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[1].hasTriggered = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.BedroomScene));
+            }
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[2].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[2].hasTriggered)
+        {
+            if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[2].hasTriggered = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.ClassroomScene));
+            }
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[3].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[3].hasTriggered)
+        {
+            if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[3].hasTriggered = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.BedroomScene));
+            }
+        }
+        else if (FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[4].isDone &&
+                 !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[4].hasTriggered)
+        {
+            if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+            {
+                FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[4].hasTriggered = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
+                FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                Values.Puzzle.isTutorial = false;
+                Values.Puzzle.isRigged = true;
+            }
+        }
     }
 }

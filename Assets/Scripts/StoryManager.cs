@@ -1203,8 +1203,8 @@ public class StoryManager : MonoBehaviour
     {
         //WHEN NEXT SCENE IS A DIFFERENT SCENE, PUT IT HERE
         //IF DIALOGUE JUST INITIALIZED, THEN DO THESE IF STATEMENTS DURING UPDATE
-        if (FindObjectOfType<StoryManager>().currentDialogue == 1 &&
-            FindObjectOfType<StoryManager>().currentChapter == 0)
+        if (FindObjectOfType<StoryManager>().currentChapter == 0 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 1)
         {
 
             if (SceneManager.GetActiveScene().name == Values.SceneNames.ClassroomScene
@@ -1227,6 +1227,18 @@ public class StoryManager : MonoBehaviour
                 FindObjectOfType<AudioManager>().Play("RoomBGM", true);
             }
         }
+        else if (FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                 FindObjectOfType<StoryManager>().currentDialogue == 4)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[4], true);
+                FindObjectOfType<AudioManager>().Stop("BattleBGM");
+                FindObjectOfType<AudioManager>().Play("RoomBGM", true);
+            }
+
+        }
         if (FindObjectOfType<StoryManager>().currentChapter == 1 &&
             FindObjectOfType<StoryManager>().currentDialogue == 1)
         {
@@ -1236,6 +1248,50 @@ public class StoryManager : MonoBehaviour
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[1], true);
                 FindObjectOfType<AudioManager>().Stop("Birds");
                 FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 1 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 2)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[2].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[2], true);
+                FindObjectOfType<AudioManager>().Stop("ClassroomBGM");
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 1 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 3)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.ClassroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[3].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[3], true);
+                //FindObjectOfType<AudioManager>().Stop("ClassroomBGM");
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 1 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 4)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[4].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[4], true);
+                //FindObjectOfType<AudioManager>().Stop("ClassroomBGM");
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 1 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 5)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[5].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[5], true);
+                //FindObjectOfType<AudioManager>().Stop("ClassroomBGM");
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
             }
         }
 

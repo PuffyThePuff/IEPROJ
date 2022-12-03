@@ -81,6 +81,8 @@ public static class Values
     public class Puzzle
     {
         public static bool isTutorial = false;
+        public static bool isRigged = false;
+        
         public static int hexBlockerCount = 3;
         public static float PainHexPosionDamage = 50.0f;
         public static float BlackHexBurstDamage = 10.0f;

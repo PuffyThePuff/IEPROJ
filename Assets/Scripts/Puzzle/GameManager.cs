@@ -112,6 +112,9 @@ public class GameManager : MonoBehaviour
     private int xDimension = 7;
     private int yDimension = 4;
 
+    public static bool isRigged = false;
+    public static int enemyLevel = 1;
+
     //tutorial
     public static bool isTutorial = false;
     public static int tutorialPhase = 0;
@@ -144,9 +147,10 @@ public class GameManager : MonoBehaviour
 
         //setting up stats accoroding to values.cs
         isTutorial = Values.Puzzle.isTutorial;
+        isRigged = Values.Puzzle.isRigged;
+        enemyLevel = Values.Enemy.enemyLevel;
 
-
-        if(!isTutorial)
+        if (!isTutorial)
         {
             //setup game
             c1Index = Values.Player.equippedChar1.index;
@@ -413,7 +417,7 @@ public class GameManager : MonoBehaviour
 
             else if (tutorialPhase == 6 && Input.GetMouseButtonUp(0))
             {
-                SceneManager.LoadScene("TransitionSample");
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
                 FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
                     .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
                 FindObjectOfType<StoryManager>().currentDialogue++;
@@ -455,7 +459,7 @@ public class GameManager : MonoBehaviour
         }
 
 
-            if (Input.GetMouseButtonUp(0))   //if left mouse button released
+        if (Input.GetMouseButtonUp(0))   //if left mouse button released
         {
             if(!isTutorial)
             {
@@ -594,6 +598,70 @@ public class GameManager : MonoBehaviour
             }
 
             hasEnded = true;
+        }
+
+        if (hasEnded && gameState == 1)
+        {
+            if (enemyLevel == 1 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (enemyLevel == 2 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (enemyLevel == 3 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+
+        }
+        else if (hasEnded && gameState == -1)
+        {
+            if (isRigged && enemyLevel == 1 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (!isRigged && enemyLevel == 1 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
+
+            if (isRigged && enemyLevel == 2 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (!isRigged && enemyLevel == 2 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
+
+            if (isRigged && enemyLevel == 3 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (!isRigged && enemyLevel == 3 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
         }
     }
 
@@ -2158,7 +2226,7 @@ public class GameManager : MonoBehaviour
             PuzzleUIManager.Instance.arrowGroup5.SetActive(false);
 
 
-
+            PuzzleUIManager.Instance.endText.GetComponentInChildren<Text>().text = "Click anywhere to exit tutorial!";
             PuzzleUIManager.Instance.endText.SetActive(true);
         }
 
@@ -2189,15 +2257,26 @@ public class GameManager : MonoBehaviour
 
     private void OnWin()
     {
-        Values.Player.gold += 25;
+        //Values.Player.gold += 25;
         Debug.Log("Win");
-        SceneManager.LoadScene("LevelSetupTest");
+        PuzzleUIManager.Instance.endText.GetComponentInChildren<Text>().text = "Victory!";
+        PuzzleUIManager.Instance.endText.SetActive(true);
+        //SceneManager.LoadScene("LevelSetupTest");
     }
 
     private void OnLose()
     {
         Debug.Log("Lose");
-        SceneManager.LoadScene("LevelSetupTest");
+        PuzzleUIManager.Instance.endText.SetActive(true);
+        if (isRigged)
+        {
+            PuzzleUIManager.Instance.endText.GetComponentInChildren<Text>().text = "Game Over!";
+        }
+        else
+        {
+            PuzzleUIManager.Instance.endText.GetComponentInChildren<Text>().text = "Try Again!";
+        }
+        //SceneManager.LoadScene("LevelSetupTest");
 
     }
 }
