@@ -22,7 +22,7 @@ public class DialogueManager : MonoBehaviour
 
     private Queue<string> sentences;
     private bool isStoryDialogue = false;
-    private int dequeueIndex = 0;
+    public int dequeueIndex = 0;
 
     private string currentSentence;
     private bool isFullSentence = false;
@@ -30,17 +30,20 @@ public class DialogueManager : MonoBehaviour
     private int ChapterNum;
     private int DialogueNum;
 
-    
+    public bool onAnimation = false;
+    public bool hasDialogueEnded = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        onAnimation = false;
+        hasDialogueEnded = false;
     }
 
     public void StartDialogue(Dialogue dialogue, bool isStoryRelated = false)
     {
-        
 
+        hasDialogueEnded = false;
         bottomRightMC.SetActive(false);
         name1TextBox.SetActive(false);
         name2TextBox.SetActive(false);
@@ -55,11 +58,15 @@ public class DialogueManager : MonoBehaviour
         Debug.Log("Starting conversation with " + dialogue.name);
 
         name1Text.text = dialogue.name;
-        Speaker1Image.sprite = dialogue.speaker1Sprites[0];
+        if (dialogue.speaker1Sprites != null)
+        {
+            Speaker1Image.sprite = dialogue.speaker1Sprites[0];
+            Speaker1Image.gameObject.SetActive(true);
+        }
 
         ChapterNum = dialogue.chapterNum;
         DialogueNum = dialogue.dialogueIndex;
-        Speaker1Image.gameObject.SetActive(true);
+        
         if ((ChapterNum == 0 && DialogueNum == 0) || (ChapterNum == 0 && DialogueNum == 5))
         {
             Speaker1Image.gameObject.SetActive(false);
@@ -68,8 +75,11 @@ public class DialogueManager : MonoBehaviour
         if (dialogue.otherName != "")
         {
             name2Text.text = dialogue.otherName;
-            Speaker2Image.sprite = dialogue.speaker2Sprites[0];
-            Speaker2Image.gameObject.SetActive(true);
+            if (dialogue.speaker2Sprites != null)
+            {
+                Speaker2Image.sprite = dialogue.speaker2Sprites[0];
+                Speaker2Image.gameObject.SetActive(true);
+            }
         }
         else
         {
@@ -103,19 +113,23 @@ public class DialogueManager : MonoBehaviour
         Speaker1Image.gameObject.SetActive(true);
         if ((ChapterNum == 0 && DialogueNum == 0) || (ChapterNum == 0 && DialogueNum == 5))
         {
-            Debug.Log("mc false 2");
+            //Debug.Log("mc false 2");
             Speaker1Image.gameObject.SetActive(false);
         }
 
         if (name2Text.text != "")
             Speaker2Image.gameObject.SetActive(true);
 
+        TriggerCutSceneInDialogue();
+
         foreach (int index in FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
-            .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker1Lines)
+                     .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker1Lines)
         {
             if (index == dequeueIndex)
             {
                 //grey out sprite2
+                Speaker2Image.color = Color.grey;
+                Speaker1Image.color = Color.white;
                 name1TextBox.SetActive(true);
                 name2TextBox.SetActive(false);
                 isSpeaker1 = true;
@@ -131,6 +145,8 @@ public class DialogueManager : MonoBehaviour
                 if (index == dequeueIndex)
                 {
                     //grey out sprite1
+                    Speaker1Image.color = Color.grey;
+                    Speaker2Image.color = Color.white;
                     name1TextBox.SetActive(false);
                     name2TextBox.SetActive(true);
                     isSpeaker2 = true;
@@ -138,17 +154,61 @@ public class DialogueManager : MonoBehaviour
             }
         }
 
+        
+
+        if (FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker1ExpressionIndex != null)
+        {
+            
+            int expressionType = FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker1ExpressionIndex[dequeueIndex];
+
+            if (FindObjectOfType<StoryManager>()
+                    .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker1Sprites != null)
+            {
+                Speaker1Image.sprite = FindObjectOfType<StoryManager>()
+                    .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker1Sprites[expressionType];
+            }
+
+        }
+
+        if (FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker2ExpressionIndex != null)
+        {
+            
+            int expressionType = FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker2ExpressionIndex[dequeueIndex];
+
+            if (FindObjectOfType<StoryManager>()
+                    .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker2Sprites != null)
+            {
+                Speaker2Image.sprite = FindObjectOfType<StoryManager>()
+                    .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].speaker2Sprites[expressionType];
+
+            }
+
+        }
+
+
         if (!isSpeaker1 && !isSpeaker2)
         {
-            Debug.Log("mc false 3");
+            //Debug.Log("mc false 3");
 
             name1TextBox.SetActive(false);
             name2TextBox.SetActive(false);
             Speaker1Image.gameObject.SetActive(false);
             Speaker2Image.gameObject.SetActive(false);
         }
+
+        HideImageOnSpecialCondition();
         dequeueIndex++;
-        
+       
 
         currentSentence = sentence;
         StartCoroutine(TypeSentence(sentence));
@@ -174,6 +234,7 @@ public class DialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
+        hasDialogueEnded = true;
         FindObjectOfType<StoryManager>().isOnDialogue = false;
         Debug.Log("End of Conversation");
         dialogueUI.SetActive(false);
@@ -206,23 +267,30 @@ public class DialogueManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if (FindObjectOfType<StoryManager>().isOnDialogue)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            if (Input.GetKeyDown(KeyCode.Mouse0) && !onAnimation)
             {
                 if (isFullSentence == false)
                 {
+
                     StopAllCoroutines();
                     dialogueText.text = currentSentence;
                     isFullSentence = true;
+
                 }
                 else
                 {
+
                     DisplayNextSentence();
                     isFullSentence = false;
+
                 }
             }
         }
+        
+
     }
 
     void FadeToBlackTransitions()
@@ -727,11 +795,60 @@ public class DialogueManager : MonoBehaviour
             !(FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 0) &&
             !(FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 2) &&
             !(FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 0) &&
-            !(FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 1) )
+            !(FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 1) &&
+            !(FindObjectOfType<StoryManager>().currentChapter == 5 && FindObjectOfType<StoryManager>().currentDialogue == 0))
         {
             FindObjectOfType<StoryManager>().currentDialogue++;
         }
         
         
     }
+
+    void HideImageOnSpecialCondition()
+    {
+        Color alphaColor = Color.clear;
+        if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+             FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex <= 2)
+        {
+            
+            Speaker2Image.color = Color.clear;
+            Speaker1Image.color = Color.white;
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex > 2)
+        {
+            Speaker1Image.color = Color.clear;
+            Speaker2Image.color = Color.white;
+
+            
+            Speaker2Image.gameObject.SetActive(true);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 4) )
+        {
+            Speaker1Image.color = Color.clear;
+            Speaker2Image.color = Color.white;
+
+
+            Speaker2Image.gameObject.SetActive(true);
+        }
+    }
+
+    void TriggerCutSceneInDialogue()
+    {
+        if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+             FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 3)
+        {
+            
+            //FindObjectOfType<StoryManager>().isOnDialogue = false;
+            //dialogueUI.SetActive(false);
+                
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FlashBangBackgroundChange(true));
+
+            
+        }
+    }
+
+
+    
 }

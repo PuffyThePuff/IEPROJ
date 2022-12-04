@@ -8,6 +8,7 @@ public class BackgroundManager : MonoBehaviour
     public GameObject EmptyBedroom;
     public GameObject CharacterBedroom;
     public GameObject GachaBackground;
+    public GameObject InGameBackground;
 
     // Start is called before the first frame update
     void Start()

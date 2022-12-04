@@ -63,19 +63,27 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[0].sentences[5] = "Time for school I guess.";
         StoryChapters[0].ChapterDialogues[0].speaker1Sprites = new Sprite[] {};
         StoryChapters[0].ChapterDialogues[0].speaker1Sprites = McSprites;
+
         StoryChapters[0].ChapterDialogues[0].chapterNum = 0;
         StoryChapters[0].ChapterDialogues[0].dialogueIndex = 0;
+
+        StoryChapters[0].ChapterDialogues[0].speaker1ExpressionIndex = new int[StoryChapters[0].ChapterDialogues[0].sentences.Length];
+        for (int k = 0; k < StoryChapters[0].ChapterDialogues[0].speaker1ExpressionIndex.Length; k++)
+        {
+            StoryChapters[0].ChapterDialogues[0].speaker1ExpressionIndex[k] = 0;
+        }
+        
         //fade to black i guess...
-        Debug.Log("c0d0 success");
+        //Debug.Log("c0d0 success");
 
         //goes to school and meets new friend 
         //chapter 1 - dialogue 2 - 2 speakers
         StoryChapters[0].ChapterDialogues[1] = new Dialogue();
         StoryChapters[0].ChapterDialogues[1].name = mainCharacterName;
         StoryChapters[0].ChapterDialogues[1].otherName = friendName;
-        StoryChapters[0].ChapterDialogues[1].sentences = new string[32];
-        StoryChapters[0].ChapterDialogues[1].speaker1Lines = new int[] { 1, 2, 5, 7, 10, 12, 14, 16, 17, 19, 23, 26, 28, 31};
-        StoryChapters[0].ChapterDialogues[1].speaker2Lines = new int[] { 0, 3, 4, 6, 8, 9, 11, 13, 15, 18, 20, 21, 22, 24, 27, 29, 30} ;
+        StoryChapters[0].ChapterDialogues[1].sentences = new string[36];
+        StoryChapters[0].ChapterDialogues[1].speaker1Lines = new int[] { 5, 6, 9, 11, 14, 16, 18, 20, 21, 23, 27, 30, 32, 35};
+        StoryChapters[0].ChapterDialogues[1].speaker2Lines = new int[] { 4, 7, 8, 10, 12, 13, 15, 17, 19, 22, 24, 25, 26, 28, 31, 33, 34} ;
         StoryChapters[0].ChapterDialogues[1].speaker1Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[1].speaker1Sprites = McSprites;
         StoryChapters[0].ChapterDialogues[1].speaker2Sprites = new Sprite[] { };
@@ -84,82 +92,145 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[1].dialogueIndex = 1;
         //narration [] = 25
 
+        #region Expressions
+        StoryChapters[0].ChapterDialogues[1].speaker1ExpressionIndex = new int[StoryChapters[0].ChapterDialogues[1].sentences.Length];
+        for (int k = 0; k < StoryChapters[0].ChapterDialogues[1].speaker1ExpressionIndex.Length; k++)
+        {
+            if (k == 6 || k == 18 || k == 19 || k == 20)
+            {
+                StoryChapters[0].ChapterDialogues[1].speaker1ExpressionIndex[k] = 4;
+            }
+            else if (k == 30)
+            {
+                StoryChapters[0].ChapterDialogues[1].speaker1ExpressionIndex[k] = 2;
+            }
+            else
+            {
+                StoryChapters[0].ChapterDialogues[1].speaker1ExpressionIndex[k] = 0;
+            }
+        }
 
-        StoryChapters[0].ChapterDialogues[1].sentences[0] = "Hey there! You don’t look too good. School draining you dead already?";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[1] = "Ah, h-hi.";
-        StoryChapters[0].ChapterDialogues[1].sentences[2] = "And, no, I just had a rough start to my day, that’s all.";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[3] = "But it’s lunch time though?";
-        StoryChapters[0].ChapterDialogues[1].sentences[4] = "Anyways, my name is Hal, what’s yours?";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[5] = "It’s Yuuki.";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[6] = "You into video games?";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[7] = "Yeah. Why do you ask?";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[8] = "I saw you have a very familiar rainbow-colored multiprism keychain, figured you were into that game series";
-        StoryChapters[0].ChapterDialogues[1].sentences[9] = "Anyways, what kind of games are you playing?";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[10] = "Well, I was into MMORPGs at a certain period of time. Like Last Legend 14, along with Last Legend 13,LL13-2, and LL13 - Thunder Rebounds. So, generally JRPGs.";
-        
-        StoryChapters[0].ChapterDialogues[1].sentences[11] = "Interesting mix! Have you ever played gacha games before?";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[12] = "I’ve heard of them, but I haven’t tried any yet. Too busy with MMOs, but… I guess I won’t be playing LL14 anytime soon.";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[13] = "Why is that, if you don't mind me asking?";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[14] = "I broke up with my girlfriend.";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[15] = "That’s rough buddy.";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[16] = "...";
-        StoryChapters[0].ChapterDialogues[1].sentences[17] = "Anyways, you were asking?";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[18] = "Ah right! The reason why I asked you is because there’s this new game that got released today. It’s called ‘MagiHimeDive’!";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[19] = "Magihimi-what?";
-
-        StoryChapters[0].ChapterDialogues[1].sentences[20] = "MagiHimeDive!, it’s actually localized as Magical Princess Dive, but we call it MagiHimeDive for simplicity’s sake";
-        StoryChapters[0].ChapterDialogues[1].sentences[21] = "It’s a gacha game where you save the world as a tactician from another world, and you command princesses to fight for you!";
-        StoryChapters[0].ChapterDialogues[1].sentences[22] = "The waifus look amazing!";
+        StoryChapters[0].ChapterDialogues[1].speaker2ExpressionIndex = new int[StoryChapters[0].ChapterDialogues[1].sentences.Length];
+        for (int k = 0; k < StoryChapters[0].ChapterDialogues[1].speaker2ExpressionIndex.Length; k++)
+        {
+            if (k == 7 || k == 11 || k == 12 || k == 26 || k == 33)
+            {
+                StoryChapters[0].ChapterDialogues[1].speaker2ExpressionIndex[k] = 1;
+            }
+            else if (k == 20)
+            {
+                StoryChapters[0].ChapterDialogues[1].speaker2ExpressionIndex[k] = 2;
+            }
+            else if (k == 19)
+            {
+                StoryChapters[0].ChapterDialogues[1].speaker2ExpressionIndex[k] = 3;
+            }
+            else
+            {
+                StoryChapters[0].ChapterDialogues[1].speaker2ExpressionIndex[k] = 0;
+            }
+        }
 
 
-        StoryChapters[0].ChapterDialogues[1].sentences[23] = "I-I see…";
+        #endregion
 
-        StoryChapters[0].ChapterDialogues[1].sentences[24] = "Well, have a look at the first one they give you!";
 
-        //narration
-        StoryChapters[0].ChapterDialogues[1].sentences[25] = "A blonde girl wearing something reminiscent of a school uniform smiles, facing the screen. A quick image of a silhouette of a woman flashes by.";
+        StoryChapters[0].ChapterDialogues[1].sentences[0] =
+            "School. A place filled with dying hopes and dreams. People just chatting about whatever they fancy. The newest makeup set, the latest sports game, their romantic interests.";
+        StoryChapters[0].ChapterDialogues[1].sentences[1] =
+            "I take a seat in the far corner of the room. The gray light peered through the window. Slowly, my thoughts my previous relationship start to spring up again, drowning out the noise of the crowd around me.";
+        StoryChapters[0].ChapterDialogues[1].sentences[2] = "Why?";
+        StoryChapters[0].ChapterDialogues[1].sentences[3] = "What did I do wrong?";
+        StoryChapters[0].ChapterDialogues[1].sentences[4] = "Hey there! You don’t look too good. School draining you dead already?";
+        StoryChapters[0].ChapterDialogues[1].sentences[5] = "Ah, h-hi.";
+        StoryChapters[0].ChapterDialogues[1].sentences[6] = "And, no, I just had a rough start to my day, that’s all.";
+        StoryChapters[0].ChapterDialogues[1].sentences[7] = "Oof, mood.";
+        StoryChapters[0].ChapterDialogues[1].sentences[8] = "Anyways, my name is Halvard. You can just call me Hal, what’s yours?";
+        StoryChapters[0].ChapterDialogues[1].sentences[9] = "It’s Yuuki.";
+        StoryChapters[0].ChapterDialogues[1].sentences[10] = "You into video games?";
+        StoryChapters[0].ChapterDialogues[1].sentences[11] = "Yeah. Why do you ask?";
+        StoryChapters[0].ChapterDialogues[1].sentences[12] = "I saw you have a very familiar rainbow-colored multiprism keychain, figured you were into that game series";
+        StoryChapters[0].ChapterDialogues[1].sentences[13] = "Anyways, what kind of games are you playing?";
+        StoryChapters[0].ChapterDialogues[1].sentences[14] = "Well, I was into MMORPGs at a certain period of time. Like Last Legend 14, along with Last Legend 13,LL13-2, and LL13 - Thunder Rebounds. So, generally JRPGs.";
+        StoryChapters[0].ChapterDialogues[1].sentences[15] = "Interesting mix! Have you ever played gacha games before?";
+        StoryChapters[0].ChapterDialogues[1].sentences[16] = "I’ve heard of them, but I haven’t tried any yet. Too busy with MMOs, but… I guess I won’t be playing LL14 anytime soon.";
 
-        StoryChapters[0].ChapterDialogues[1].sentences[26] = "W-Wow. She does look pretty. Is it available for Cyborg devices?";
+        StoryChapters[0].ChapterDialogues[1].sentences[17] = "Why is that, if you don't mind me asking?";
 
-        StoryChapters[0].ChapterDialogues[1].sentences[27] = "Yeah! So, are you interested in playing?";
+        StoryChapters[0].ChapterDialogues[1].sentences[18] = "A breakup.";
 
-        StoryChapters[0].ChapterDialogues[1].sentences[28] = "Sure. Let me download it right now.";
-        
-        StoryChapters[0].ChapterDialogues[1].sentences[29] = "Alright! Here’s my friend code!";
+        StoryChapters[0].ChapterDialogues[1].sentences[19] = "That’s rough buddy.";
 
-        StoryChapters[0].ChapterDialogues[1].sentences[30] = "Oh! My class is in another room. I’ll go ahead.";
+        StoryChapters[0].ChapterDialogues[1].sentences[20] = "...";
+        StoryChapters[0].ChapterDialogues[1].sentences[21] = "Anyways, you were asking?";
 
-        StoryChapters[0].ChapterDialogues[1].sentences[31] = "Alright…";
+        StoryChapters[0].ChapterDialogues[1].sentences[22] = "Ah right! The reason why I asked you is because there’s this new game that got released today. It’s called ‘MagiHimeDive’!";
+
+        StoryChapters[0].ChapterDialogues[1].sentences[23] = "Magihimi-what?";
+
+        StoryChapters[0].ChapterDialogues[1].sentences[24] = "MagiHimeDive!, it’s actually localized as Magical Princess Dive, but we call it MagiHimeDive for simplicity’s sake";
+        StoryChapters[0].ChapterDialogues[1].sentences[25] = "It’s a gacha game where you save the world as a tactician from another world, and you command princesses to fight for you!";
+        StoryChapters[0].ChapterDialogues[1].sentences[26] = "The waifus look amazing!";
+
+        StoryChapters[0].ChapterDialogues[1].sentences[27] = "I-I see…";
+
+        StoryChapters[0].ChapterDialogues[1].sentences[28] = "Well, have a look at the first one they give you!";
+        StoryChapters[0].ChapterDialogues[1].sentences[29] = "A blonde girl wearing something reminiscent of a school uniform smiles, facing the screen. A quick image of a silhouette of a woman flashes by.";
+        StoryChapters[0].ChapterDialogues[1].sentences[30] = "W-Wow. She does look pretty. Is it available for Cyborg devices?";
+        StoryChapters[0].ChapterDialogues[1].sentences[31] = "Yeah! So, are you interested in playing?";
+        StoryChapters[0].ChapterDialogues[1].sentences[32] = "Sure. Let me download it right now.";
+        StoryChapters[0].ChapterDialogues[1].sentences[33] = "Alright! Here’s my friend code!";
+        StoryChapters[0].ChapterDialogues[1].sentences[34] = "Oh! My class is in another room. I’ll go ahead.";
+        StoryChapters[0].ChapterDialogues[1].sentences[35] = "Alright…";
+
         //screen fade to black then back to dimly lit room
-        Debug.Log("c0d1 success");
+        //Debug.Log("c0d1 success");
 
         //chapter 1 - dialogue 3
         StoryChapters[0].ChapterDialogues[2] = new Dialogue();
         StoryChapters[0].ChapterDialogues[2].name = phoneName;
         StoryChapters[0].ChapterDialogues[2].otherName = aliceName;
-        StoryChapters[0].ChapterDialogues[2].sentences = new string[14];
-        StoryChapters[0].ChapterDialogues[2].speaker1Lines = new int[] { 0, 1, 2, 8};
-        StoryChapters[0].ChapterDialogues[2].speaker2Lines = new int[] { 5, 6, 9, 11, 13};
+        StoryChapters[0].ChapterDialogues[2].sentences = new string[18];
+        StoryChapters[0].ChapterDialogues[2].speaker1Lines = new int[] { 0, 1, 2, 8, 10, 17};
+        StoryChapters[0].ChapterDialogues[2].speaker2Lines = new int[] { 5, 6, 9, 12};
         StoryChapters[0].ChapterDialogues[2].speaker1Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[2].speaker1Sprites = McSprites;
         StoryChapters[0].ChapterDialogues[2].speaker2Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[2].speaker2Sprites = AliceSprites;
         StoryChapters[0].ChapterDialogues[2].chapterNum = 0;
         StoryChapters[0].ChapterDialogues[2].dialogueIndex = 2;
+
+        #region Expressions
+        StoryChapters[0].ChapterDialogues[2].speaker1ExpressionIndex = new int[StoryChapters[0].ChapterDialogues[2].sentences.Length];
+        for (int k = 0; k < StoryChapters[0].ChapterDialogues[2].speaker1ExpressionIndex.Length; k++)
+        {
+            StoryChapters[0].ChapterDialogues[2].speaker1ExpressionIndex[k] = 0;
+            
+        }
+
+        StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex = new int[StoryChapters[0].ChapterDialogues[2].sentences.Length];
+        for (int k = 0; k < StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex.Length; k++)
+        {
+            if (k == 5)
+            {
+                StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex[k] = 1;
+            }
+            else if (k == 11)
+            {
+                StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex[k] = 2;
+            }
+            else if (k == 9 || k == 12 || k == 13 || k == 14 || k == 15 || k == 16)
+            {
+                StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex[k] = 3;
+            }
+            else
+            {
+                StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex[k] = 0;
+            }
+        }
+
+
+        #endregion
 
         StoryChapters[0].ChapterDialogues[2].sentences[0] = "...And it's done.";
         StoryChapters[0].ChapterDialogues[2].sentences[1] = "Still, the game is relatively light for a gacha game.";
@@ -174,26 +245,33 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[2].sentences[6] = "Quickly, take my hand!";
 
         //spawn phone image
-        StoryChapters[0].ChapterDialogues[2].sentences[7] = "And just like that, I was whisked away.The girl dragged me out of the dimly lit room… And it was there that I saw it, a world of color.";
+        StoryChapters[0].ChapterDialogues[2].sentences[7] = "And just like that, I was whisked away. The girl dragged me out of the dimly lit room… And it was there that I saw it, a world of color.";
         
         StoryChapters[0].ChapterDialogues[2].sentences[8] = "What are we, colorless?";
 
         StoryChapters[0].ChapterDialogues[2].sentences[9] = "Hero, there’s no time to explain, kiss the back of my palm!";
 
         //phone
-        StoryChapters[0].ChapterDialogues[2].sentences[10] = "[Phone]“Huh? Why?” I asked out of surprise. As I asked, however, the area immediately began to feel eerie, and a shiver went down my spine.";
+        StoryChapters[0].ChapterDialogues[2].sentences[10] = "Huh? Why? ";
+        StoryChapters[0].ChapterDialogues[2].sentences[11] = "As I asked, however, the area immediately began to feel eerie, and a shiver went down my spine.";
         
-        StoryChapters[0].ChapterDialogues[2].sentences[11] = "Hurry!";
+        StoryChapters[0].ChapterDialogues[2].sentences[12] = "Hurry!";
 
         //phone
-        StoryChapters[0].ChapterDialogues[2].sentences[12] = "[Phone]Alice shoves her hand towards my face, and I immediately kiss it.As I pull back, A mark is left on the back of her palm.A crown. A smile of confidence replaces her once nervous face.Light begins to combine around the mark on her hand, and a sword forms from the light";
-        
-        StoryChapters[0].ChapterDialogues[2].sentences[13] = "Alright! Let’s do this!";
-        Debug.Log("c0d2 success");
+        StoryChapters[0].ChapterDialogues[2].sentences[13] = "Alice shoves her hand towards my face, and I immediately kiss it.";
+        StoryChapters[0].ChapterDialogues[2].sentences[14] = "As I pull back, A mark is left on the back of her palm. A crown. ";
+        StoryChapters[0].ChapterDialogues[2].sentences[15] = "A smile of confidence replaces her once nervous face.";
+        StoryChapters[0].ChapterDialogues[2].sentences[16] = "Light begins to combine around the mark on her hand, and a sword forms from the light";
+
+        StoryChapters[0].ChapterDialogues[2].sentences[17] = "Alright! Let’s do this!";
+        //Debug.Log("c0d2 success");
+
 
         //start phone game (load phone game scene)
         StoryChapters[0].ChapterDialogues[3] = new Dialogue();
-        Debug.Log("c0d3 success");
+        //Debug.Log("c0d3 success");
+
+
         //dia4
         StoryChapters[0].ChapterDialogues[4] = new Dialogue();
         StoryChapters[0].ChapterDialogues[4].name = phoneName;
@@ -1117,11 +1195,11 @@ public class StoryManager : MonoBehaviour
 
         StoryChapters[j].ChapterDialogues[i].speaker1Lines = new int[] { 0, 1,2,3,4,5,6,8,9,11,14,15,16,17,22 };
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
-        //StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
+        StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
 
         StoryChapters[j].ChapterDialogues[i].speaker2Lines = new int[] { 7,10,12,13,18,19,20,21,23,24,25 };
         StoryChapters[j].ChapterDialogues[i].speaker2Sprites = new Sprite[] { };
-        //StoryChapters[j].ChapterDialogues[i].speaker2Sprites = McSprites;
+        StoryChapters[j].ChapterDialogues[i].speaker2Sprites = NFSprites;
 
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;

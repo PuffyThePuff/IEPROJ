@@ -33,14 +33,26 @@ public class StoryAnimations : MonoBehaviour
         
     }
 
-    public IEnumerator FadeBackgroundChange()
+    public IEnumerator FadeBackgroundChange(bool isMidDialogue = false)
     {
         
         FadeBlackTransition.SetTrigger("DramaticSceneEnter");
         yield return new WaitForSeconds(1.9f);
-        BackgrondChange();
+        BackgrondChange(isMidDialogue);
         yield return new WaitForSeconds(1.0f);
         FindObjectOfType<DialogueManager>().StartNextDialogue();
+    }
+
+    public IEnumerator FlashBangBackgroundChange(bool isMidDialogue = false)
+    {
+        FindObjectOfType<DialogueManager>().onAnimation = true;
+        FindObjectOfType<DialogueManager>().dialogueUI.SetActive(false);
+        FadeBlackTransition.SetTrigger("FlashBang");
+        yield return new WaitForSeconds(0.5f);
+        BackgrondChange(isMidDialogue);
+        yield return new WaitForSeconds(0.5f);
+        FindObjectOfType<DialogueManager>().dialogueUI.SetActive(true);
+        FindObjectOfType<DialogueManager>().onAnimation = false;
     }
 
 
@@ -61,41 +73,50 @@ public class StoryAnimations : MonoBehaviour
 
     }
 
-    public void BackgrondChange()
+    public void BackgrondChange(bool isMidDialogue = false)
     {
-        if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 0)
+        FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(false);
+        FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
+        FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(false);
+        FindObjectOfType<BackgroundManager>().InGameBackground.SetActive(false);
+
+        if (!isMidDialogue)
         {
-            FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(false);
-            FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(true);
-            FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(false);
-            
-        }
-        else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 5)
-        {
-            FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
-            FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(false);
-            FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
-        }
-        else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 2)
-        {
-            FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
-            FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.black;
-            FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(false);
-            FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
-        }
-        else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 3)
-        {
-            FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
-            FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.black;
-            FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(false);
-            FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
+            if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 0)
+            {
+                FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(true);
+            }
+            else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 5)
+            {
+                FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+            }
+            else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 2)
+            {
+                FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+                FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.black;
+            }
+            else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 3)
+            {
+                FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+                FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.black;
+            }
+            else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 4)
+            {
+                FindObjectOfType<BackgroundManager>().InGameBackground.SetActive(true);
+            }
+            else
+            {
+                FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(true);
+            }
         }
         else
         {
-            FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(true);
-            FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
-            FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(false);
+            if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 2)
+            {
+                FindObjectOfType<BackgroundManager>().InGameBackground.SetActive(true);
+            }
         }
+        
     }
 
     public void SceneChange()
