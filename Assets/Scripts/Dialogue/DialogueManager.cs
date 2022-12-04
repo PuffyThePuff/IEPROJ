@@ -839,10 +839,6 @@ public class DialogueManager : MonoBehaviour
         if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
              FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 3)
         {
-            
-            //FindObjectOfType<StoryManager>().isOnDialogue = false;
-            //dialogueUI.SetActive(false);
-                
             StartCoroutine(FindObjectOfType<StoryAnimations>().FlashBangBackgroundChange(true));
 
             
