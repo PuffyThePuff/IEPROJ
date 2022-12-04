@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class StoryAnimations : MonoBehaviour
 {
@@ -72,6 +73,20 @@ public class StoryAnimations : MonoBehaviour
         else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 5)
         {
             FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+            FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(false);
+            FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
+        }
+        else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 2)
+        {
+            FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+            FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.black;
+            FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(false);
+            FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
+        }
+        else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 3)
+        {
+            FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+            FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.black;
             FindObjectOfType<BackgroundManager>().EmptyBedroom.SetActive(false);
             FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
         }

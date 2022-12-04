@@ -84,6 +84,8 @@ public static class Values
     {
         public static bool isTutorial = false;
         public static bool isRigged = false;
+        public static bool is2ndLastLevel = false;
+        public static bool isFinalLevel = false;
         
         public static int hexBlockerCount = 3;
         public static float PainHexPosionDamage = 50.0f;
@@ -96,7 +98,7 @@ public static class Values
         public static string BedroomScene = "TransitionSample";
         public static string ClassroomScene = "DestinationSample";
         public static string PuzzleScene = "Puzzle";
-        public static string PhoneScene = "PhoneScene";
+        public static string LogoScene = "OtaconnectStart";
     }
 }
     

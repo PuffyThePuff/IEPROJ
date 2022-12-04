@@ -26,11 +26,11 @@ public class SpriteManager : MonoBehaviour
         }
         else if (Values.Enemy.enemyLevel == 2)
         {
-            BossImage.sprite = LockHexMob;
+            BossImage.sprite = PainHexMob;
         }
         else if (Values.Enemy.enemyLevel == 3)
         {
-            BossImage.sprite = PainHexMob;
+            BossImage.sprite = LockHexMob;
         }
         else if (Values.Enemy.enemyLevel == 4)
         {

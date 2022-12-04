@@ -50,6 +50,7 @@ public class PuzzleUIManager : MonoBehaviour
     public GameObject arrowGroup4;
     public GameObject arrowGroup5;
 
+   
 
     //enemy
     public SpriteRenderer enemyBoss;
@@ -57,7 +58,11 @@ public class PuzzleUIManager : MonoBehaviour
     //mob sprites
     public Sprite[] enemySprites;
 
+    public GameObject AllGameHUD;
+    public GameObject FadeToBlackPanel;
+    public GameObject Text;
 
+    public Color FadeToBlackColor;
 
     private void Awake()
     {

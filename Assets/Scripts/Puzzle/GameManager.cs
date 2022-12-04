@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -114,8 +115,14 @@ public class GameManager : MonoBehaviour
     private int yDimension = 4;
 
     public static bool isRigged = false;
-    public static int enemyLevel = 1;
+    public static int enemyLevel = 0;
+    public static bool is2ndLastLevel = false;
+    public static int dialogueIndexFor2ndLast = 0;
+    public static bool isFinalLevel = false;
+    public static int dialogueIndexForFinal = 0;
+    public static bool isPuzzleDone = false;
 
+    public static float initTextPosY = 0;
     //tutorial
     public static bool isTutorial = false;
     public static int tutorialPhase = 0;
@@ -150,7 +157,26 @@ public class GameManager : MonoBehaviour
         isTutorial = Values.Puzzle.isTutorial;
         isRigged = Values.Puzzle.isRigged;
         enemyLevel = Values.Enemy.enemyLevel;
+        is2ndLastLevel = Values.Puzzle.is2ndLastLevel;
+        isFinalLevel = Values.Puzzle.isFinalLevel;
+        dialogueIndexFor2ndLast = 0;
+        isPuzzleDone = false;
 
+        PuzzleUIManager.Instance.charDialogue1.gameObject.GetComponentInChildren<Text>().color = Color.white;
+        PuzzleUIManager.Instance.charDialogue2.gameObject.GetComponentInChildren<Text>().color = Color.white;
+        PuzzleUIManager.Instance.charDialogue3.gameObject.GetComponentInChildren<Text>().color = Color.white;
+        if (isFinalLevel)
+        {
+            PuzzleUIManager.Instance.AllGameHUD.SetActive(false);
+            PuzzleUIManager.Instance.FadeToBlackPanel.SetActive(true);
+            PuzzleUIManager.Instance.Text.SetActive(true);
+
+            PuzzleUIManager.Instance.FadeToBlackColor = PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color;
+            PuzzleUIManager.Instance.FadeToBlackColor.a = 0f;
+            PuzzleUIManager.Instance.Text.GetComponent<Text>().text = "";
+            initTextPosY =  PuzzleUIManager.Instance.Text.GetComponent<RectTransform>().position.y;
+
+        }
         if (!isTutorial)
         {
             //setup game
@@ -180,9 +206,14 @@ public class GameManager : MonoBehaviour
             selfHurtDamage = Values.Puzzle.PainHexPosionDamage;
 
             PuzzleUIManager.Instance.SetEnemyBossSprite(Values.Enemy.enemyLevel);
+            
 
         }
-
+        else
+        {
+            PuzzleUIManager.Instance.SetEnemyBossSprite(0);
+        }
+        
 
         if (!isTutorial)
             nBoard = InitializeBoard();
@@ -430,8 +461,11 @@ public class GameManager : MonoBehaviour
 
         else
         {
-            UpdateCatchphraseDialogue();
-
+            if (!is2ndLastLevel)
+            {
+                UpdateCatchphraseDialogue();
+            }
+            
             UpdateGameState();
         }
 
@@ -479,10 +513,12 @@ public class GameManager : MonoBehaviour
                 {
                     UnselectAllPieces();
                 }
+                
             }
 
             else
             {
+                
                 Debug.Log("true2");
                 if (GameManager.Instance.selected.Count < 3)   //if more than 3 pieces selected
                 {
@@ -604,6 +640,15 @@ public class GameManager : MonoBehaviour
             hasEnded = true;
         }
 
+        if (isPuzzleDone)
+        {
+            SceneManager.LoadScene(Values.SceneNames.ClassroomScene);
+            FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+            FindObjectOfType<StoryManager>().currentDialogue = 0;
+            FindObjectOfType<StoryManager>().currentChapter = 5;
+        }
+
         if (hasEnded && gameState == 1)
         {
             if (enemyLevel == 1 && Input.GetMouseButtonUp(0))
@@ -621,6 +666,13 @@ public class GameManager : MonoBehaviour
                 FindObjectOfType<StoryManager>().currentDialogue++;
             }
             else if (enemyLevel == 3 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (enemyLevel == 0 && Input.GetMouseButtonUp(0))
             {
                 SceneManager.LoadScene(Values.SceneNames.BedroomScene);
                 FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
@@ -663,6 +715,11 @@ public class GameManager : MonoBehaviour
                 FindObjectOfType<StoryManager>().currentDialogue++;
             }
             else if (!isRigged && enemyLevel == 3 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
+
+            if (!isRigged && enemyLevel == 0 && Input.GetMouseButtonUp(0)) //try again
             {
                 SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
             }
@@ -1156,7 +1213,7 @@ public class GameManager : MonoBehaviour
                 PerformSpecialPieceEffects(i);
             }
         }
-
+        
         selected.Clear();   //clear reference list of selected pieces
         powerups.Clear();   //clear reference list of selected powerups
         DestroyDamagedPieces(); //destroy game object pieces that have been set to -1 value
@@ -1174,8 +1231,66 @@ public class GameManager : MonoBehaviour
         currentDamageMultiplier = 1;
         currentHealCounter = 0;
         currentHealMultiplier = 1;
+        
 
+        if (is2ndLastLevel)
+        {
+            Update2ndLastLevelDialogue();
+            dialogueIndexFor2ndLast++;
+        }
+        
+
+        if (isFinalLevel)
+        {
+            UpdateFinalLevelDialogue();
+            dialogueIndexForFinal++;
+        }
+        
         Debug.Log("Attack");
+
+        currentTurn++;
+        if (currentTurn % 3 == 0)
+        {
+            for (int i = 0; i < Values.Puzzle.hexBlockerCount; i++)
+            {
+
+                int newBlockerXIndex = 0;
+                int newBlockerYIndex = 0;
+
+                do
+                {
+                    newBlockerXIndex = UnityEngine.Random.Range(0, xDimension);
+                    newBlockerYIndex = UnityEngine.Random.Range(0, yDimension);
+                    Debug.Log(newBlockerXIndex + " " + newBlockerYIndex);
+                } while (nBoard[newBlockerXIndex, newBlockerYIndex] == -2);
+
+
+                Destroy(gBoard[newBlockerXIndex, newBlockerYIndex]);
+
+                nBoard[newBlockerXIndex, newBlockerYIndex] = -2;
+
+                GameObject newhexBlockerObj = createNeutral(0, newBlockerXIndex, newBlockerYIndex);
+                gBoard[newBlockerXIndex, newBlockerYIndex] = newhexBlockerObj;
+
+
+
+
+                int oldBlockerXIndex = lockedHexes[i].GetComponent<PieceBehavior>().x;
+                int oldBlockerYIndex = lockedHexes[i].GetComponent<PieceBehavior>().y;
+                GameObject oldHexBlockerObj = gBoard[oldBlockerXIndex, oldBlockerYIndex];
+                Destroy(oldHexBlockerObj);
+
+
+                int n = UnityEngine.Random.Range(0, 3);
+                GameObject newPiece = createPiece(n, oldBlockerXIndex, oldBlockerYIndex);
+
+                nBoard[oldBlockerXIndex, oldBlockerYIndex] = n;
+                gBoard[oldBlockerXIndex, oldBlockerYIndex] = newPiece;
+
+                lockedHexes[i] = newhexBlockerObj;
+
+            }
+        }
     }
 
     
@@ -1191,10 +1306,13 @@ public class GameManager : MonoBehaviour
             c1CurrentCharge = 0;
             UpdateChargeBars(i);
 
-            if(!isTutorial)
+            if (!isTutorial)
+            {
                 PuzzleUIManager.Instance.charDialogue1.gameObject.SetActive(true);
+                PuzzleUIManager.Instance.charDialogue2.gameObject.SetActive(false);
+                PuzzleUIManager.Instance.charDialogue3.gameObject.SetActive(false);
+            }
 
-           
         }
 
         else if (specialPiece.GetComponent<PieceBehavior>().ID == c2Index)
@@ -1205,9 +1323,11 @@ public class GameManager : MonoBehaviour
             UpdateChargeBars(i);
 
             if (!isTutorial)
+            {
                 PuzzleUIManager.Instance.charDialogue2.gameObject.SetActive(true);
-
-            
+                PuzzleUIManager.Instance.charDialogue1.gameObject.SetActive(false);
+                PuzzleUIManager.Instance.charDialogue3.gameObject.SetActive(false);
+            }
 
         }
 
@@ -1220,9 +1340,11 @@ public class GameManager : MonoBehaviour
             UpdateChargeBars(i);
 
             if (!isTutorial)
+            {
                 PuzzleUIManager.Instance.charDialogue3.gameObject.SetActive(true);
-
-            
+                PuzzleUIManager.Instance.charDialogue2.gameObject.SetActive(false);
+                PuzzleUIManager.Instance.charDialogue1.gameObject.SetActive(false);
+            }
 
         }
 
@@ -2065,50 +2187,9 @@ public class GameManager : MonoBehaviour
         if(!playerIsFrozen)
             isBoardInteractable = true;
 
-        currentTurn++;
+        
 
-        if(currentTurn % 3 == 0)
-        {
-            for (int i = 0; i < Values.Puzzle.hexBlockerCount; i++)
-            {
-
-                int newBlockerXIndex = 0;
-                int newBlockerYIndex = 0;
-
-                do
-                {
-                    newBlockerXIndex = UnityEngine.Random.Range(0, xDimension);
-                    newBlockerYIndex = UnityEngine.Random.Range(0, yDimension);
-                    Debug.Log(newBlockerXIndex + " " + newBlockerYIndex);
-                } while (nBoard[newBlockerXIndex, newBlockerYIndex] == -2);
-
-
-                Destroy(gBoard[newBlockerXIndex, newBlockerYIndex]);
-
-                nBoard[newBlockerXIndex, newBlockerYIndex] = -2;
-
-                GameObject newhexBlockerObj = createNeutral(0, newBlockerXIndex, newBlockerYIndex);
-                gBoard[newBlockerXIndex, newBlockerYIndex] = newhexBlockerObj;
-                
-
-
-
-                int oldBlockerXIndex = lockedHexes[i].GetComponent<PieceBehavior>().x;
-                int oldBlockerYIndex = lockedHexes[i].GetComponent<PieceBehavior>().y;
-                GameObject oldHexBlockerObj = gBoard[oldBlockerXIndex, oldBlockerYIndex];
-                Destroy(oldHexBlockerObj);
-
-
-                int n = UnityEngine.Random.Range(0, 3);
-                GameObject newPiece = createPiece(n, oldBlockerXIndex, oldBlockerYIndex);
-
-                nBoard[oldBlockerXIndex, oldBlockerYIndex] = n;
-                gBoard[oldBlockerXIndex, oldBlockerYIndex] = newPiece;
-
-                lockedHexes[i] = newhexBlockerObj;
-
-            }
-        }
+        
         //if (currentTurn > maxTurn)
         //    isBoardInteractable = false;
     }
@@ -2259,6 +2340,70 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Update2ndLastLevelDialogue()
+    {
+        PuzzleUIManager.Instance.charDialogue2.gameObject.SetActive(false);
+        PuzzleUIManager.Instance.charDialogue3.gameObject.SetActive(false);
+        PuzzleUIManager.Instance.charDialogue1.gameObject.SetActive(true);
+
+        if (dialogueIndexFor2ndLast < FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length)
+        {
+            PuzzleUIManager.Instance.charDialogue1.gameObject.GetComponentInChildren<Text>().text =
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue]
+                    .sentences[dialogueIndexFor2ndLast];
+        }
+        else
+        {
+            SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+            FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+            FindObjectOfType<StoryManager>().currentDialogue++;
+        }
+    }
+
+    private void UpdateFinalLevelDialogue()
+    {
+
+        if (dialogueIndexForFinal < FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length)
+        {
+            
+            PuzzleUIManager.Instance.Text.GetComponent<Text>().text =
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue]
+                    .sentences[dialogueIndexForFinal];
+
+            int RisingValue = FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length / 2;
+
+            float currentTextPosition = initTextPosY *5 ;
+            float increaseValue = currentTextPosition / RisingValue;
+            Vector3 increaseVector = new Vector3(0, increaseValue, 0);
+
+            float currentAlpha = 1;
+            float increaseAlphaValue = currentAlpha / RisingValue;
+            Color increaseAlpha = new Color(0, 0, 0, increaseAlphaValue);
+
+
+            if (dialogueIndexForFinal >= RisingValue)
+            {
+                PuzzleUIManager.Instance.Text.GetComponent<RectTransform>().position += increaseVector;
+                PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color += increaseAlpha;
+            }
+            
+        }
+        else
+        {
+            Debug.Log("dialogueIndexForFinal:" + dialogueIndexForFinal);
+            StartCoroutine(WaitAnimation());
+        }
+    }
+
     private void OnWin()
     {
         //Values.Player.gold += 25;
@@ -2270,17 +2415,28 @@ public class GameManager : MonoBehaviour
 
     private void OnLose()
     {
-        Debug.Log("Lose");
+       
         PuzzleUIManager.Instance.endText.SetActive(true);
         if (isRigged)
         {
+            Debug.Log("Lose Rigged");
             PuzzleUIManager.Instance.endText.GetComponentInChildren<Text>().text = "Game Over!";
         }
         else
         {
+            Debug.Log("Lose Not Rigged");
             PuzzleUIManager.Instance.endText.GetComponentInChildren<Text>().text = "Try Again!";
         }
         //SceneManager.LoadScene("LevelSetupTest");
 
     }
+
+    IEnumerator WaitAnimation()
+    {
+        yield return new WaitForSeconds(3.0f);
+        isPuzzleDone = true;
+        Debug.Log("triggertoscene transfer");
+    }
+
+
 }

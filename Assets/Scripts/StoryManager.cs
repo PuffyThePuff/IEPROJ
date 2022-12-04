@@ -961,8 +961,8 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
 
-        StoryChapters[j].ChapterDialogues[i].sentences[0] = "This is too easy.";
-        StoryChapters[j].ChapterDialogues[i].sentences[1] = "Give me some challenge, game!";
+        StoryChapters[j].ChapterDialogues[i].sentences[0] = "Play...";
+        StoryChapters[j].ChapterDialogues[i].sentences[1] = "...some more..";
 
         //After 2nd game
         i = 1;
@@ -1365,6 +1365,106 @@ public class StoryManager : MonoBehaviour
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3], true);
                 FindObjectOfType<AudioManager>().Stop("BattleBGM");
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 0)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0], true);
+                FindObjectOfType<AudioManager>().Stop("BattleBGM");
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 1)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1], true);
+                FindObjectOfType<AudioManager>().Stop("BattleBGM");
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
+        //ONLY FOR 2ndTO LAST LEVEL
+        if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 2)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[2].isDone)
+            {
+                
+                Values.Puzzle.isTutorial = false;
+                Values.Puzzle.isRigged = false;
+                Values.Puzzle.is2ndLastLevel = true;
+                Values.Puzzle.isFinalLevel = false;
+                Values.Enemy.enemyLevel = 0;
+                Values.Enemy.maxHP = 10000;
+                Values.Enemy.dmg = 0.01f;
+
+                //BUFFED ENEMY
+                Values.Enemy.attackInterval = 1.5f;//
+                Values.Puzzle.PainHexPosionDamage = 0.01f;
+                Values.Puzzle.BlackHexBurstDamage = 1.0f;
+                Values.Puzzle.hexBlockerCount = 1;//
+
+                //set normal values
+                Values.Player.setStunAmount = 1;
+                Values.Player.basicHeal = 0.01f;
+                Values.Player.basicDamage = 5;
+
+                FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[2].hasTriggered = true;
+                FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[2].isDone = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
+        //FOR FINAL LEVEL
+        if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 3)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[3].isDone)
+            {
+
+                Values.Puzzle.isTutorial = false;
+                Values.Puzzle.isRigged = false;
+                Values.Puzzle.is2ndLastLevel = false;
+                Values.Puzzle.isFinalLevel = true;
+                Values.Enemy.enemyLevel = 4;
+                Values.Enemy.maxHP = 10000000000;
+                Values.Enemy.dmg = 0.0f;
+
+                //BUFFED ENEMY
+                Values.Enemy.attackInterval = 1.5f;//
+                Values.Puzzle.PainHexPosionDamage = 0.01f;
+                Values.Puzzle.BlackHexBurstDamage = 1.0f;
+                Values.Puzzle.hexBlockerCount = 3;//
+
+                //set normal values
+                Values.Player.setStunAmount = 0;
+                Values.Player.basicHeal = 0.01f;
+                Values.Player.basicDamage = 0;
+
+                FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[3].hasTriggered = true;
+                FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[3].isDone = true;
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
+                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 5 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 0)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.ClassroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[5].ChapterDialogues[0].isDone)
+            {
+
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[5].ChapterDialogues[0], true);
+
                 //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
             }
         }
