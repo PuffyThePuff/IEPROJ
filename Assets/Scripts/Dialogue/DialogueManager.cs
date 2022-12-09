@@ -299,10 +299,12 @@ public class DialogueManager : MonoBehaviour
         if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 4)
         {
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-            
+
         }
         else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 5)
         {
+            FindObjectOfType<AudioManager>().Stop("SkyLeadingHomeBGM", "bgm");
+            FindObjectOfType<AudioManager>().Play("YouFarAwayBGM", "bgm", true);
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
             
         }
@@ -310,22 +312,21 @@ public class DialogueManager : MonoBehaviour
         else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 6)
         {
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-            FindObjectOfType<AudioManager>().Play("Birds", true);
-            FindObjectOfType<AudioManager>().Stop("RoomBGM");
+            //FindObjectOfType<AudioManager>().Play("BirdsSFX", "sfx", true);
         }
         //before chapter 2
         else if (FindObjectOfType<StoryManager>().currentChapter == 1 && FindObjectOfType<StoryManager>().currentDialogue == 6)
         {
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-            FindObjectOfType<AudioManager>().Play("Birds", true);
-            FindObjectOfType<AudioManager>().Stop("RoomBGM");
+            //FindObjectOfType<AudioManager>().Play("Birds", true);
+            //FindObjectOfType<AudioManager>().Stop("RoomBGM");
         }
         //before chapter 3
         else if (FindObjectOfType<StoryManager>().currentChapter == 2 && FindObjectOfType<StoryManager>().currentDialogue == 4)
         {
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-            FindObjectOfType<AudioManager>().Play("Birds", true);
-            FindObjectOfType<AudioManager>().Stop("RoomBGM");
+            //FindObjectOfType<AudioManager>().Play("Birds", true);
+            //FindObjectOfType<AudioManager>().Stop("RoomBGM");
         }
         else if (FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 1)
         {
@@ -343,8 +344,8 @@ public class DialogueManager : MonoBehaviour
         else if (FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 3)
         {
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-            FindObjectOfType<AudioManager>().Play("Birds", true);
-            FindObjectOfType<AudioManager>().Stop("RoomBGM");
+            //FindObjectOfType<AudioManager>().Play("Birds", true);
+            //FindObjectOfType<AudioManager>().Stop("RoomBGM");
         }
 
 
@@ -465,8 +466,7 @@ public class DialogueManager : MonoBehaviour
             {
                 FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                FindObjectOfType<AudioManager>().Play("BattleBGM",true);
+                FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
                 Values.Puzzle.isTutorial = true;
             }
 
@@ -526,8 +526,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[4].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
                 
             }
         }
@@ -554,8 +554,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[5].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
 
             }
         }
@@ -601,8 +601,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[2].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[3].isDone &&
@@ -627,8 +627,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[3].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[0].isDone &&
@@ -655,8 +655,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[0].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[2].isDone &&
@@ -681,8 +681,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[2].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3].isDone &&
@@ -709,8 +709,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0].isDone &&
@@ -737,7 +737,7 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
                 //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
             }
         }
@@ -765,7 +765,7 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
                 //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
             }
         }
@@ -843,8 +843,12 @@ public class DialogueManager : MonoBehaviour
 
             
         }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                 FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 4)
+
+        {
+            FindObjectOfType<AudioManager>().Stop("FruitsofLazinessBGM", "bgm");
+            FindObjectOfType<AudioManager>().Play("SandCollegeBGM", "bgm", true);
+        }
     }
-
-
-    
 }

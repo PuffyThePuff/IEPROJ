@@ -7,7 +7,7 @@ public class StartCutScene : MonoBehaviour
 {
     public void playOtaconnect()
     {
-        AudioManager.Instance.Play("Otakonekto",false);
+        AudioManager.Instance.Play("OtakonektoSFX", "sfx", false);
     }
     public void LoadScene()
     {

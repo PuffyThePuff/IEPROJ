@@ -156,7 +156,7 @@ public class EquipCharacter : MonoBehaviour
         Values.Puzzle.BlackHexBurstDamage = 50.0f;
         Values.Puzzle.hexBlockerCount = 0;
         SceneManager.LoadScene("Puzzle");
-        AudioManager.Instance.Play("BattleBGM");
+        //AudioManager.Instance.Play("BattleBGM");
     }
 
     public void SelectLevel2()
@@ -182,7 +182,7 @@ public class EquipCharacter : MonoBehaviour
         Values.Puzzle.hexBlockerCount = 3;
         Values.Enemy.skill = Values.Enemy.SkillType.Freeze;
         SceneManager.LoadScene("Puzzle");
-        AudioManager.Instance.Play("BattleBGM");
+        //AudioManager.Instance.Play("BattleBGM");
     }
 
     public void SelectLevel3()
@@ -207,7 +207,7 @@ public class EquipCharacter : MonoBehaviour
         Values.Puzzle.BlackHexBurstDamage = 0.0f;
         Values.Puzzle.hexBlockerCount = 0;
         SceneManager.LoadScene("Puzzle");
-        AudioManager.Instance.Play("BattleBGM");
+        //AudioManager.Instance.Play("BattleBGM");
     }
 
     public void SelectLevel4()
@@ -231,7 +231,7 @@ public class EquipCharacter : MonoBehaviour
         Values.Puzzle.BlackHexBurstDamage = 10.0f;
         Values.Puzzle.hexBlockerCount = 3;
         SceneManager.LoadScene("Puzzle");
-        AudioManager.Instance.Play("BattleBGM");
+        //AudioManager.Instance.Play("BattleBGM");
     }
 
     public void SelectLevel5()
@@ -253,7 +253,7 @@ public class EquipCharacter : MonoBehaviour
         Values.Enemy.attackInterval = 1.1f;
         Values.Puzzle.isTutorial = false;
         SceneManager.LoadScene("Puzzle");
-        AudioManager.Instance.Play("BattleBGM");
+        //AudioManager.Instance.Play("BattleBGM");
     }
 
     private void Start()

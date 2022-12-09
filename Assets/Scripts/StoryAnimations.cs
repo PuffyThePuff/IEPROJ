@@ -66,7 +66,7 @@ public class StoryAnimations : MonoBehaviour
                 AlphaPopUp.SetActive(false);
                 FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[6].hasTriggered = true;
                 StartCoroutine(FadeTransition("LevelSetupTest"));
-                FindObjectOfType<AudioManager>().Stop("RoomBGM");
+                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
             }
 
         }
