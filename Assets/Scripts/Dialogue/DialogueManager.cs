@@ -282,7 +282,7 @@ public class DialogueManager : MonoBehaviour
                 }
                 else
                 {
-
+                    FindObjectOfType<AudioManager>().Play("NextDialogueSFX", "sfx", false);
                     DisplayNextSentence();
                     isFullSentence = false;
 
@@ -298,21 +298,22 @@ public class DialogueManager : MonoBehaviour
         //IF PREVIOUS SCENE IS SAME SCENE
         if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 4)
         {
+            FindObjectOfType<AudioManager>().Stop("SkyLeadingHomeBGM", "bgm");
+            FindObjectOfType<AudioManager>().Play("SkyLeadingHomeMuffledBGM", "bgm", true);
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-
         }
         else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 5)
         {
-            FindObjectOfType<AudioManager>().Stop("SkyLeadingHomeBGM", "bgm");
+            FindObjectOfType<AudioManager>().Stop("SkyLeadingHomeMuffledBGM", "bgm");
             FindObjectOfType<AudioManager>().Play("YouFarAwayBGM", "bgm", true);
+            FindObjectOfType<AudioManager>().AdjustPitch("YouFarAwayBGM", "bgm", 0.9f);
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-            
         }
         //before chapter 1
         else if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 6)
         {
+            FindObjectOfType<AudioManager>().Stop("YouFarAwayBGM", "bgm");
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-            //FindObjectOfType<AudioManager>().Play("BirdsSFX", "sfx", true);
         }
         //before chapter 2
         else if (FindObjectOfType<StoryManager>().currentChapter == 1 && FindObjectOfType<StoryManager>().currentDialogue == 6)
@@ -466,10 +467,9 @@ public class DialogueManager : MonoBehaviour
             {
                 FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
                 Values.Puzzle.isTutorial = true;
             }
-
+            FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].isDone &&
                  !FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].hasTriggered)
@@ -839,9 +839,8 @@ public class DialogueManager : MonoBehaviour
         if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
              FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 3)
         {
+            FindObjectOfType<AudioManager>().Stop("AirConSFX", "sfx");
             StartCoroutine(FindObjectOfType<StoryAnimations>().FlashBangBackgroundChange(true));
-
-            
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 4)

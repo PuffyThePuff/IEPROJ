@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
     [Range(0f, 1f)] private float masterVolume = 1.0f;
     [Range(0f, 1f)] private float musicVolume = 1.0f;
     [Range(0f, 1f)] private float sfxVolume = 1.0f;
+    [Range(0.5f, 1f)] private float pitch = 1.0f; 
 
     private void Awake()
     {
@@ -61,6 +62,34 @@ public class AudioManager : MonoBehaviour
         foreach(Sounds s in soundEffects)
         {
             s.source.volume = (0.75f * masterVolume * sfxVolume);
+        }
+    }
+
+    public void AdjustPitch(string name, string type, float newPitch)
+    {
+        if (String.Compare(type, "bgm") == 0)
+        {
+            Sounds s = Array.Find(music, sound => sound.name == name);
+
+            if (s == null)
+            {
+                Debug.LogWarning("Sound: " + name + " not found!");
+                return;
+            }
+
+            s.source.pitch = newPitch;
+        }
+        else if (String.Compare(type, "sfx") == 0)
+        {
+            Sounds s = Array.Find(music, sound => sound.name == name);
+
+            if (s == null)
+            {
+                Debug.LogWarning("Sound: " + name + " not found!");
+                return;
+            }
+
+            s.source.pitch = newPitch;
         }
     }
 
