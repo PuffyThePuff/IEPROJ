@@ -1514,6 +1514,7 @@ public class StoryManager : MonoBehaviour
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[2], true);
                 FindObjectOfType<AudioManager>().Stop("SandCollegeBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("AirConSFX", "sfx", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().currentChapter == 0 &&
