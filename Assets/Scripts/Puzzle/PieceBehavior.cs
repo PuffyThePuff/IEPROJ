@@ -109,6 +109,13 @@ public class PieceBehavior : MonoBehaviour
                 this.gameObject.transform.localScale *= 1.10f;
                 GameManager.Instance.selected.Add(gameObject); //add selected object to selected objects list
                 Instantiate(Border, this.transform);    //create border around piece for visual aid
+                FindObjectOfType<AudioManager>().Stop("Ding1", "sfx");
+                FindObjectOfType<AudioManager>().Stop("Ding2", "sfx");
+                FindObjectOfType<AudioManager>().Stop("Ding3", "sfx");
+                FindObjectOfType<AudioManager>().Stop("Ding4", "sfx");
+                FindObjectOfType<AudioManager>().Stop("Ding5", "sfx");
+
+                FindObjectOfType<AudioManager>().Play("Ding1", "sfx", false);
                 //lineRenderer.positionCount = 9;
 
                 //lineRenderer.SetPosition(0, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y + 0.05f, gameObject.transform.position.z - 0.0001f));
@@ -364,6 +371,8 @@ public class PieceBehavior : MonoBehaviour
                         latestSelected.GetComponent<LineRenderer>().positionCount = 0;
                         latestSelected.transform.localScale /= 1.10f;
 
+                        
+
                     }
 
                     else
@@ -427,6 +436,61 @@ public class PieceBehavior : MonoBehaviour
                             lineRenderer.positionCount = 2;
                             lineRenderer.SetPosition(0, new Vector3( latestSelected.transform.position.x, latestSelected.transform.position.y, latestSelected.transform.position.z - 0.0001f));
                             lineRenderer.SetPosition(1, new Vector3(gameObject.transform.position.x, gameObject.transform.position.y, gameObject.transform.position.z - 0.0001f));
+
+                            if (GameManager.Instance.selected.Count >= 5)
+                            {
+                                FindObjectOfType<AudioManager>().Stop("Ding1", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding2", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding3", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding4", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding5", "sfx");
+
+                                FindObjectOfType<AudioManager>().Play("Ding5", "sfx", false);
+                            }
+
+                            else if (GameManager.Instance.selected.Count == 4)
+                            {
+                                FindObjectOfType<AudioManager>().Stop("Ding1", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding2", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding3", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding4", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding5", "sfx");
+
+                                FindObjectOfType<AudioManager>().Play("Ding4", "sfx", false);
+                            }
+
+                            else if (GameManager.Instance.selected.Count == 3)
+                            {
+                                FindObjectOfType<AudioManager>().Stop("Ding1", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding2", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding3", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding4", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding5", "sfx");
+
+                                FindObjectOfType<AudioManager>().Play("Ding3", "sfx", false);
+                            }
+
+                            else if (GameManager.Instance.selected.Count == 2)
+                            {
+                                FindObjectOfType<AudioManager>().Stop("Ding1", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding2", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding3", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding4", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding5", "sfx");
+
+                                FindObjectOfType<AudioManager>().Play("Ding2", "sfx", false);
+                            }
+
+                            else if (GameManager.Instance.selected.Count == 1)
+                            {
+                                FindObjectOfType<AudioManager>().Stop("Ding1", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding2", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding3", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding4", "sfx");
+                                FindObjectOfType<AudioManager>().Stop("Ding5", "sfx");
+
+                                FindObjectOfType<AudioManager>().Play("Ding1", "sfx", false);
+                            }
                             //Debug.Log("drawing line");
                         }
                     }
