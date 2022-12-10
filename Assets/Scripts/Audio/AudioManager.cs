@@ -49,12 +49,37 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public float getCurrVolume()
+    {
+        Sounds s = Array.Find(music, sound => sound.name == name);
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return 0;
+        }
+
+        return s.source.volume;
+    }
+
     private void AdjustMusicVolume()
     {
         foreach(Sounds s in music)
         {
             s.source.volume = (0.75f * masterVolume * musicVolume);
         }
+    }
+
+    public void AdjustMusicVolume(string name, float newVolume)
+    {
+        Sounds s = Array.Find(music, sound => sound.name == name);
+
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+
+        s.source.volume = 0.75f * newVolume;
     }
 
     private void AdjustSFXVolume()

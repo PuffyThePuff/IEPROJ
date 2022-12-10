@@ -784,7 +784,7 @@ public class StoryManager : MonoBehaviour
         StoryChapters[1].ChapterDialogues[i].sentences[0] = "YES!";
         StoryChapters[1].ChapterDialogues[i].sentences[1] = "HELL YEAH!!";
         StoryChapters[1].ChapterDialogues[i].sentences[2] = "SUCK IT!!!";
-        StoryChapters[1].ChapterDialogues[i].sentences[3] = "Three knocks from my ceiling echoed throughout my room.";
+        StoryChapters[1].ChapterDialogues[i].sentences[3] = "Five knocks from my ceiling echoed throughout my room.";
         StoryChapters[1].ChapterDialogues[i].sentences[4] = "SORRY!";
         StoryChapters[1].ChapterDialogues[i].sentences[5] = "I let out a sigh of relief.";
         StoryChapters[1].ChapterDialogues[i].sentences[6] = "Man, that’s fifteen dollars well spent.";
@@ -1601,8 +1601,8 @@ public class StoryManager : MonoBehaviour
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[1].isDone)
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[1], true);
-                //FindObjectOfType<AudioManager>().Stop("BattleBGM");
-                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+                FindObjectOfType<AudioManager>().Stop("FruitsofLazinessBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("SandCollegeBGM", "bgm", true);
             }
         }
         if (FindObjectOfType<StoryManager>().currentChapter == 2 &&
@@ -1612,8 +1612,8 @@ public class StoryManager : MonoBehaviour
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[2].isDone)
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[2], true);
-                //FindObjectOfType<AudioManager>().Stop("BattleBGM");
-                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+                FindObjectOfType<AudioManager>().Stop("AngryBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("AirConSFX", "sfx", true);
             }
         }
         if (FindObjectOfType<StoryManager>().currentChapter == 2 &&
@@ -1623,8 +1623,8 @@ public class StoryManager : MonoBehaviour
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[3].isDone)
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[3], true);
-                //FindObjectOfType<AudioManager>().Stop("BattleBGM");
-                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+                FindObjectOfType<AudioManager>().Stop("CuriosityBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("DefeatSFX", "sfx", false);
             }
         }
         if (FindObjectOfType<StoryManager>().currentChapter == 2 &&
@@ -1634,8 +1634,8 @@ public class StoryManager : MonoBehaviour
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[4].isDone)
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[4], true);
-                //FindObjectOfType<AudioManager>().Stop("BattleBGM");
-                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+                FindObjectOfType<AudioManager>().Stop("CuriosityBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("VictorySFX", "bgm", false);
             }
         }
         if (FindObjectOfType<StoryManager>().currentChapter == 3 &&
@@ -1645,8 +1645,8 @@ public class StoryManager : MonoBehaviour
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[1].isDone)
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[1], true);
-                //FindObjectOfType<AudioManager>().Stop("BattleBGM");
-                //FindObjectOfType<AudioManager>().Play("ClassroomBGM", true);
+                FindObjectOfType<AudioManager>().Stop("YouFarAwayBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("FruitsofLazinessBGM", "bgm", true);
             }
         }
         if (FindObjectOfType<StoryManager>().currentChapter == 3 &&

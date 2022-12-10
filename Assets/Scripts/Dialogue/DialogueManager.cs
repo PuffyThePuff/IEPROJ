@@ -321,7 +321,7 @@ public class DialogueManager : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().Stop("YouFarAwayMuffledBGM", "bgm");
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-            //FindObjectOfType<AudioManager>().Play("Birds", true);
+            FindObjectOfType<AudioManager>().Play("FruitsofLazinessBGM", "bgm", true);
         }
         //before chapter 3
         else if (FindObjectOfType<StoryManager>().currentChapter == 2 && FindObjectOfType<StoryManager>().currentDialogue == 4)
@@ -601,8 +601,7 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[2].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[3].isDone &&
@@ -627,8 +626,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[2].ChapterDialogues[3].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                FindObjectOfType<AudioManager>().Stop("CuriosityMuffledBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[0].isDone &&
@@ -864,6 +863,7 @@ public class DialogueManager : MonoBehaviour
         else if ((FindObjectOfType<StoryManager>().currentChapter == 1 && 
                   FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 4)
         {
+            FindObjectOfType<AudioManager>().Stop("JapaneseBellSFX", "sfx");
             FindObjectOfType<AudioManager>().Play("SandCollegeBGM", "bgm", true);
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 1 && 
@@ -876,11 +876,13 @@ public class DialogueManager : MonoBehaviour
         else if ((FindObjectOfType<StoryManager>().currentChapter == 1 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 4) && dequeueIndex == 2)
         {
+            FindObjectOfType<AudioManager>().Stop("KnucklesCrackingSFX", "sfx");
             FindObjectOfType<AudioManager>().Play("FruitsofLazinessBGM", "bgm", true);
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 1 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 5) && dequeueIndex == 1)
         {
+            FindObjectOfType<AudioManager>().Stop("DefeatSFX", "sfx");
             FindObjectOfType<AudioManager>().Play("CuriosityMuffledBGM", "bgm", true);
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 1 &&
@@ -890,14 +892,29 @@ public class DialogueManager : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("SparkleSFX", "sfx", true);
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 1 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 5) && dequeueIndex == 13)
+        {
+            FindObjectOfType<AudioManager>().Stop("GetGachaSFX", "sfx");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 1 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 5) && dequeueIndex == 14)
         {
             FindObjectOfType<AudioManager>().Stop("SparkleSFX", "sfx");
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 1 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 6) && dequeueIndex == 1)
+        {
+            FindObjectOfType<AudioManager>().Stop("VictorySFX", "sfx");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 1 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 6) && dequeueIndex == 3)
         {
             FindObjectOfType<AudioManager>().Play("MuffledKnocksSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 1 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 6) && dequeueIndex == 4)
+        {
+            FindObjectOfType<AudioManager>().Stop("MuffledKnocksSFX", "sfx");
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 1 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 6) && dequeueIndex == 6)
@@ -911,5 +928,110 @@ public class DialogueManager : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("YouFarAwayMuffledBGM", "bgm", true);
             FindObjectOfType<AudioManager>().AdjustPitch("YouFarAwayMuffledBGM", "bgm", 0.8f);
         }
+        //Chapter 2
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 12)
+        {
+            FindObjectOfType<AudioManager>().Stop("SandCollegeBGM", "bgm");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 20)
+        {
+            FindObjectOfType<AudioManager>().Play("AngryBGM", "bgm", true);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 9)
+        {
+            FindObjectOfType<AudioManager>().Play("NotificationSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 10)
+        {
+            FindObjectOfType<AudioManager>().Stop("NotificationSFX", "sfx");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 16)
+        {
+            FindObjectOfType<AudioManager>().Play("NotificationSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 17)
+        {
+            FindObjectOfType<AudioManager>().Stop("NotificationSFX", "sfx");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 21)
+        {
+            FindObjectOfType<AudioManager>().Stop("AirConSFX", "sfx");
+            FindObjectOfType<AudioManager>().Play("YouFarAwayBGM", "bgm", true);
+            FindObjectOfType<AudioManager>().AdjustPitch("YouFarAwayBGM", "bgm", 0.7f);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 43)
+        {
+            FindObjectOfType<AudioManager>().Play("NotificationSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 44)
+        {
+            FindObjectOfType<AudioManager>().Stop("NotificationSFX", "sfx");
+            FindObjectOfType<AudioManager>().Stop("YouFarAwayBGM", "bgm");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 1)
+        {
+            FindObjectOfType<AudioManager>().Stop("DefeatSFX", "sfx");
+            FindObjectOfType<AudioManager>().Play("CuriosityMuffledBGM", "bgm", true);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 18)
+        {
+            FindObjectOfType<AudioManager>().Play("SparkleSFX", "sfx", true);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 19)
+        {
+            FindObjectOfType<AudioManager>().Stop("SparkleSFX", "sfx");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 24)
+        {
+            FindObjectOfType<AudioManager>().Play("GetGachaSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 25)
+        {
+            FindObjectOfType<AudioManager>().Stop("GetGachaSFX", "sfx");
+            FindObjectOfType<AudioManager>().Play("SparkleSFX", "sfx", true);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 26)
+        {
+            FindObjectOfType<AudioManager>().Stop("SparkleSFX", "sfx");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 4) && dequeueIndex == 1)
+        {
+            FindObjectOfType<AudioManager>().Stop("VictorySFX", "sfx");
+            FindObjectOfType<AudioManager>().Play("AirConSFX", "sfx", true);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 4) && dequeueIndex == 10)
+        {
+            FindObjectOfType<AudioManager>().Play("NotificationSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 4) && dequeueIndex == 11)
+        {
+            FindObjectOfType<AudioManager>().Stop("AirConSFX", "sfx");
+            FindObjectOfType<AudioManager>().Play("YouFarAwayBGM", "bgm", true);
+            FindObjectOfType<AudioManager>().AdjustPitch("YouFarAwayBGM", "bgm", 0.7f);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 4) && dequeueIndex == 36)
+        {
+            FindObjectOfType<AudioManager>().Play("NotificationSFX", "sfx", false);
+        }
+        //Chapter 3
     }
 }
