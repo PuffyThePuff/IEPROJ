@@ -326,15 +326,15 @@ public class DialogueManager : MonoBehaviour
         //before chapter 3
         else if (FindObjectOfType<StoryManager>().currentChapter == 2 && FindObjectOfType<StoryManager>().currentDialogue == 4)
         {
+            FindObjectOfType<AudioManager>().Stop("YouFarAwayBGM", "bgm");
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-            //FindObjectOfType<AudioManager>().Play("Birds", true);
-            //FindObjectOfType<AudioManager>().Stop("RoomBGM");
+            FindObjectOfType<AudioManager>().Play("FruitsofLazinessBGM", "bgm", true);
         }
         else if (FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 1)
         {
+            FindObjectOfType<AudioManager>().Stop("YouFarAwayBGM", "bgm");
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange());
-            //FindObjectOfType<AudioManager>().Play("Birds", true);
-            //FindObjectOfType<AudioManager>().Stop("BattleBGM");
+            FindObjectOfType<AudioManager>().Play("FruitsofLazinessBGM", "bgm", true);
         }
         else if (FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 2)
         {
@@ -654,8 +654,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[0].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                FindObjectOfType<AudioManager>().Stop("FruitsofLazinessBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[2].isDone &&
@@ -680,8 +680,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[2].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                FindObjectOfType<AudioManager>().Stop("FruitsofLazinessBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3].isDone &&
@@ -708,8 +708,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                FindObjectOfType<AudioManager>().Stop("CuriosityMuffledBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0].isDone &&
@@ -736,8 +736,6 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1].isDone &&
@@ -764,8 +762,6 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[5].ChapterDialogues[0].isDone &&
@@ -1033,5 +1029,56 @@ public class DialogueManager : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("NotificationSFX", "sfx", false);
         }
         //Chapter 3
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 1)
+        {
+            FindObjectOfType<AudioManager>().Stop("DefeatSFX", "sfx");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 2)
+        {
+            FindObjectOfType<AudioManager>().Play("CuriosityMuffledBGM", "bgm", true);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 7)
+        {
+            FindObjectOfType<AudioManager>().Stop("CuriosityMuffledBGM", "bgm");
+            FindObjectOfType<AudioManager>().Play("YouFarAwayBGM", "bgm", true);
+            FindObjectOfType<AudioManager>().AdjustPitch("YouFarAwayBGM", "bgm", 0.6f);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 15)
+        {
+            FindObjectOfType<AudioManager>().Stop("YouFarAwayBGM", "bgm");
+            FindObjectOfType<AudioManager>().Play("AlarmSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 16)
+        {
+            FindObjectOfType<AudioManager>().Stop("AlarmSFX", "sfx");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 10)
+        {
+            FindObjectOfType<AudioManager>().Play("GetGachaSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 11)
+        {
+            FindObjectOfType<AudioManager>().Stop("GetGachaSFX", "sfx");
+            FindObjectOfType<AudioManager>().Play("SparkleSFX", "sfx", true);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 12)
+        {
+            FindObjectOfType<AudioManager>().Stop("SparkleSFX", "sfx");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 4)
+        {
+            FindObjectOfType<AudioManager>().Stop("AirConSFX", "sfx");
+            FindObjectOfType<AudioManager>().Play("YouFarAwayBGM", "bgm", true);
+            FindObjectOfType<AudioManager>().AdjustPitch("YouFarAwayBGM", "bgm", 0.5f);
+        }
     }
 }
