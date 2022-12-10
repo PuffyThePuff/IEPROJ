@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ButtonFunctions : MonoBehaviour
 {
-    
     // Start is called before the first frame update
     public void Attack()
     {
@@ -35,5 +34,12 @@ public class ButtonFunctions : MonoBehaviour
                 StartCoroutine(GameManager.Instance.DelayedRefreshBoard());
             }
         }
+    }
+
+    void Update()
+    {
+        
+
+        
     }
 }
