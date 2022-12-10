@@ -420,7 +420,7 @@ public class GameManager : MonoBehaviour
         {
             UpdateHelpDialogue();
 
-            if (tutorialPhase == 2)
+            if (tutorialPhase == 3)
             {
                 if (c1CurrentHp == c1MaxHp)
                     c1CurrentHp -= enemyDmg;
@@ -428,29 +428,29 @@ public class GameManager : MonoBehaviour
 
                 if (Input.GetMouseButtonUp(0))
                 {
-                    tutorialPhase = 3;
+                    tutorialPhase = 4;
                 }
 
-            }
-
-            else if (tutorialPhase == 2 && Input.GetMouseButtonUp(0))
-            {
-                tutorialPhase = 3;
             }
 
             else if (tutorialPhase == 3 && Input.GetMouseButtonUp(0))
             {
                 tutorialPhase = 4;
-
             }
 
-            else if (tutorialPhase == 5 && Input.GetMouseButtonUp(0))
+            else if (tutorialPhase == 4 && Input.GetMouseButtonUp(0))
             {
-                tutorialPhase = 6;
-                c1CurrentHp -= enemyDmg;
+                tutorialPhase = 5;
+
             }
 
             else if (tutorialPhase == 6 && Input.GetMouseButtonUp(0))
+            {
+                tutorialPhase = 7;
+                c1CurrentHp -= enemyDmg;
+            }
+
+            else if (tutorialPhase == 7 && Input.GetMouseButtonUp(0))
             {
                 SceneManager.LoadScene(Values.SceneNames.BedroomScene);
                 FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
@@ -572,11 +572,16 @@ public class GameManager : MonoBehaviour
                     Debug.Log("true3");
                 }
 
-                else if (GameManager.tutorialPhase == 4 && GameManager.Instance.selected.Count >= 4)
+                else if (GameManager.tutorialPhase == 5 && GameManager.Instance.selected.Count >= 5)
                 {
-                    GameManager.tutorialPhase = 5;
+                    GameManager.tutorialPhase = 6;
                     GameManager.Instance.Attack();
                     GameManager.Instance.InstantRefreshBoard();
+                }
+
+                else
+                {
+                    UnselectAllPieces();
                 }
             }
             
@@ -1987,6 +1992,7 @@ public class GameManager : MonoBehaviour
                         {
                             n = 3;
                             newPiece = createPiece(n, i, j);
+                            tutorialPhase = 3;
                         }
 
                         else
@@ -1994,6 +2000,9 @@ public class GameManager : MonoBehaviour
                             n = UnityEngine.Random.Range(0, 3);
                             newPiece = createPiece(n, i, j);
                         }
+
+                        
+
                     }
                     //-------------------------------------------------------\\
 
@@ -2265,7 +2274,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 3 && !(PuzzleUIManager.Instance.helpDialogue3.activeInHierarchy))
+        if (tutorialPhase == 4 && !(PuzzleUIManager.Instance.helpDialogue3.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2280,7 +2289,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 4 && !(PuzzleUIManager.Instance.helpDialogue4.activeInHierarchy))
+        if (tutorialPhase == 5 && !(PuzzleUIManager.Instance.helpDialogue4.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2300,7 +2309,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 5 && !(PuzzleUIManager.Instance.helpDialogue5.activeInHierarchy))
+        if (tutorialPhase == 6 && !(PuzzleUIManager.Instance.helpDialogue5.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2321,7 +2330,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 6 && !(PuzzleUIManager.Instance.endText.activeInHierarchy))
+        if (tutorialPhase == 7 && !(PuzzleUIManager.Instance.endText.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
