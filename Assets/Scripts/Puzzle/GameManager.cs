@@ -485,9 +485,15 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("Enemy is stunned and cannot attack");
                     enemyStunnedRounds--;
+                    PuzzleUIManager.Instance.stunCounter.text = enemyStunnedRounds.ToString();
 
                     if (enemyStunnedRounds == 0)
+                    {
                         enemyStunned = false;
+                        PuzzleUIManager.Instance.stunIndicator.SetActive(false);
+                        PuzzleUIManager.Instance.stunIndicator.transform.rotation = Quaternion.identity;
+                    }    
+                        
 
                 }
 
@@ -495,7 +501,15 @@ public class GameManager : MonoBehaviour
                 enemyAttackTick = 0.0f;
             }
         }
+        PuzzleUIManager.Instance.painHexTriggerBar.fillAmount = (float)bossExtraAttackRoundCurrent / bossExtraAttackRoundTrigger;
+        Debug.Log(bossExtraAttackRoundCurrent + "/" + bossExtraAttackRoundTrigger);
+        if (enemyStunned)
+        {
+            Vector3 stunIndicatorRot = PuzzleUIManager.Instance.stunIndicator.transform.rotation.eulerAngles;
+            PuzzleUIManager.Instance.stunIndicator.transform.rotation = Quaternion.Euler(stunIndicatorRot.x, stunIndicatorRot.y, stunIndicatorRot.z + (150 *Time.deltaTime));
+        }
 
+        
 
         if (Input.GetMouseButtonUp(0))   //if left mouse button released
         {
@@ -1182,10 +1196,15 @@ public class GameManager : MonoBehaviour
                 {
                     if (!enemyStunned)
                     {
+                        PuzzleUIManager.Instance.stunIndicator.SetActive(true);
+                        PuzzleUIManager.Instance.stunIndicator.transform.rotation = Quaternion.identity;
+
                         enemyStunned = true;
                     }
 
                     enemyStunnedRounds += enemyStunSetRounds;
+                    PuzzleUIManager.Instance.stunCounter.text = enemyStunnedRounds.ToString();
+
                     currentDamageCounter += basicDamage * 0.7f;
                 }
 
@@ -1460,9 +1479,16 @@ public class GameManager : MonoBehaviour
                     Debug.Log("Disable next enemy attack (stunned)");
 
                     if (!enemyStunned)
+                    {
+                        PuzzleUIManager.Instance.stunIndicator.SetActive(true);
+                        PuzzleUIManager.Instance.stunIndicator.transform.rotation = Quaternion.identity;
                         enemyStunned = true;
+                    }
+                        
 
                     enemyStunnedRounds += 3 + enemyStunSetRounds;
+                    PuzzleUIManager.Instance.stunCounter.text = enemyStunnedRounds.ToString();
+
 
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;

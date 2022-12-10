@@ -50,6 +50,11 @@ public class PuzzleUIManager : MonoBehaviour
     public GameObject arrowGroup4;
     public GameObject arrowGroup5;
 
+    public GameObject stunIndicator;
+    public Text stunCounter;
+
+    public Image painHexTriggerBar;
+
    
 
     //enemy
@@ -76,6 +81,11 @@ public class PuzzleUIManager : MonoBehaviour
     public void SetEnemyBossSprite(int index)
     {
         enemyBoss.sprite = enemySprites[index];
+    }
+
+    public void Update()
+    {
+        
     }
 
 }
