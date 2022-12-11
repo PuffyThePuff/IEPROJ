@@ -862,6 +862,45 @@ public class DialogueManager : MonoBehaviour
         {
             name2Text.text = "???";
         }
+
+        if (FindObjectOfType<StoryManager>().currentChapter == 5)
+        {
+            if (dequeueIndex <= 6)
+            {
+                name1Text.text = "Man's Voice";
+                name2Text.text = "Woman's Voice";
+            }
+            else if (dequeueIndex >= 7 && dequeueIndex >= 14)
+            {
+                name1Text.text = "Older Man";
+                name2Text.text = "Woman's Voice";
+            }
+            else if (dequeueIndex == 15 || dequeueIndex == 16)
+            {
+                name1Text.text = "Man's Voice";
+            }
+            else if (dequeueIndex > 16 && dequeueIndex <= 20)
+            {
+                name1Text.text = "Older Man";
+            }
+            else if (dequeueIndex == 21 )
+            {
+                name2Text.text = "???";
+            }
+            else if (dequeueIndex == 22)
+            {
+                name1Text.text = "Man & Woman";
+            }
+            else if (dequeueIndex == 23 || dequeueIndex == 24)
+            {
+                name1Text.text = "Hal";
+            }
+            else if (dequeueIndex == 25)
+            {
+                name2Text.text = "Yuuki";
+            }
+
+        }
     }
 
     void HideImageOnSpecialCondition()
@@ -927,6 +966,11 @@ public class DialogueManager : MonoBehaviour
         else if (FindObjectOfType<StoryManager>().currentChapter == 4)
         {
             Speaker1Image.color = Color.clear;
+        }
+        else if (FindObjectOfType<StoryManager>().currentChapter == 5)
+        {
+            Speaker1Image.color = Color.clear;
+            Speaker2Image.color = Color.clear;
         }
     }
 

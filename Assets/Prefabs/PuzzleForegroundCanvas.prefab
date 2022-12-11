@@ -1559,8 +1559,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Sweet! I was able to summon [Character 2]''s special piece. This happened
-    because we chained [normal piece 2] together and filled up [their] charge bar.
+  m_Text: 'The longer the chain, the more damage I deal. Connect the longest one
+    you can find! Remember this: red damages, blue stuns, and green heals!
 
 '
 --- !u!114 &304180278736664982
@@ -1889,8 +1889,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Make use of them by including them in your chain to maximize your combos.
-    For instance, try adding this in the middle of a chain!
+  m_Text: See? Now, try adding this in the middle of a chain!
 --- !u!114 &562523212492550188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1985,7 +1984,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Good! See that? I managed to hurt the enemy. Longer chain means more damage.
+  m_Text: Good! See that? I managed to hurt the enemy.
 --- !u!114 &904023788408351435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2080,8 +2079,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: The game is played by connecting identical neighboring pieces by selecting
-    them in succession. To start, try connecting the following pieces together!
+  m_Text: To start, try connecting the following pieces together!
 --- !u!114 &1612182930081425613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2476,10 +2474,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Good! You seem to be a really good tactician, huh? Be careful though, I
-    must defeat my enemy before all my characters are taken down.  Repeatedly, after
-    a certain amount of time, one of my characters gets attacked. See? It's already
-    happening.
+  m_Text: "Yes! Good! You seem to be a really good tactician, huh? Now, say my name.
+    Don\u2019t worry, I know you know it."
 --- !u!114 &6806882243493647910
 MonoBehaviour:
   m_ObjectHideFlags: 0

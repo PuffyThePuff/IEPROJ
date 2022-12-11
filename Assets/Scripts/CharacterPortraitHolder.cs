@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class CharacterPortraitHolder : MonoBehaviour
 {
+
     [SerializeField] private GameObject red1;
     [SerializeField] private GameObject blue1;
     [SerializeField] private GameObject green1;
@@ -23,7 +24,6 @@ public class CharacterPortraitHolder : MonoBehaviour
             red1.SetActive(false);
             red2.SetActive(true);
         }
-
         else
         {
             red2.SetActive(false);
