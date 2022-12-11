@@ -2048,7 +2048,7 @@ public class StoryManager : MonoBehaviour
         if (FindObjectOfType<StoryManager>().currentChapter == 5 &&
             FindObjectOfType<StoryManager>().currentDialogue == 0)
         {
-            if (SceneManager.GetActiveScene().name == Values.SceneNames.ClassroomScene
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[5].ChapterDialogues[0].isDone)
             {
 

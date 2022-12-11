@@ -663,7 +663,7 @@ public class GameManager : MonoBehaviour
 
         if (isPuzzleDone)
         {
-            SceneManager.LoadScene(Values.SceneNames.ClassroomScene);
+            SceneManager.LoadScene(Values.SceneNames.BedroomScene);
             FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
                 .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
             FindObjectOfType<StoryManager>().currentDialogue = 0;
