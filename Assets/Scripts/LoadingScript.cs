@@ -22,9 +22,11 @@ public class LoadingScript : MonoBehaviour
 
     IEnumerator LoadAsync()
     {
+        
         AsyncOperation i = SceneManager.LoadSceneAsync("TransitionSample");
         //AsyncOperation j = SceneManager.LoadSceneAsync("RoomSample", LoadSceneMode.Additive);
         FindObjectOfType<StoryManager>().ResetChapters();
+        FindObjectOfType<AudioManager>().Stop("TheWorldIsGrayBGM", "bgm");
 
         loadingScreen.SetActive(true);
         mainMenuScreen.SetActive(false);
@@ -36,6 +38,7 @@ public class LoadingScript : MonoBehaviour
             slider.value = progress;
             yield return null;
         }
+        
     }
 
     public void goMainMenu()

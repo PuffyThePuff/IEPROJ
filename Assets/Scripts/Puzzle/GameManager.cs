@@ -2525,6 +2525,29 @@ public class GameManager : MonoBehaviour
     IEnumerator WaitAnimation()
     {
         dialogueIndexForFinal++;
+        PuzzleUIManager.Instance.Text.GetComponent<Text>().text =
+            FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue]
+                .sentences[dialogueIndexForFinal];
+
+        int RisingValue = FindObjectOfType<StoryManager>()
+            .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+            .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length / 2;
+
+        float currentTextPosition = initTextPosY * 5;
+        float increaseValue = currentTextPosition / RisingValue;
+        Vector3 increaseVector = new Vector3(0, increaseValue, 0);
+
+        float currentAlpha = 1;
+        float increaseAlphaValue = currentAlpha / RisingValue;
+        Color increaseAlpha = new Color(0, 0, 0, increaseAlphaValue);
+
+
+        if (dialogueIndexForFinal >= RisingValue)
+        {
+            PuzzleUIManager.Instance.Text.GetComponent<RectTransform>().position += increaseVector;
+            PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color += increaseAlpha;
+        }
         yield return new WaitForSeconds(3.0f);
         
 

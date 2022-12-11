@@ -499,6 +499,7 @@ public class DialogueManager : MonoBehaviour
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
                 Values.Puzzle.isTutorial = true;
             }
+            FindObjectOfType<AudioManager>().Stop("ChasingVictoryBGM", "bgm");
             FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[1].ChapterDialogues[0].isDone &&
@@ -800,7 +801,7 @@ public class DialogueManager : MonoBehaviour
             {
                 
                 FindObjectOfType<StoryManager>().StoryChapters[5].ChapterDialogues[0].hasTriggered = true;
-                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.LogoScene));
+                StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition("Credits"));
                 FindObjectOfType<AudioManager>().Stop("SandCollegeBGM", "bgm");
             }
         }
@@ -870,7 +871,7 @@ public class DialogueManager : MonoBehaviour
                 name1Text.text = "Man's Voice";
                 name2Text.text = "Woman's Voice";
             }
-            else if (dequeueIndex >= 7 && dequeueIndex >= 14)
+            else if (dequeueIndex >= 7 && dequeueIndex <= 14)
             {
                 name1Text.text = "Older Man";
                 name2Text.text = "Woman's Voice";
@@ -914,7 +915,14 @@ public class DialogueManager : MonoBehaviour
             Speaker1Image.color = Color.white;
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
-                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex > 2)
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && (dequeueIndex > 2 && dequeueIndex < 12))
+        {
+            Speaker1Image.color = Color.clear;
+            Speaker2Image.color = Color.clear;
+
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex >= 12)
         {
             Speaker1Image.color = Color.clear;
             Speaker2Image.color = Color.white;
@@ -987,16 +995,49 @@ public class DialogueManager : MonoBehaviour
                   FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 8)
 
         {
-            //FindObjectOfType<AudioManager>().Stop("FruitsofLazinessBGM", "bgm");
-            //FindObjectOfType<AudioManager>().Play("SandCollegeBGM", "bgm", true);
+            FindObjectOfType<AudioManager>().Play("BirdsSFX", "sfx", true);
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange(true));
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 16)
+
+        {
+            FindObjectOfType<AudioManager>().Stop("BirdsSFX", "sfx");
+            FindObjectOfType<AudioManager>().Play("ChasingVictoryBGM", "bgm", true);
+            
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 21)
+
+        {
+            
+            FindObjectOfType<AudioManager>().Play("BombMulffledSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 22)
+
+        {
+
+            FindObjectOfType<AudioManager>().Stop("BombMulffledSFX", "sfx");
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 28)
+
+        {
+            
+            FindObjectOfType<AudioManager>().Play("BombSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 29)
+
+        {
+
+            FindObjectOfType<AudioManager>().Stop("BombSFX", "sfx");
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 24)
 
         {
-            //FindObjectOfType<AudioManager>().Stop("FruitsofLazinessBGM", "bgm");
-            //FindObjectOfType<AudioManager>().Play("SandCollegeBGM", "bgm", true);
             StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange(true));
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
@@ -1005,6 +1046,20 @@ public class DialogueManager : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().Stop("FruitsofLazinessBGM", "bgm");
             FindObjectOfType<AudioManager>().Play("SandCollegeBGM", "bgm", true);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 39)
+
+        {
+            FindObjectOfType<AudioManager>().Stop("SandCollegeBGM", "bgm");
+            FindObjectOfType<AudioManager>().Play("JapaneseBellSFX", "sfx", false);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 40)
+
+        {
+            
+            FindObjectOfType<AudioManager>().Stop("JapaneseBellSFX", "sfx");
         }
         //Chapter 1
         else if ((FindObjectOfType<StoryManager>().currentChapter == 1 && 
