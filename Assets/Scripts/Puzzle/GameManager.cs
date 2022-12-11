@@ -165,11 +165,18 @@ public class GameManager : MonoBehaviour
         PuzzleUIManager.Instance.charDialogue1.gameObject.GetComponentInChildren<Text>().color = Color.white;
         PuzzleUIManager.Instance.charDialogue2.gameObject.GetComponentInChildren<Text>().color = Color.white;
         PuzzleUIManager.Instance.charDialogue3.gameObject.GetComponentInChildren<Text>().color = Color.white;
+
+        //normal bg
+        PuzzleUIManager.Instance.BackgroundImage.sprite = PuzzleUIManager.Instance.BGSprites[0];
+
         if (isFinalLevel)
         {
             PuzzleUIManager.Instance.AllGameHUD.SetActive(false);
             PuzzleUIManager.Instance.FadeToBlackPanel.SetActive(true);
             PuzzleUIManager.Instance.Text.SetActive(true);
+
+            //final bg bg
+            PuzzleUIManager.Instance.BackgroundImage.sprite = PuzzleUIManager.Instance.BGSprites[1];
 
             PuzzleUIManager.Instance.FadeToBlackColor = PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color;
             PuzzleUIManager.Instance.FadeToBlackColor.a = 0f;
