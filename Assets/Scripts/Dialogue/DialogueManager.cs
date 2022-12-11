@@ -736,8 +736,8 @@ public class DialogueManager : MonoBehaviour
 
                 FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("CuriosityMuffledBGM", "bgm");
-                FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
+                //FindObjectOfType<AudioManager>().Stop("FruitsofLazinessBGM", "bgm");
+                //FindObjectOfType<AudioManager>().Play("CuriosityBGM", "bgm", true);
             }
         }
         else if (FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0].isDone &&
@@ -800,8 +800,7 @@ public class DialogueManager : MonoBehaviour
                 
                 FindObjectOfType<StoryManager>().StoryChapters[5].ChapterDialogues[0].hasTriggered = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.LogoScene));
-                //FindObjectOfType<AudioManager>().Stop("RoomBGM");
-                //FindObjectOfType<AudioManager>().Play("BattleBGM", true);
+                FindObjectOfType<AudioManager>().Stop("SandCollegeBGM", "bgm");
             }
         }
 
