@@ -273,7 +273,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d65928c240f3bb846b56e5399dd82629, type: 3}
   AllGameHUD: {fileID: 976875033}
   FadeToBlackPanel: {fileID: 89664139}
-  Text: {fileID: 2017255006}
+  Text: {fileID: 297937294}
   FadeToBlackColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!4 &90924989
 Transform:

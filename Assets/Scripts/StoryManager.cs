@@ -1825,6 +1825,20 @@ public class StoryManager : MonoBehaviour
                 FindObjectOfType<AudioManager>().Play("AirConSFX", "sfx", true);
             }
         }
+        //SPECIAL CASE FOR CHAPTER4
+        if (FindObjectOfType<StoryManager>().currentChapter == 3 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 4)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue )
+            {
+                FindObjectOfType<StoryManager>().currentChapter = 4;
+                FindObjectOfType<StoryManager>().currentDialogue = 0;
+                FindObjectOfType<AudioManager>().Stop("CuriosityBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("VictorySFX", "sfx", false);
+                FindObjectOfType<AudioManager>().Play("AirConSFX", "sfx", true);
+            }
+        }
         if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
             FindObjectOfType<StoryManager>().currentDialogue == 0)
         {
