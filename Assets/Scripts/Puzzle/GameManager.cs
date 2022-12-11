@@ -553,44 +553,7 @@ public class GameManager : MonoBehaviour
         {
             if(!isTutorial)
             {
-                if (isFinalLevel)
-                {
-                    if (dialogueIndexForFinal >= FindObjectOfType<StoryManager>()
-                            .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
-                            .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length - 5)
-                    {
-
-                        PuzzleUIManager.Instance.Text.GetComponent<Text>().text =
-                            FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
-                                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue]
-                                .sentences[dialogueIndexForFinal];
-
-                        int RisingValue = FindObjectOfType<StoryManager>()
-                            .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
-                            .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length / 2;
-
-                        float currentTextPosition = initTextPosY * 5;
-                        float increaseValue = currentTextPosition / RisingValue;
-                        Vector3 increaseVector = new Vector3(0, increaseValue, 0);
-
-                        float currentAlpha = 1;
-                        float increaseAlphaValue = currentAlpha / RisingValue;
-                        Color increaseAlpha = new Color(0, 0, 0, increaseAlphaValue);
-
-
-                        if (dialogueIndexForFinal >= RisingValue)
-                        {
-                            PuzzleUIManager.Instance.Text.GetComponent<RectTransform>().position += increaseVector;
-                            PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color += increaseAlpha;
-                        }
-
-                    }
-                    else
-                    {
-                        Debug.Log("dialogueIndexForFinal:" + dialogueIndexForFinal);
-                        StartCoroutine(WaitAnimation());
-                    }
-                }
+                
                 if (GameManager.Instance.selected.Count >= 3)   //if more than 3 pieces selected
                 {
                     GameManager.Instance.Attack();  //delete normal pieces and trigger special pieces effects
@@ -2495,7 +2458,7 @@ public class GameManager : MonoBehaviour
 
         if (dialogueIndexForFinal < FindObjectOfType<StoryManager>()
                 .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
-                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length - 5)
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length - 3)
         {
             
             PuzzleUIManager.Instance.Text.GetComponent<Text>().text =
@@ -2523,6 +2486,12 @@ public class GameManager : MonoBehaviour
             }
             
         }
+        else
+        {
+            Debug.Log("dialogueIndexForFinal:" + dialogueIndexForFinal);
+            StartCoroutine(WaitAnimation());
+        }
+
         
     }
 
@@ -2555,9 +2524,17 @@ public class GameManager : MonoBehaviour
 
     IEnumerator WaitAnimation()
     {
+        dialogueIndexForFinal++;
         yield return new WaitForSeconds(3.0f);
-        isPuzzleDone = true;
+        
+
         Debug.Log("triggertoscene transfer");
+        if (dialogueIndexForFinal < FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length)
+        {
+            isPuzzleDone = true;
+        }
     }
 
 
