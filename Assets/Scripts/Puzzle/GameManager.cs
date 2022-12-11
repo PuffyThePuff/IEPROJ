@@ -502,6 +502,8 @@ public class GameManager : MonoBehaviour
             }
         }
         PuzzleUIManager.Instance.painHexTriggerBar.fillAmount = (float)bossExtraAttackRoundCurrent / bossExtraAttackRoundTrigger;
+        PuzzleUIManager.Instance.lockHexTransferBar.fillAmount = (float)((currentTurn % 3)) / 2;
+
         Debug.Log(bossExtraAttackRoundCurrent + "/" + bossExtraAttackRoundTrigger);
         if (enemyStunned)
         {
