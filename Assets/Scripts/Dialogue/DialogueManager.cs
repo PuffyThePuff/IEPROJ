@@ -120,6 +120,7 @@ public class DialogueManager : MonoBehaviour
         if (name2Text.text != "")
             Speaker2Image.gameObject.SetActive(true);
 
+        AlterNameTags();
         TriggerCutSceneInDialogue();
 
         foreach (int index in FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
@@ -691,7 +692,7 @@ public class DialogueManager : MonoBehaviour
             {
                 Values.Puzzle.isTutorial = false;
                 Values.Puzzle.isRigged = false;
-                Values.Enemy.enemyLevel = 0;
+                Values.Enemy.enemyLevel = 5;
                 Values.Enemy.maxHP = 150;
                 Values.Enemy.dmg = 50;
 
@@ -719,7 +720,7 @@ public class DialogueManager : MonoBehaviour
             {
                 Values.Puzzle.isTutorial = false;
                 Values.Puzzle.isRigged = false;
-                Values.Enemy.enemyLevel = 0;
+                Values.Enemy.enemyLevel = 5;
                 Values.Enemy.maxHP = 150;
                 Values.Enemy.dmg = 25;
 
@@ -745,7 +746,7 @@ public class DialogueManager : MonoBehaviour
             {
                 Values.Puzzle.isTutorial = false;
                 Values.Puzzle.isRigged = false;
-                Values.Enemy.enemyLevel = 0;
+                Values.Enemy.enemyLevel = 5;
                 Values.Enemy.maxHP = 150;
                 Values.Enemy.dmg = 25;
 
@@ -799,6 +800,18 @@ public class DialogueManager : MonoBehaviour
         
     }
 
+    void AlterNameTags()
+    {
+        /*
+        if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+             FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex <= 2)
+        {
+
+            name1Text.text = "";
+        }
+        */
+    }
+
     void HideImageOnSpecialCondition()
     {
         Color alphaColor = Color.clear;
@@ -826,6 +839,16 @@ public class DialogueManager : MonoBehaviour
 
 
             Speaker2Image.gameObject.SetActive(true);
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2))
+        {
+            Speaker2Image.color = Color.clear;
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 4))
+        {
+            Speaker2Image.color = Color.clear;
         }
     }
 
@@ -886,6 +909,7 @@ public class DialogueManager : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().Play("GetGachaSFX", "sfx", false);
             FindObjectOfType<AudioManager>().Play("SparkleSFX", "sfx", true);
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange(true));
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 1 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 5) && dequeueIndex == 13)
@@ -980,6 +1004,11 @@ public class DialogueManager : MonoBehaviour
             FindObjectOfType<AudioManager>().Play("CuriosityMuffledBGM", "bgm", true);
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 14)
+        {
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange(true));
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 18)
         {
             FindObjectOfType<AudioManager>().Play("SparkleSFX", "sfx", true);
@@ -993,6 +1022,7 @@ public class DialogueManager : MonoBehaviour
                   FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 24)
         {
             FindObjectOfType<AudioManager>().Play("GetGachaSFX", "sfx", false);
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FlashBangBackgroundChange(true));
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 25)
@@ -1077,6 +1107,7 @@ public class DialogueManager : MonoBehaviour
                   FindObjectOfType<StoryManager>().currentDialogue == 3) && dequeueIndex == 4)
         {
             FindObjectOfType<AudioManager>().Stop("AirConSFX", "sfx");
+            FindObjectOfType<AudioManager>().Stop("CuriosityMuffledBGM", "bgm");
             FindObjectOfType<AudioManager>().Play("YouFarAwayBGM", "bgm", true);
             FindObjectOfType<AudioManager>().AdjustPitch("YouFarAwayBGM", "bgm", 0.5f);
         }

@@ -9,6 +9,12 @@ public class BackgroundManager : MonoBehaviour
     public GameObject CharacterBedroom;
     public GameObject GachaBackground;
     public GameObject InGameBackground;
+    public GameObject CaveBackground;
+    public GameObject BedYuukiBackground;
+
+    public GameObject NagiSpawn;
+    public GameObject ChessSpawn;
+    public GameObject SakuraSpawn;
 
     // Start is called before the first frame update
     void Start()

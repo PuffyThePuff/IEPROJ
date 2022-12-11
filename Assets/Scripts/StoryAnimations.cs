@@ -35,12 +35,15 @@ public class StoryAnimations : MonoBehaviour
 
     public IEnumerator FadeBackgroundChange(bool isMidDialogue = false)
     {
-        
+        FindObjectOfType<DialogueManager>().onAnimation = true;
+        FindObjectOfType<DialogueManager>().dialogueUI.SetActive(false);
         FadeBlackTransition.SetTrigger("DramaticSceneEnter");
         yield return new WaitForSeconds(1.9f);
         BackgrondChange(isMidDialogue);
         yield return new WaitForSeconds(1.0f);
         FindObjectOfType<DialogueManager>().StartNextDialogue();
+        FindObjectOfType<DialogueManager>().dialogueUI.SetActive(true);
+        FindObjectOfType<DialogueManager>().onAnimation = false;
     }
 
     public IEnumerator FlashBangBackgroundChange(bool isMidDialogue = false)
@@ -79,6 +82,11 @@ public class StoryAnimations : MonoBehaviour
         FindObjectOfType<BackgroundManager>().CharacterBedroom.SetActive(false);
         FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(false);
         FindObjectOfType<BackgroundManager>().InGameBackground.SetActive(false);
+        FindObjectOfType<BackgroundManager>().CaveBackground.SetActive(false);
+        FindObjectOfType<BackgroundManager>().BedYuukiBackground.SetActive(false);
+        FindObjectOfType<BackgroundManager>().NagiSpawn.SetActive(false);
+        FindObjectOfType<BackgroundManager>().ChessSpawn.SetActive(false);
+        FindObjectOfType<BackgroundManager>().SakuraSpawn.SetActive(false);
 
         if (!isMidDialogue)
         {
@@ -114,6 +122,22 @@ public class StoryAnimations : MonoBehaviour
             if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 2)
             {
                 FindObjectOfType<BackgroundManager>().InGameBackground.SetActive(true);
+            }
+            else if (FindObjectOfType<StoryManager>().currentChapter == 1 && FindObjectOfType<StoryManager>().currentDialogue == 5)
+            {
+                FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+                FindObjectOfType<BackgroundManager>().NagiSpawn.SetActive(true);
+            }
+            else if (FindObjectOfType<StoryManager>().currentChapter == 2 && FindObjectOfType<StoryManager>().currentDialogue == 3 
+                                                                          && (FindObjectOfType<DialogueManager>().dequeueIndex >= 14 && FindObjectOfType<DialogueManager>().dequeueIndex < 24))
+            {
+                FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+            }
+            else if (FindObjectOfType<StoryManager>().currentChapter == 2 && FindObjectOfType<StoryManager>().currentDialogue == 3
+                                                                          && FindObjectOfType<DialogueManager>().dequeueIndex >= 24)
+            {
+                FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+                FindObjectOfType<BackgroundManager>().ChessSpawn.SetActive(true);
             }
         }
         
