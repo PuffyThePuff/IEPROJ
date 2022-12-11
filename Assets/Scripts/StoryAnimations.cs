@@ -123,6 +123,13 @@ public class StoryAnimations : MonoBehaviour
             {
                 FindObjectOfType<BackgroundManager>().DepressionBG.SetActive(true);
             }
+            else if (FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 4)
+            {
+                FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+                FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.black;
+                FindObjectOfType<BackgroundManager>().FinalText.gameObject.SetActive(true);
+                FindObjectOfType<BackgroundManager>().FinalText.text = "...and I played...";
+            }
             else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 0)
             {
                 FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
