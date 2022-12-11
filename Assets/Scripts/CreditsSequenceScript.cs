@@ -24,9 +24,6 @@ public class CreditsSequenceScript : MonoBehaviour
         timer -= Time.deltaTime;
         if (timer <= 0.0f)
         {
-            if (currentBlock < creditBlocks.Length) creditBlocks[currentBlock].SetActive(false);
-            else SceneManager.LoadScene("OtaconnectStart");
-
             if (currentBlock >= creditBlocks.Length)
             {
                 AudioManager.Instance.Stop("TheWorldIsGrayBGM", "bgm");
