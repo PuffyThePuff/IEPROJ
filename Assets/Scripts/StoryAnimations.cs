@@ -88,6 +88,7 @@ public class StoryAnimations : MonoBehaviour
         FindObjectOfType<BackgroundManager>().ChessSpawn.SetActive(false);
         FindObjectOfType<BackgroundManager>().SakuraSpawn.SetActive(false);
         FindObjectOfType<BackgroundManager>().FinalText.gameObject.SetActive(false);
+        FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.white;
 
         if (!isMidDialogue)
         {
@@ -156,7 +157,20 @@ public class StoryAnimations : MonoBehaviour
         }
         else
         {
-            if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 2)
+            if ((FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 2)
+                && (FindObjectOfType<DialogueManager>().dequeueIndex >= 3 && FindObjectOfType<DialogueManager>().dequeueIndex < 8))
+            {
+                FindObjectOfType<BackgroundManager>().CaveBackground.GetComponent<Image>().color = Color.black;
+                FindObjectOfType<BackgroundManager>().CaveBackground.SetActive(true);
+            }
+            else if ((FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 2)
+                && (FindObjectOfType<DialogueManager>().dequeueIndex >= 8 && FindObjectOfType<DialogueManager>().dequeueIndex < 24))
+            {
+                FindObjectOfType<BackgroundManager>().CaveBackground.GetComponent<Image>().color = Color.white;
+                FindObjectOfType<BackgroundManager>().CaveBackground.SetActive(true);
+            }
+            else if ((FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 2)
+                     && (FindObjectOfType<DialogueManager>().dequeueIndex >= 24))
             {
                 FindObjectOfType<BackgroundManager>().InGameBackground.SetActive(true);
             }
