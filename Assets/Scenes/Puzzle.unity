@@ -2696,6 +2696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ArrowAnimator: {fileID: 976875031}
   HitAnimator: {fileID: 1136160451}
+  HurtAnimator: {fileID: 1849823145}
 --- !u!4 &1085479308
 Transform:
   m_ObjectHideFlags: 0
@@ -4117,6 +4118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1849823143}
   - component: {fileID: 1849823144}
+  - component: {fileID: 1849823145}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Untagged
@@ -4189,6 +4191,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1849823145
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1849823142}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bb7e8ab8f38f3b144914b3c8184bdd6e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1864145960
 GameObject:
   m_ObjectHideFlags: 0
