@@ -638,7 +638,7 @@ public class DialogueManager : MonoBehaviour
             if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
             {
                 Values.Puzzle.isTutorial = false;
-                Values.Puzzle.isRigged = true;
+                Values.Puzzle.isRigged = false;
                 Values.Enemy.enemyLevel = 2;
                 Values.Enemy.maxHP = 300;
                 Values.Enemy.dmg = 100;
