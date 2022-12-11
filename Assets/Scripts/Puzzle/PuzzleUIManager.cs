@@ -54,8 +54,10 @@ public class PuzzleUIManager : MonoBehaviour
     public Text stunCounter;
 
     public Image painHexTriggerBar;
+    public Image lockHexTransferBar;
+    public Image BackgroundImage;
 
-   
+    public Sprite[] BGSprites;
 
     //enemy
     public SpriteRenderer enemyBoss;

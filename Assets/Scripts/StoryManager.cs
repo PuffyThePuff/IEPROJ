@@ -20,6 +20,9 @@ public class StoryManager : MonoBehaviour
     public Sprite[] McSprites;
     public Sprite[] NFSprites;
     public Sprite[] AliceSprites;
+    public Sprite[] PhoneSprites;
+
+
 
     private const string mainCharacterName = "Yuuki";
     private const string friendName = "Hal";
@@ -28,6 +31,8 @@ public class StoryManager : MonoBehaviour
 
     private const string olderMan = "Older Man";
     private const string woman = "Woman";
+
+
 
     void Awake()
     {
@@ -39,6 +44,23 @@ public class StoryManager : MonoBehaviour
         else if (instanceRef != this)
             Destroy(gameObject);
     }
+
+    public void ResetChapters()
+    {
+        currentChapter = 0;
+        currentDialogue = 0;
+        for (int i = 0; i < StoryChapters.Count; i++)
+        {
+            for (int j = 0; j < StoryChapters[i].ChapterDialogues.Length; j++)
+            {
+                StoryChapters[i].ChapterDialogues[j].isDone = false;
+                StoryChapters[i].ChapterDialogues[j].hasTriggered = false;
+            }
+        }
+            
+        
+    }
+
     public void setAllDialogues()
     {
         //TODO: CHANGE TO PHONE BG IN Ch0 DIALOGUE 2 sentence no.?
@@ -81,7 +103,7 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[1] = new Dialogue();
         StoryChapters[0].ChapterDialogues[1].name = mainCharacterName;
         StoryChapters[0].ChapterDialogues[1].otherName = friendName;
-        StoryChapters[0].ChapterDialogues[1].sentences = new string[36];
+        StoryChapters[0].ChapterDialogues[1].sentences = new string[41];
         StoryChapters[0].ChapterDialogues[1].speaker1Lines = new int[] { 5, 6, 9, 11, 14, 16, 18, 20, 21, 23, 27, 30, 32, 35};
         StoryChapters[0].ChapterDialogues[1].speaker2Lines = new int[] { 4, 7, 8, 10, 12, 13, 15, 17, 19, 22, 24, 25, 26, 28, 31, 33, 34} ;
         StoryChapters[0].ChapterDialogues[1].speaker1Sprites = new Sprite[] { };
@@ -183,6 +205,13 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[1].sentences[34] = "Oh! My class is in another room. I’ll go ahead.";
         StoryChapters[0].ChapterDialogues[1].sentences[35] = "Alright…";
 
+        StoryChapters[0].ChapterDialogues[1].sentences[36] = "That was… Unexpected.";
+        StoryChapters[0].ChapterDialogues[1].sentences[37] = "A game where you, a regular old human, get summoned into another world, and guide women into war?";
+        StoryChapters[0].ChapterDialogues[1].sentences[38] = "Even worse, princesses?";
+        StoryChapters[0].ChapterDialogues[1].sentences[39] = "Well, I guess it’s a way to pass time.";
+        StoryChapters[0].ChapterDialogues[1].sentences[40] = "Might as well try it when I get home.";
+        
+
         //screen fade to black then back to dimly lit room
         //Debug.Log("c0d1 success");
 
@@ -190,9 +219,9 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[2] = new Dialogue();
         StoryChapters[0].ChapterDialogues[2].name = phoneName;
         StoryChapters[0].ChapterDialogues[2].otherName = aliceName;
-        StoryChapters[0].ChapterDialogues[2].sentences = new string[18];
-        StoryChapters[0].ChapterDialogues[2].speaker1Lines = new int[] { 0, 1, 2, 8, 10, 17};
-        StoryChapters[0].ChapterDialogues[2].speaker2Lines = new int[] { 5, 6, 9, 12};
+        StoryChapters[0].ChapterDialogues[2].sentences = new string[40];
+        StoryChapters[0].ChapterDialogues[2].speaker1Lines = new int[] { 0, 1, 2, 8, 18,20,26,30,34};
+        StoryChapters[0].ChapterDialogues[2].speaker2Lines = new int[] { 12, 6, 9, 12,19,23,27,29,32,39};
         StoryChapters[0].ChapterDialogues[2].speaker1Sprites = new Sprite[] { };
         StoryChapters[0].ChapterDialogues[2].speaker1Sprites = McSprites;
         StoryChapters[0].ChapterDialogues[2].speaker2Sprites = new Sprite[] { };
@@ -211,16 +240,19 @@ public class StoryManager : MonoBehaviour
         StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex = new int[StoryChapters[0].ChapterDialogues[2].sentences.Length];
         for (int k = 0; k < StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex.Length; k++)
         {
-            if (k == 5)
+            if (k == 37 || k == 38)
             {
+                //happy
                 StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex[k] = 1;
             }
-            else if (k == 11)
+            else if (k == 23 || k == 31)
             {
+                //mad
                 StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex[k] = 2;
             }
-            else if (k == 9 || k == 12 || k == 13 || k == 14 || k == 15 || k == 16)
+            else if (k == 29 || k == 30 || (k >= 32 && k < 37))
             {
+                //blush
                 StoryChapters[0].ChapterDialogues[2].speaker2ExpressionIndex[k] = 3;
             }
             else
@@ -229,39 +261,83 @@ public class StoryManager : MonoBehaviour
             }
         }
         #endregion
-
+        //yuuki 0-2
         StoryChapters[0].ChapterDialogues[2].sentences[0] = "...And it's done.";
         StoryChapters[0].ChapterDialogues[2].sentences[1] = "Still, the game is relatively light for a gacha game.";
         StoryChapters[0].ChapterDialogues[2].sentences[2] = "The princesses do look good though.";
 
-        //narration
-        StoryChapters[0].ChapterDialogues[2].sentences[3] = "And the game starts.";
+        StoryChapters[0].ChapterDialogues[2].sentences[3] = "And so it begins.";
         StoryChapters[0].ChapterDialogues[2].sentences[4] = "A blonde woman stands in front of the screen, wearing the same familiar school uniform. She smiles.";
 
-        //alice
-        StoryChapters[0].ChapterDialogues[2].sentences[5] = "Ah, hero, you’re finally here!";
-        StoryChapters[0].ChapterDialogues[2].sentences[6] = "Quickly, take my hand!";
+        //phone narration
+        StoryChapters[0].ChapterDialogues[2].sentences[5] = "Darkness. That was all there was.";
+        StoryChapters[0].ChapterDialogues[2].sentences[6] = "All I remember is pushing a woman away from the path of an oncoming truck. Then bright lights.";
+        StoryChapters[0].ChapterDialogues[2].sentences[7] = "And then nothing... Left alone in this cold, dark void.";
 
-        //spawn phone image
-        StoryChapters[0].ChapterDialogues[2].sentences[7] = "And just like that, I was whisked away. The girl dragged me out of the dimly lit room… And it was there that I saw it, a world of color.";
+        //orang bg
+        StoryChapters[0].ChapterDialogues[2].sentences[8] = "Moments pass…";
+        StoryChapters[0].ChapterDialogues[2].sentences[9] = "Warmth then surrounds my skin. The darkness slowly fading away.";
+        StoryChapters[0].ChapterDialogues[2].sentences[10] = "Dim orange lights begin to surround me.";
+        StoryChapters[0].ChapterDialogues[2].sentences[11] = "My senses returning, I feel the cold hard ground against my back, and the soft warm feeling of…Something?";
+
+        //???
+        StoryChapters[0].ChapterDialogues[2].sentences[12] = "Are you awake?";
         
-        StoryChapters[0].ChapterDialogues[2].sentences[8] = "What are we, colorless?";
 
-        StoryChapters[0].ChapterDialogues[2].sentences[9] = "Hero, there’s no time to explain, kiss the back of my palm!";
+        StoryChapters[0].ChapterDialogues[2].sentences[13] = "My eyes open. A blonde haired girl loomed over me.";
+
+        //???
+        StoryChapters[0].ChapterDialogues[2].sentences[14] = "Ah, I see you’re okay.";
+        StoryChapters[0].ChapterDialogues[2].sentences[15] = "You’ve been asleep for quite awhile.";
+
+        StoryChapters[0].ChapterDialogues[2].sentences[16] = "I shot up. Taking in my surroundings, I was in a dimly lit room. ";
+        StoryChapters[0].ChapterDialogues[2].sentences[17] = "Candles were around me, and this woman was cradling my head in her thighs.";
 
         //phone
-        StoryChapters[0].ChapterDialogues[2].sentences[10] = "Huh? Why? ";
-        StoryChapters[0].ChapterDialogues[2].sentences[11] = "As I asked, however, the area immediately began to feel eerie, and a shiver went down my spine.";
-        
-        StoryChapters[0].ChapterDialogues[2].sentences[12] = "Hurry!";
+        StoryChapters[0].ChapterDialogues[2].sentences[18] = "Where am I? Who are you?";
+
+        //???
+        StoryChapters[0].ChapterDialogues[2].sentences[19] = "I know you have a lot of questions in mind. But I suggest we head outside as soon as we can.";
+         
+        //???
+        StoryChapters[0].ChapterDialogues[2].sentences[20] = "Why is tha-";
+
+        StoryChapters[0].ChapterDialogues[2].sentences[21] = "Boom.";
+        StoryChapters[0].ChapterDialogues[2].sentences[22] = "A loud thunder could be heard from far away.";
+
+        //???
+        StoryChapters[0].ChapterDialogues[2].sentences[23] = "They’re getting close. We need to run, now!";
+
+        StoryChapters[0].ChapterDialogues[2].sentences[24] = "And just like that, I was whisked away. ";
+        StoryChapters[0].ChapterDialogues[2].sentences[25] = "The girl dragged me out, and it was there that I saw it, a world of fantasy.";
+        //phone 
+        StoryChapters[0].ChapterDialogues[2].sentences[26] = "Where are we?";
+        //???
+        StoryChapters[0].ChapterDialogues[2].sentences[27] = "The Kingdom of Tolemach. And that noise from earlier? It was made by the dark forces of Queen of Dreadmore";
+        StoryChapters[0].ChapterDialogues[2].sentences[28] = "The thunderous sound was heard once more. Except this time, it was louder.";
+
+        StoryChapters[0].ChapterDialogues[2].sentences[29] = "Oh no. Kiss my hand, quick!";
 
         //phone
-        StoryChapters[0].ChapterDialogues[2].sentences[13] = "Alice shoves her hand towards my face, and I immediately kiss it.";
-        StoryChapters[0].ChapterDialogues[2].sentences[14] = "As I pull back, A mark is left on the back of her palm. A crown. ";
-        StoryChapters[0].ChapterDialogues[2].sentences[15] = "A smile of confidence replaces her once nervous face.";
-        StoryChapters[0].ChapterDialogues[2].sentences[16] = "Light begins to combine around the mark on her hand, and a sword forms from the light";
+        StoryChapters[0].ChapterDialogues[2].sentences[30] = "Huh? Why? ";
 
-        StoryChapters[0].ChapterDialogues[2].sentences[17] = "Alright! Let’s do this!";
+
+        StoryChapters[0].ChapterDialogues[2].sentences[31] = "As I asked, however, the area immediately began to feel eerie, and a shiver went down my spine.";
+        
+        StoryChapters[0].ChapterDialogues[2].sentences[32] = "Hurry!";
+
+        //phone
+        StoryChapters[0].ChapterDialogues[2].sentences[33] = "The woman shoved her hand towards my face, she looked nervous.";
+
+        StoryChapters[0].ChapterDialogues[2].sentences[34] = "Alice.";
+
+        StoryChapters[0].ChapterDialogues[2].sentences[35] = "I say as I kiss it. ";
+        StoryChapters[0].ChapterDialogues[2].sentences[36] = "As I do, A mark is left on the back of her hand. A crown.";
+        StoryChapters[0].ChapterDialogues[2].sentences[37] = "A smile of confidence replaces her once fearful look.";
+        StoryChapters[0].ChapterDialogues[2].sentences[38] = "Light begins to combine around the mark on her hand, and a sword forms from the light.";
+
+        //Alice
+        StoryChapters[0].ChapterDialogues[2].sentences[39] = "Alright! Let’s do this!";
         //Debug.Log("c0d2 success");
 
 
@@ -768,7 +844,7 @@ public class StoryManager : MonoBehaviour
             {
                 StoryChapters[1].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
             }
-            else if (k >= 3 && k == 6)
+            else if (k <= 3 || k == 6)
             {
                 StoryChapters[1].ChapterDialogues[i].speaker1ExpressionIndex[k] = 1;
             }
@@ -822,6 +898,15 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
 
+        #region Expressions
+        StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex = new int[StoryChapters[j].ChapterDialogues[i].sentences.Length];
+        for (int k = 0; k < StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex.Length; k++)
+        {
+            StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
+        }
+
+        #endregion
+
         StoryChapters[j].ChapterDialogues[i].sentences[0] = "It’s been two months since I started playing this game.";
         StoryChapters[j].ChapterDialogues[i].sentences[1] = "I’ve made progress with the story, but I’ve reached a roadblock.";
         StoryChapters[j].ChapterDialogues[i].sentences[2] = "Even with the units I had, I can’t progress past it.";
@@ -860,6 +945,69 @@ public class StoryManager : MonoBehaviour
 
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
+
+        #region Expressions
+        StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex = new int[StoryChapters[j].ChapterDialogues[i].sentences.Length];
+        for (int k = 0; k < StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex.Length; k++)
+        {
+            if ((k >= 2 && k < 5) || k == 7 || k == 35)
+            {
+                //annoyed
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
+            }
+            else if (k == 10)
+            {
+                //happy
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 1;
+            }
+            else if (k == 8 || k == 9)
+            {
+                //disgust
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 3;
+            }
+            else if (k == 1)
+            {
+                //embarrassed
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 2;
+            }
+            else if ((k >= 20 && k < 24) || k >= 33) 
+            {
+                //angry
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 5;
+            }
+            else
+            {
+                //neutral
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 0;
+            }
+        }
+
+        StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex = new int[StoryChapters[j].ChapterDialogues[i].sentences.Length];
+        for (int k = 0; k < StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex.Length; k++)
+        {
+            if ((k >= 2 && k < 5) ||(k >= 9 && k < 25))
+            {
+                //worry
+                StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex[k] = 3;
+            }
+            else if (k == 0)
+            {
+                //happy
+                StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex[k] = 1;
+            }
+            else if (k >= 25)
+            {
+                //sad
+                StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex[k] = 2;
+            }
+            else
+            {
+                StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex[k] = 0;
+            }
+            
+        }
+
+        #endregion
 
         StoryChapters[j].ChapterDialogues[i].sentences[0] = "Hey!";
         StoryChapters[j].ChapterDialogues[i].sentences[1] = "How have you been? You haven’t been hanging out at the usual spot for the past two weeks.";
@@ -916,9 +1064,9 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
 
-        StoryChapters[j].ChapterDialogues[i].speaker2Lines = new int[] { 29,30,31};
+        StoryChapters[j].ChapterDialogues[i].speaker2Lines = new int[] { 28,29,30,31};
         StoryChapters[j].ChapterDialogues[i].speaker2Sprites = new Sprite[] { };
-        StoryChapters[j].ChapterDialogues[i].speaker2Sprites = NFSprites;
+        StoryChapters[j].ChapterDialogues[i].speaker2Sprites = PhoneSprites;
 
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
@@ -990,6 +1138,38 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
 
+        #region Expressions
+        StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex = new int[StoryChapters[j].ChapterDialogues[i].sentences.Length];
+        for (int k = 0; k < StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex.Length; k++)
+        {
+            if (k == 12)
+            {
+                //annoyed
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
+            }
+            else if (k >= 24)
+            {
+                //happy
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 1;
+            }
+            else if (k == 2 || k == 13)
+            {
+                //disgust
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 3;
+            }
+            else if (k == 1 || k == 0 || k == 18)
+            {
+                //angry
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 5;
+            }
+            else
+            {
+                //neutral
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 0;
+            }
+        }
+        #endregion
+
         StoryChapters[j].ChapterDialogues[i].sentences[0] = "Damn. Really?";
         StoryChapters[j].ChapterDialogues[i].sentences[1] = "I’m not healing enough for this.";
         StoryChapters[j].ChapterDialogues[i].sentences[2] = "Tsk, I guess I need to get that event unit.";
@@ -1036,7 +1216,7 @@ public class StoryManager : MonoBehaviour
 
         StoryChapters[j].ChapterDialogues[i].speaker2Lines = new int[] { 11,12,13,14,15,16,17,18,19,20,21,22,23,24,37,38,39,40,41,42 };
         StoryChapters[j].ChapterDialogues[i].speaker2Sprites = new Sprite[] { };
-        StoryChapters[j].ChapterDialogues[i].speaker2Sprites = NFSprites;
+        StoryChapters[j].ChapterDialogues[i].speaker2Sprites = PhoneSprites;
 
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
@@ -1112,6 +1292,33 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
 
+        #region Expressions
+        StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex = new int[StoryChapters[j].ChapterDialogues[i].sentences.Length];
+        for (int k = 0; k < StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex.Length; k++)
+        {
+            if (k == 4)
+            {
+                //annoyed
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
+            }
+            else if (k == 0 || k == 2)
+            {
+                //disgust
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 3;
+            }
+            else if (k == 1)
+            {
+                //angry
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 5;
+            }
+            else
+            {
+                //neutral
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 0;
+            }
+        }
+        #endregion
+
         StoryChapters[j].ChapterDialogues[i].sentences[0] = "Tsk. Wrong team.";
         StoryChapters[j].ChapterDialogues[i].sentences[1] = "I’ll try aga-- FUCK!!";
         StoryChapters[j].ChapterDialogues[i].sentences[2] = "I’m out of stamina.";
@@ -1134,6 +1341,33 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
+
+        #region Expressions
+        StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex = new int[StoryChapters[j].ChapterDialogues[i].sentences.Length];
+        for (int k = 0; k < StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex.Length; k++)
+        {
+            if (k > 10)
+            {
+                //annoyed
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
+            }
+            else if (k == 1 || k == 2 || k == 3)
+            {
+                //disgust
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 3;
+            }
+            else if (k == 0)
+            {
+                //angry
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 5;
+            }
+            else
+            {
+                //neutral
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 0;
+            }
+        }
+        #endregion
 
         StoryChapters[j].ChapterDialogues[i].sentences[0] = "Damn it.";
         StoryChapters[j].ChapterDialogues[i].sentences[1] = "Those locks are getting in my way.";
@@ -1165,6 +1399,7 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
+
 
         StoryChapters[j].ChapterDialogues[i].sentences[0] = "Yep! Alright! Enjoy the PC!";
         StoryChapters[j].ChapterDialogues[i].sentences[1] = "Ah.";
@@ -1409,11 +1644,11 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].otherName = woman;
         StoryChapters[j].ChapterDialogues[i].sentences = new string[26];
 
-        StoryChapters[j].ChapterDialogues[i].speaker1Lines = new int[] { 0, 1,2,3,4,5,6,8,9,11,14,15,16,17,22 };
+        StoryChapters[j].ChapterDialogues[i].speaker1Lines = new int[] { 0, 3,4,7,10,12,13,15,16,17,18,19,22,23,24 };
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
 
-        StoryChapters[j].ChapterDialogues[i].speaker2Lines = new int[] { 7,10,12,13,18,19,20,21,23,24,25 };
+        StoryChapters[j].ChapterDialogues[i].speaker2Lines = new int[] { 1,2,5,6,8,9,11,21,25 };
         StoryChapters[j].ChapterDialogues[i].speaker2Sprites = new Sprite[] { };
         StoryChapters[j].ChapterDialogues[i].speaker2Sprites = NFSprites;
 
@@ -1484,13 +1719,23 @@ public class StoryManager : MonoBehaviour
         DontDestroyOnLoad(this);
         setAllChapters();
         setAllDialogues();
-        FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[0], true);
-        FindObjectOfType<AudioManager>().Play("YouFarAwayBGM", "bgm", true);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (FindObjectOfType<StoryManager>().currentChapter == 0 &&
+             FindObjectOfType<StoryManager>().currentDialogue == 0)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[0].ChapterDialogues[0].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(StoryChapters[0].ChapterDialogues[0], true);
+                FindObjectOfType<AudioManager>().Play("YouFarAwayBGM", "bgm", true);
+            }
+            
+        }
         //IF PREVIOUS SCENE IS A DIFFERENT SCENE, PUT IT HERE
         //IF DIALOGUE JUST INITIALIZED, THEN DO THESE IF STATEMENTS DURING UPDATE
         if (FindObjectOfType<StoryManager>().currentChapter == 0 &&
@@ -1657,8 +1902,19 @@ public class StoryManager : MonoBehaviour
             {
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3], true);
                 FindObjectOfType<AudioManager>().Stop("CuriosityBGM", "bgm");
-                FindObjectOfType<AudioManager>().Play("VictorySFX", "sfx", false);
-                FindObjectOfType<AudioManager>().Play("AirConSFX", "sfx", true);
+                FindObjectOfType<AudioManager>().Play("YouFarAwayBGM", "bgm", true);
+            }
+        }
+        //SPECIAL CASE FOR CHAPTER4
+        if (FindObjectOfType<StoryManager>().currentChapter == 3 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 4)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue )
+            {
+                FindObjectOfType<StoryManager>().currentChapter = 4;
+                FindObjectOfType<StoryManager>().currentDialogue = 0;
+                FindObjectOfType<AudioManager>().Stop("CuriosityBGM", "bgm");
             }
         }
         if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
@@ -1667,7 +1923,29 @@ public class StoryManager : MonoBehaviour
             if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0].isDone)
             {
-                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0], true);
+                if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+                {
+                    Values.Puzzle.isTutorial = false;
+                    Values.Puzzle.isRigged = false;
+                    Values.Enemy.enemyLevel = 5;
+                    Values.Enemy.maxHP = 150;
+                    Values.Enemy.dmg = 25;
+
+                    //BUFFED ENEMY
+                    Values.Enemy.attackInterval = 1.5f;//
+                    Values.Puzzle.PainHexPosionDamage = 0.0f;
+                    Values.Puzzle.BlackHexBurstDamage = 0.0f;
+                    Values.Puzzle.hexBlockerCount = 0;//
+
+                    //set normal values
+                    Values.Player.setStunAmount = 1;
+                    Values.Player.basicHeal = 0.01f;
+                    Values.Player.basicDamage = 5;
+
+                    FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0].hasTriggered = true;
+                    FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0].isDone = true;
+                    StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
+                }
             }
         }
         if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
@@ -1676,7 +1954,29 @@ public class StoryManager : MonoBehaviour
             if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1].isDone)
             {
-                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1], true);
+                if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
+                {
+                    Values.Puzzle.isTutorial = false;
+                    Values.Puzzle.isRigged = false;
+                    Values.Enemy.enemyLevel = 5;
+                    Values.Enemy.maxHP = 150;
+                    Values.Enemy.dmg = 25;
+
+                    //BUFFED ENEMY
+                    Values.Enemy.attackInterval = 1.5f;//
+                    Values.Puzzle.PainHexPosionDamage = 0.0f;
+                    Values.Puzzle.BlackHexBurstDamage = 0.0f;
+                    Values.Puzzle.hexBlockerCount = 0;//
+
+                    //set normal values
+                    Values.Player.setStunAmount = 1;
+                    Values.Player.basicHeal = 0.01f;
+                    Values.Player.basicDamage = 5;
+
+                    FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1].hasTriggered = true;
+                    FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1].isDone = true;
+                    StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
+                }
             }
         }
         //ONLY FOR 2ndTO LAST LEVEL
@@ -1691,7 +1991,7 @@ public class StoryManager : MonoBehaviour
                 Values.Puzzle.isRigged = false;
                 Values.Puzzle.is2ndLastLevel = true;
                 Values.Puzzle.isFinalLevel = false;
-                Values.Enemy.enemyLevel = 0;
+                Values.Enemy.enemyLevel = 5;
                 Values.Enemy.maxHP = 10000;
                 Values.Enemy.dmg = 0.01f;
 
@@ -1702,15 +2002,13 @@ public class StoryManager : MonoBehaviour
                 Values.Puzzle.hexBlockerCount = 1;//
 
                 //set normal values
-                Values.Player.setStunAmount = 1;
-                Values.Player.basicHeal = 0.01f;
-                Values.Player.basicDamage = 5;
+                Values.Player.setStunAmount = 0;
+                Values.Player.basicHeal = 0;
+                Values.Player.basicDamage = 0;
 
                 FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[2].hasTriggered = true;
                 FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[2].isDone = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
-                FindObjectOfType<AudioManager>().Stop("YouFarAwayBGM", "bgm");
-                FindObjectOfType<AudioManager>().Play("TheWorldIsGrayBGM", "bgm", true);
             }
         }
         //FOR FINAL LEVEL
@@ -1743,12 +2041,14 @@ public class StoryManager : MonoBehaviour
                 FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[3].hasTriggered = true;
                 FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[3].isDone = true;
                 StartCoroutine(FindObjectOfType<StoryAnimations>().FadeTransition(Values.SceneNames.PuzzleScene));
+                FindObjectOfType<AudioManager>().Stop("YouFarAwayBGM", "bgm");
+                FindObjectOfType<AudioManager>().Play("TheWorldIsGrayBGM", "bgm", true);
             }
         }
         if (FindObjectOfType<StoryManager>().currentChapter == 5 &&
             FindObjectOfType<StoryManager>().currentDialogue == 0)
         {
-            if (SceneManager.GetActiveScene().name == Values.SceneNames.ClassroomScene
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
                 && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[5].ChapterDialogues[0].isDone)
             {
 

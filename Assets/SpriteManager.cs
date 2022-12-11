@@ -12,6 +12,7 @@ public class SpriteManager : MonoBehaviour
     public Sprite LockHexMob;
     public Sprite PainHexMob;
     public Sprite FinalBoss;
+    public Sprite TrashMob;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +36,10 @@ public class SpriteManager : MonoBehaviour
         else if (Values.Enemy.enemyLevel == 4)
         {
             BossImage.sprite = FinalBoss;
+        }
+        else if (Values.Enemy.enemyLevel == 5)
+        {
+            BossImage.sprite = TrashMob;
         }
 
     }

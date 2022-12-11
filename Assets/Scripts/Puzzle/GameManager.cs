@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     public float catchphraseDuration = 3.5f;
     public float catchPhraseTick = 0.0f;
-
+    
 
     //hold timer
     private float holdTime = 5.0f;
@@ -165,11 +165,18 @@ public class GameManager : MonoBehaviour
         PuzzleUIManager.Instance.charDialogue1.gameObject.GetComponentInChildren<Text>().color = Color.white;
         PuzzleUIManager.Instance.charDialogue2.gameObject.GetComponentInChildren<Text>().color = Color.white;
         PuzzleUIManager.Instance.charDialogue3.gameObject.GetComponentInChildren<Text>().color = Color.white;
+
+        //normal bg
+        PuzzleUIManager.Instance.BackgroundImage.sprite = PuzzleUIManager.Instance.BGSprites[0];
+
         if (isFinalLevel)
         {
             PuzzleUIManager.Instance.AllGameHUD.SetActive(false);
             PuzzleUIManager.Instance.FadeToBlackPanel.SetActive(true);
             PuzzleUIManager.Instance.Text.SetActive(true);
+
+            //final bg bg
+            PuzzleUIManager.Instance.BackgroundImage.sprite = PuzzleUIManager.Instance.BGSprites[1];
 
             PuzzleUIManager.Instance.FadeToBlackColor = PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color;
             PuzzleUIManager.Instance.FadeToBlackColor.a = 0f;
@@ -206,7 +213,34 @@ public class GameManager : MonoBehaviour
             selfHurtDamage = Values.Puzzle.PainHexPosionDamage;
 
             PuzzleUIManager.Instance.SetEnemyBossSprite(Values.Enemy.enemyLevel);
-            
+            if ((Values.Enemy.enemyLevel == 1 && !isRigged) || (Values.Enemy.enemyLevel == 2 && isRigged))
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
+            else if ((Values.Enemy.enemyLevel == 2 && !isRigged) || (Values.Enemy.enemyLevel == 3 && isRigged))
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
+            else if ((Values.Enemy.enemyLevel == 3 && !isRigged) || (Values.Enemy.enemyLevel == 5 || Values.Enemy.enemyLevel == 5))
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
+            else
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
 
         }
         else
@@ -420,7 +454,7 @@ public class GameManager : MonoBehaviour
         {
             UpdateHelpDialogue();
 
-            if (tutorialPhase == 2)
+            if (tutorialPhase == 3)
             {
                 if (c1CurrentHp == c1MaxHp)
                     c1CurrentHp -= enemyDmg;
@@ -428,29 +462,29 @@ public class GameManager : MonoBehaviour
 
                 if (Input.GetMouseButtonUp(0))
                 {
-                    tutorialPhase = 3;
+                    tutorialPhase = 4;
                 }
 
-            }
-
-            else if (tutorialPhase == 2 && Input.GetMouseButtonUp(0))
-            {
-                tutorialPhase = 3;
             }
 
             else if (tutorialPhase == 3 && Input.GetMouseButtonUp(0))
             {
                 tutorialPhase = 4;
-
             }
 
-            else if (tutorialPhase == 5 && Input.GetMouseButtonUp(0))
+            else if (tutorialPhase == 4 && Input.GetMouseButtonUp(0))
             {
-                tutorialPhase = 6;
-                c1CurrentHp -= enemyDmg;
+                tutorialPhase = 5;
+
             }
 
             else if (tutorialPhase == 6 && Input.GetMouseButtonUp(0))
+            {
+                tutorialPhase = 7;
+                c1CurrentHp -= enemyDmg;
+            }
+
+            else if (tutorialPhase == 7 && Input.GetMouseButtonUp(0))
             {
                 SceneManager.LoadScene(Values.SceneNames.BedroomScene);
                 FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
@@ -501,7 +535,11 @@ public class GameManager : MonoBehaviour
                 enemyAttackTick = 0.0f;
             }
         }
-        PuzzleUIManager.Instance.painHexTriggerBar.fillAmount = (float)bossExtraAttackRoundCurrent / bossExtraAttackRoundTrigger;
+        if (enemyLevel == 1)
+            PuzzleUIManager.Instance.painHexTriggerBar.fillAmount = (float)bossExtraAttackRoundCurrent / bossExtraAttackRoundTrigger;
+        if (enemyLevel == 3)
+            PuzzleUIManager.Instance.lockHexTransferBar.fillAmount = (float)((currentTurn % 3)) / 2;
+
         Debug.Log(bossExtraAttackRoundCurrent + "/" + bossExtraAttackRoundTrigger);
         if (enemyStunned)
         {
@@ -515,6 +553,44 @@ public class GameManager : MonoBehaviour
         {
             if(!isTutorial)
             {
+                if (isFinalLevel)
+                {
+                    if (dialogueIndexForFinal >= FindObjectOfType<StoryManager>()
+                            .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                            .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length - 5)
+                    {
+
+                        PuzzleUIManager.Instance.Text.GetComponent<Text>().text =
+                            FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue]
+                                .sentences[dialogueIndexForFinal];
+
+                        int RisingValue = FindObjectOfType<StoryManager>()
+                            .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                            .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length / 2;
+
+                        float currentTextPosition = initTextPosY * 5;
+                        float increaseValue = currentTextPosition / RisingValue;
+                        Vector3 increaseVector = new Vector3(0, increaseValue, 0);
+
+                        float currentAlpha = 1;
+                        float increaseAlphaValue = currentAlpha / RisingValue;
+                        Color increaseAlpha = new Color(0, 0, 0, increaseAlphaValue);
+
+
+                        if (dialogueIndexForFinal >= RisingValue)
+                        {
+                            PuzzleUIManager.Instance.Text.GetComponent<RectTransform>().position += increaseVector;
+                            PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color += increaseAlpha;
+                        }
+
+                    }
+                    else
+                    {
+                        Debug.Log("dialogueIndexForFinal:" + dialogueIndexForFinal);
+                        StartCoroutine(WaitAnimation());
+                    }
+                }
                 if (GameManager.Instance.selected.Count >= 3)   //if more than 3 pieces selected
                 {
                     GameManager.Instance.Attack();  //delete normal pieces and trigger special pieces effects
@@ -572,11 +648,16 @@ public class GameManager : MonoBehaviour
                     Debug.Log("true3");
                 }
 
-                else if (GameManager.tutorialPhase == 4 && GameManager.Instance.selected.Count >= 4)
+                else if (GameManager.tutorialPhase == 5 && GameManager.Instance.selected.Count >= 5)
                 {
-                    GameManager.tutorialPhase = 5;
+                    GameManager.tutorialPhase = 6;
                     GameManager.Instance.Attack();
                     GameManager.Instance.InstantRefreshBoard();
+                }
+
+                else
+                {
+                    UnselectAllPieces();
                 }
             }
             
@@ -656,7 +737,7 @@ public class GameManager : MonoBehaviour
 
         if (isPuzzleDone)
         {
-            SceneManager.LoadScene(Values.SceneNames.ClassroomScene);
+            SceneManager.LoadScene(Values.SceneNames.BedroomScene);
             FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
                 .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
             FindObjectOfType<StoryManager>().currentDialogue = 0;
@@ -687,6 +768,13 @@ public class GameManager : MonoBehaviour
                 FindObjectOfType<StoryManager>().currentDialogue++;
             }
             else if (enemyLevel == 0 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (enemyLevel == 5 && Input.GetMouseButtonUp(0)) 
             {
                 SceneManager.LoadScene(Values.SceneNames.BedroomScene);
                 FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
@@ -734,6 +822,11 @@ public class GameManager : MonoBehaviour
             }
 
             if (!isRigged && enemyLevel == 0 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
+
+            if (!isRigged && enemyLevel == 5 && Input.GetMouseButtonUp(0)) //try again
             {
                 SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
             }
@@ -1190,6 +1283,8 @@ public class GameManager : MonoBehaviour
                 if (selected[i].GetComponent<PieceBehavior>().ID == 1)
                 {
                     currentHealCounter += 0.01f;
+                    currentDamageCounter += basicDamage * 0.45f;
+
                 }
 
                 if (selected[i].GetComponent<PieceBehavior>().ID == 2)
@@ -1202,10 +1297,10 @@ public class GameManager : MonoBehaviour
                         enemyStunned = true;
                     }
 
-                    enemyStunnedRounds += enemyStunSetRounds;
+                    enemyStunnedRounds = Math.Min(enemyStunnedRounds + enemyStunSetRounds, 5);
                     PuzzleUIManager.Instance.stunCounter.text = enemyStunnedRounds.ToString();
 
-                    currentDamageCounter += basicDamage * 0.7f;
+                    currentDamageCounter += basicDamage * 0.3f;
                 }
 
 
@@ -1486,7 +1581,8 @@ public class GameManager : MonoBehaviour
                     }
                         
 
-                    enemyStunnedRounds += 3 + enemyStunSetRounds;
+                    enemyStunnedRounds = Math.Min(enemyStunnedRounds + enemyStunSetRounds + 3, 5);
+                    currentDamageCounter += basicDamage * 1.0f;
                     PuzzleUIManager.Instance.stunCounter.text = enemyStunnedRounds.ToString();
 
 
@@ -1987,6 +2083,7 @@ public class GameManager : MonoBehaviour
                         {
                             n = 3;
                             newPiece = createPiece(n, i, j);
+                            tutorialPhase = 3;
                         }
 
                         else
@@ -1994,6 +2091,9 @@ public class GameManager : MonoBehaviour
                             n = UnityEngine.Random.Range(0, 3);
                             newPiece = createPiece(n, i, j);
                         }
+
+                        
+
                     }
                     //-------------------------------------------------------\\
 
@@ -2265,7 +2365,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 3 && !(PuzzleUIManager.Instance.helpDialogue3.activeInHierarchy))
+        if (tutorialPhase == 4 && !(PuzzleUIManager.Instance.helpDialogue3.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2280,7 +2380,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 4 && !(PuzzleUIManager.Instance.helpDialogue4.activeInHierarchy))
+        if (tutorialPhase == 5 && !(PuzzleUIManager.Instance.helpDialogue4.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2300,7 +2400,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 5 && !(PuzzleUIManager.Instance.helpDialogue5.activeInHierarchy))
+        if (tutorialPhase == 6 && !(PuzzleUIManager.Instance.helpDialogue5.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2321,7 +2421,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 6 && !(PuzzleUIManager.Instance.endText.activeInHierarchy))
+        if (tutorialPhase == 7 && !(PuzzleUIManager.Instance.endText.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2395,7 +2495,7 @@ public class GameManager : MonoBehaviour
 
         if (dialogueIndexForFinal < FindObjectOfType<StoryManager>()
                 .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
-                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length)
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length - 5)
         {
             
             PuzzleUIManager.Instance.Text.GetComponent<Text>().text =
@@ -2423,11 +2523,7 @@ public class GameManager : MonoBehaviour
             }
             
         }
-        else
-        {
-            Debug.Log("dialogueIndexForFinal:" + dialogueIndexForFinal);
-            StartCoroutine(WaitAnimation());
-        }
+        
     }
 
     private void OnWin()
