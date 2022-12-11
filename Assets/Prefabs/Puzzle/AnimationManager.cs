@@ -7,6 +7,7 @@ public class AnimationManager : MonoBehaviour
     public static AnimationManager Instance;
     public Animator ArrowAnimator;
     public Animator HitAnimator;
+    public Animator HurtAnimator;
     private void Awake()
     {
         if (Instance == null)
@@ -59,6 +60,7 @@ public class AnimationManager : MonoBehaviour
     public void PlayHitAnimation()
     {
         HitAnimator.SetTrigger("Damaged");
+        HurtAnimator.SetTrigger("Damaged");
         Debug.Log("playing hit animation");
     }
 }
