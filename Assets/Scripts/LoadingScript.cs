@@ -24,6 +24,8 @@ public class LoadingScript : MonoBehaviour
     {
         AsyncOperation i = SceneManager.LoadSceneAsync("TransitionSample");
         //AsyncOperation j = SceneManager.LoadSceneAsync("RoomSample", LoadSceneMode.Additive);
+        FindObjectOfType<StoryManager>().ResetChapters();
+
         loadingScreen.SetActive(true);
         mainMenuScreen.SetActive(false);
         //yield return new WaitForSeconds(3.0f);

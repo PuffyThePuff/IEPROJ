@@ -85,6 +85,7 @@ public class DialogueManager : MonoBehaviour
         {
             name2Text.text = "";
         }
+        
 
         if (sentences != null)
             sentences.Clear();
@@ -829,14 +830,38 @@ public class DialogueManager : MonoBehaviour
 
     void AlterNameTags()
     {
-        /*
+        if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+             FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex >= 8)
+        {
+            name2Text.text = "Hal";
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex < 8)
+        {
+            name2Text.text = "???";
+        }
+
+
         if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
              FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex <= 2)
         {
-
-            name1Text.text = "";
+            name1Text.text = "Yuuki";
         }
-        */
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex > 2)
+        {
+            name1Text.text = "Phone";
+        }
+        if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex > 34)
+        {
+            name2Text.text = "Alice";
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+             FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex <= 34)
+        {
+            name2Text.text = "???";
+        }
     }
 
     void HideImageOnSpecialCondition()
@@ -845,7 +870,7 @@ public class DialogueManager : MonoBehaviour
         if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
              FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex <= 2)
         {
-            
+            name1Text.text = "Yuuki";
             Speaker2Image.color = Color.clear;
             Speaker1Image.color = Color.white;
         }
@@ -857,6 +882,10 @@ public class DialogueManager : MonoBehaviour
 
             
             Speaker2Image.gameObject.SetActive(true);
+            if (dequeueIndex > 34)
+            {
+                name2Text.text = "Alice";
+            }
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 4) )
@@ -909,6 +938,22 @@ public class DialogueManager : MonoBehaviour
         {
             FindObjectOfType<AudioManager>().Stop("AirConSFX", "sfx");
             StartCoroutine(FindObjectOfType<StoryAnimations>().FlashBangBackgroundChange(true));
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 8)
+
+        {
+            //FindObjectOfType<AudioManager>().Stop("FruitsofLazinessBGM", "bgm");
+            //FindObjectOfType<AudioManager>().Play("SandCollegeBGM", "bgm", true);
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange(true));
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 24)
+
+        {
+            //FindObjectOfType<AudioManager>().Stop("FruitsofLazinessBGM", "bgm");
+            //FindObjectOfType<AudioManager>().Play("SandCollegeBGM", "bgm", true);
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange(true));
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 0 &&
                  FindObjectOfType<StoryManager>().currentDialogue == 1) && dequeueIndex == 4)
