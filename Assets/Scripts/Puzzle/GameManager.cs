@@ -698,6 +698,13 @@ public class GameManager : MonoBehaviour
                     .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
                 FindObjectOfType<StoryManager>().currentDialogue++;
             }
+            else if (enemyLevel == 5 && Input.GetMouseButtonUp(0)) 
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
 
         }
         else if (hasEnded && gameState == -1)
@@ -739,6 +746,11 @@ public class GameManager : MonoBehaviour
             }
 
             if (!isRigged && enemyLevel == 0 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
+
+            if (!isRigged && enemyLevel == 5 && Input.GetMouseButtonUp(0)) //try again
             {
                 SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
             }

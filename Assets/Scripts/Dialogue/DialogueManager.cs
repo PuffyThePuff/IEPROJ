@@ -692,7 +692,7 @@ public class DialogueManager : MonoBehaviour
             if (FindObjectOfType<StoryAnimations>().FadeBlackTransition != null)
             {
                 Values.Puzzle.isTutorial = false;
-                Values.Puzzle.isRigged = true;
+                Values.Puzzle.isRigged = false;
                 Values.Enemy.enemyLevel = 3;
                 Values.Enemy.maxHP = 400;
                 Values.Enemy.dmg = 150;
@@ -817,6 +817,7 @@ public class DialogueManager : MonoBehaviour
             !(FindObjectOfType<StoryManager>().currentChapter == 2 && FindObjectOfType<StoryManager>().currentDialogue == 3) &&
             !(FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 0) &&
             !(FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 2) &&
+            //!(FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 3) &&
             !(FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 0) &&
             !(FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 1) &&
             !(FindObjectOfType<StoryManager>().currentChapter == 5 && FindObjectOfType<StoryManager>().currentDialogue == 0))
@@ -882,7 +883,22 @@ public class DialogueManager : MonoBehaviour
         else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 4))
         {
+            Speaker1Image.color = Color.clear;
             Speaker2Image.color = Color.clear;
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 2))
+        {
+            Speaker1Image.color = Color.clear;
+        }
+        else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
+                  FindObjectOfType<StoryManager>().currentDialogue == 3))
+        {
+            Speaker1Image.color = Color.clear;
+        }
+        else if (FindObjectOfType<StoryManager>().currentChapter == 4)
+        {
+            Speaker1Image.color = Color.clear;
         }
     }
 
@@ -1125,6 +1141,7 @@ public class DialogueManager : MonoBehaviour
                   FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 10)
         {
             FindObjectOfType<AudioManager>().Play("GetGachaSFX", "sfx", false);
+            StartCoroutine(FindObjectOfType<StoryAnimations>().FadeBackgroundChange(true));
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 3 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 2) && dequeueIndex == 11)

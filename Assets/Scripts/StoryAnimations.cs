@@ -107,25 +107,37 @@ public class StoryAnimations : MonoBehaviour
             {
                 FindObjectOfType<BackgroundManager>().BedYuukiBackground.SetActive(true);
             }
+            else if ((FindObjectOfType<StoryManager>().currentChapter == 2 && FindObjectOfType<StoryManager>().currentDialogue == 4))
+            {
+                FindObjectOfType<BackgroundManager>().BedYuukiBackground.SetActive(true);
+            }
+            else if ((FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 2))
+            {
+                FindObjectOfType<BackgroundManager>().BedYuukiBackground.SetActive(true);
+            }
+            else if ((FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 3))
+            {
+                FindObjectOfType<BackgroundManager>().BedYuukiBackground.SetActive(true);
+            }
             else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 0)
             {
                 FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
                 FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.black;
-                FindObjectOfType<BackgroundManager>().FinalText.gameObject.SetActive(false);
+                FindObjectOfType<BackgroundManager>().FinalText.gameObject.SetActive(true);
                 FindObjectOfType<BackgroundManager>().FinalText.text = "...and I played...";
             }
             else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 1)
             {
                 FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
                 FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.black;
-                FindObjectOfType<BackgroundManager>().FinalText.gameObject.SetActive(false);
+                FindObjectOfType<BackgroundManager>().FinalText.gameObject.SetActive(true);
                 FindObjectOfType<BackgroundManager>().FinalText.text = "How long has it been...";
             }
             else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 2)
             {
                 FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
                 FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.black;
-                FindObjectOfType<BackgroundManager>().FinalText.gameObject.SetActive(false);
+                FindObjectOfType<BackgroundManager>().FinalText.gameObject.SetActive(true);
                 FindObjectOfType<BackgroundManager>().FinalText.text = "I'm..tired...";
             }
             else if (FindObjectOfType<StoryManager>().currentChapter == 4 && FindObjectOfType<StoryManager>().currentDialogue == 3)
@@ -163,6 +175,12 @@ public class StoryAnimations : MonoBehaviour
             {
                 FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
                 FindObjectOfType<BackgroundManager>().ChessSpawn.SetActive(true);
+            }
+            else if ((FindObjectOfType<StoryManager>().currentChapter == 3 && FindObjectOfType<StoryManager>().currentDialogue == 2) 
+                     && ( FindObjectOfType<DialogueManager>().dequeueIndex >= 10))
+            {
+                FindObjectOfType<BackgroundManager>().GachaBackground.SetActive(true);
+                FindObjectOfType<BackgroundManager>().SakuraSpawn.SetActive(true);
             }
         }
         

@@ -773,7 +773,7 @@ public class StoryManager : MonoBehaviour
             {
                 StoryChapters[1].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
             }
-            else if (k <= 3 && k == 6)
+            else if (k <= 3 || k == 6)
             {
                 StoryChapters[1].ChapterDialogues[i].speaker1ExpressionIndex[k] = 1;
             }
@@ -1067,6 +1067,38 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
 
+        #region Expressions
+        StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex = new int[StoryChapters[j].ChapterDialogues[i].sentences.Length];
+        for (int k = 0; k < StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex.Length; k++)
+        {
+            if (k == 12)
+            {
+                //annoyed
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
+            }
+            else if (k >= 24)
+            {
+                //happy
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 1;
+            }
+            else if (k == 2 || k == 13)
+            {
+                //disgust
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 3;
+            }
+            else if (k == 1 || k == 0 || k == 18)
+            {
+                //angry
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 5;
+            }
+            else
+            {
+                //neutral
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 0;
+            }
+        }
+        #endregion
+
         StoryChapters[j].ChapterDialogues[i].sentences[0] = "Damn. Really?";
         StoryChapters[j].ChapterDialogues[i].sentences[1] = "I’m not healing enough for this.";
         StoryChapters[j].ChapterDialogues[i].sentences[2] = "Tsk, I guess I need to get that event unit.";
@@ -1189,6 +1221,33 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
 
+        #region Expressions
+        StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex = new int[StoryChapters[j].ChapterDialogues[i].sentences.Length];
+        for (int k = 0; k < StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex.Length; k++)
+        {
+            if (k == 4)
+            {
+                //annoyed
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
+            }
+            else if (k == 0 || k == 2)
+            {
+                //disgust
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 3;
+            }
+            else if (k == 1)
+            {
+                //angry
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 5;
+            }
+            else
+            {
+                //neutral
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 0;
+            }
+        }
+        #endregion
+
         StoryChapters[j].ChapterDialogues[i].sentences[0] = "Tsk. Wrong team.";
         StoryChapters[j].ChapterDialogues[i].sentences[1] = "I’ll try aga-- FUCK!!";
         StoryChapters[j].ChapterDialogues[i].sentences[2] = "I’m out of stamina.";
@@ -1211,6 +1270,33 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
+
+        #region Expressions
+        StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex = new int[StoryChapters[j].ChapterDialogues[i].sentences.Length];
+        for (int k = 0; k < StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex.Length; k++)
+        {
+            if (k > 10)
+            {
+                //annoyed
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
+            }
+            else if (k == 1 || k == 2 || k == 3)
+            {
+                //disgust
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 3;
+            }
+            else if (k == 0)
+            {
+                //angry
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 5;
+            }
+            else
+            {
+                //neutral
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 0;
+            }
+        }
+        #endregion
 
         StoryChapters[j].ChapterDialogues[i].sentences[0] = "Damn it.";
         StoryChapters[j].ChapterDialogues[i].sentences[1] = "Those locks are getting in my way.";
@@ -1242,6 +1328,7 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
         StoryChapters[j].ChapterDialogues[i].chapterNum = j;
         StoryChapters[j].ChapterDialogues[i].dialogueIndex = i;
+
 
         StoryChapters[j].ChapterDialogues[i].sentences[0] = "Yep! Alright! Enjoy the PC!";
         StoryChapters[j].ChapterDialogues[i].sentences[1] = "Ah.";
