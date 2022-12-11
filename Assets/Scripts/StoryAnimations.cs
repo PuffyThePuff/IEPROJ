@@ -87,9 +87,9 @@ public class StoryAnimations : MonoBehaviour
         FindObjectOfType<BackgroundManager>().NagiSpawn.SetActive(false);
         FindObjectOfType<BackgroundManager>().ChessSpawn.SetActive(false);
         FindObjectOfType<BackgroundManager>().SakuraSpawn.SetActive(false);
-        FindObjectOfType<BackgroundManager>().AfterPCSellBG.SetActive(true);
-        FindObjectOfType<BackgroundManager>().HallwayClassroom.SetActive(true);
-        FindObjectOfType<BackgroundManager>().DepressionBG.SetActive(true);
+        FindObjectOfType<BackgroundManager>().AfterPCSellBG.SetActive(false);
+        FindObjectOfType<BackgroundManager>().HallwayClassroom.SetActive(false);
+        FindObjectOfType<BackgroundManager>().DepressionBG.SetActive(false);
         FindObjectOfType<BackgroundManager>().FinalText.gameObject.SetActive(false);
         FindObjectOfType<BackgroundManager>().GachaBackground.GetComponent<Image>().color = Color.white;
 

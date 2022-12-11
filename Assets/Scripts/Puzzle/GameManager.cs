@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     public float catchphraseDuration = 3.5f;
     public float catchPhraseTick = 0.0f;
-
+    
 
     //hold timer
     private float holdTime = 5.0f;
@@ -502,7 +502,8 @@ public class GameManager : MonoBehaviour
             }
         }
         PuzzleUIManager.Instance.painHexTriggerBar.fillAmount = (float)bossExtraAttackRoundCurrent / bossExtraAttackRoundTrigger;
-        PuzzleUIManager.Instance.lockHexTransferBar.fillAmount = (float)((currentTurn % 3)) / 2;
+        if (enemyLevel == 3)
+            PuzzleUIManager.Instance.lockHexTransferBar.fillAmount = (float)((currentTurn % 3)) / 2;
 
         Debug.Log(bossExtraAttackRoundCurrent + "/" + bossExtraAttackRoundTrigger);
         if (enemyStunned)
