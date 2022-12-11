@@ -1644,11 +1644,11 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].otherName = woman;
         StoryChapters[j].ChapterDialogues[i].sentences = new string[26];
 
-        StoryChapters[j].ChapterDialogues[i].speaker1Lines = new int[] { 0, 1,2,3,4,5,6,8,9,11,14,15,16,17,22 };
+        StoryChapters[j].ChapterDialogues[i].speaker1Lines = new int[] { 0, 3,4,7,10,12,13,15,16,17,18,19,22,23,24 };
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
 
-        StoryChapters[j].ChapterDialogues[i].speaker2Lines = new int[] { 7,10,12,13,18,19,20,21,23,24,25 };
+        StoryChapters[j].ChapterDialogues[i].speaker2Lines = new int[] { 1,2,5,6,8,9,11,21,25 };
         StoryChapters[j].ChapterDialogues[i].speaker2Sprites = new Sprite[] { };
         StoryChapters[j].ChapterDialogues[i].speaker2Sprites = NFSprites;
 
