@@ -1207,6 +1207,8 @@ public class GameManager : MonoBehaviour
                 if (selected[i].GetComponent<PieceBehavior>().ID == 1)
                 {
                     currentHealCounter += 0.01f;
+                    currentDamageCounter += basicDamage * 0.45f;
+
                 }
 
                 if (selected[i].GetComponent<PieceBehavior>().ID == 2)
@@ -1219,10 +1221,10 @@ public class GameManager : MonoBehaviour
                         enemyStunned = true;
                     }
 
-                    enemyStunnedRounds += enemyStunSetRounds;
+                    enemyStunnedRounds = Math.Min(enemyStunnedRounds + enemyStunSetRounds, 5);
                     PuzzleUIManager.Instance.stunCounter.text = enemyStunnedRounds.ToString();
 
-                    currentDamageCounter += basicDamage * 0.7f;
+                    currentDamageCounter += basicDamage * 0.3f;
                 }
 
 
@@ -1503,7 +1505,8 @@ public class GameManager : MonoBehaviour
                     }
                         
 
-                    enemyStunnedRounds += 3 + enemyStunSetRounds;
+                    enemyStunnedRounds = Math.Min(enemyStunnedRounds + enemyStunSetRounds + 3, 5);
+                    currentDamageCounter += basicDamage * 1.0f;
                     PuzzleUIManager.Instance.stunCounter.text = enemyStunnedRounds.ToString();
 
 
