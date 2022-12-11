@@ -12,6 +12,10 @@ public class BackgroundManager : MonoBehaviour
     public GameObject InGameBackground;
     public GameObject CaveBackground;
     public GameObject BedYuukiBackground;
+    public GameObject AfterPCSellBG;
+    public GameObject DepressionBG;
+    public GameObject HallwayClassroom;
+
 
     public GameObject NagiSpawn;
     public GameObject ChessSpawn;

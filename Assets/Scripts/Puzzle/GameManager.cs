@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
 
     public float catchphraseDuration = 3.5f;
     public float catchPhraseTick = 0.0f;
-
+    
 
     //hold timer
     private float holdTime = 5.0f;
@@ -165,11 +165,18 @@ public class GameManager : MonoBehaviour
         PuzzleUIManager.Instance.charDialogue1.gameObject.GetComponentInChildren<Text>().color = Color.white;
         PuzzleUIManager.Instance.charDialogue2.gameObject.GetComponentInChildren<Text>().color = Color.white;
         PuzzleUIManager.Instance.charDialogue3.gameObject.GetComponentInChildren<Text>().color = Color.white;
+
+        //normal bg
+        PuzzleUIManager.Instance.BackgroundImage.sprite = PuzzleUIManager.Instance.BGSprites[0];
+
         if (isFinalLevel)
         {
             PuzzleUIManager.Instance.AllGameHUD.SetActive(false);
             PuzzleUIManager.Instance.FadeToBlackPanel.SetActive(true);
             PuzzleUIManager.Instance.Text.SetActive(true);
+
+            //final bg bg
+            PuzzleUIManager.Instance.BackgroundImage.sprite = PuzzleUIManager.Instance.BGSprites[1];
 
             PuzzleUIManager.Instance.FadeToBlackColor = PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color;
             PuzzleUIManager.Instance.FadeToBlackColor.a = 0f;
@@ -206,7 +213,34 @@ public class GameManager : MonoBehaviour
             selfHurtDamage = Values.Puzzle.PainHexPosionDamage;
 
             PuzzleUIManager.Instance.SetEnemyBossSprite(Values.Enemy.enemyLevel);
-            
+            if ((Values.Enemy.enemyLevel == 1 && !isRigged) || (Values.Enemy.enemyLevel == 2 && isRigged))
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
+            else if ((Values.Enemy.enemyLevel == 2 && !isRigged) || (Values.Enemy.enemyLevel == 3 && isRigged))
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
+            else if ((Values.Enemy.enemyLevel == 3 && !isRigged) || (Values.Enemy.enemyLevel == 5 || Values.Enemy.enemyLevel == 5))
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
+            else
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
 
         }
         else
@@ -501,8 +535,10 @@ public class GameManager : MonoBehaviour
                 enemyAttackTick = 0.0f;
             }
         }
-        PuzzleUIManager.Instance.painHexTriggerBar.fillAmount = (float)bossExtraAttackRoundCurrent / bossExtraAttackRoundTrigger;
-        PuzzleUIManager.Instance.lockHexTransferBar.fillAmount = (float)((currentTurn % 3)) / 2;
+        if (enemyLevel == 1)
+            PuzzleUIManager.Instance.painHexTriggerBar.fillAmount = (float)bossExtraAttackRoundCurrent / bossExtraAttackRoundTrigger;
+        if (enemyLevel == 3)
+            PuzzleUIManager.Instance.lockHexTransferBar.fillAmount = (float)((currentTurn % 3)) / 2;
 
         Debug.Log(bossExtraAttackRoundCurrent + "/" + bossExtraAttackRoundTrigger);
         if (enemyStunned)
@@ -517,6 +553,44 @@ public class GameManager : MonoBehaviour
         {
             if(!isTutorial)
             {
+                if (isFinalLevel)
+                {
+                    if (dialogueIndexForFinal >= FindObjectOfType<StoryManager>()
+                            .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                            .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length - 5)
+                    {
+
+                        PuzzleUIManager.Instance.Text.GetComponent<Text>().text =
+                            FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue]
+                                .sentences[dialogueIndexForFinal];
+
+                        int RisingValue = FindObjectOfType<StoryManager>()
+                            .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                            .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length / 2;
+
+                        float currentTextPosition = initTextPosY * 5;
+                        float increaseValue = currentTextPosition / RisingValue;
+                        Vector3 increaseVector = new Vector3(0, increaseValue, 0);
+
+                        float currentAlpha = 1;
+                        float increaseAlphaValue = currentAlpha / RisingValue;
+                        Color increaseAlpha = new Color(0, 0, 0, increaseAlphaValue);
+
+
+                        if (dialogueIndexForFinal >= RisingValue)
+                        {
+                            PuzzleUIManager.Instance.Text.GetComponent<RectTransform>().position += increaseVector;
+                            PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color += increaseAlpha;
+                        }
+
+                    }
+                    else
+                    {
+                        Debug.Log("dialogueIndexForFinal:" + dialogueIndexForFinal);
+                        StartCoroutine(WaitAnimation());
+                    }
+                }
                 if (GameManager.Instance.selected.Count >= 3)   //if more than 3 pieces selected
                 {
                     GameManager.Instance.Attack();  //delete normal pieces and trigger special pieces effects
@@ -663,7 +737,7 @@ public class GameManager : MonoBehaviour
 
         if (isPuzzleDone)
         {
-            SceneManager.LoadScene(Values.SceneNames.ClassroomScene);
+            SceneManager.LoadScene(Values.SceneNames.BedroomScene);
             FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
                 .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
             FindObjectOfType<StoryManager>().currentDialogue = 0;
@@ -2421,7 +2495,7 @@ public class GameManager : MonoBehaviour
 
         if (dialogueIndexForFinal < FindObjectOfType<StoryManager>()
                 .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
-                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length)
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length - 5)
         {
             
             PuzzleUIManager.Instance.Text.GetComponent<Text>().text =
@@ -2449,11 +2523,7 @@ public class GameManager : MonoBehaviour
             }
             
         }
-        else
-        {
-            Debug.Log("dialogueIndexForFinal:" + dialogueIndexForFinal);
-            StartCoroutine(WaitAnimation());
-        }
+        
     }
 
     private void OnWin()
