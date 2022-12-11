@@ -14,6 +14,8 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+        FindObjectOfType<AudioManager>().Play("TheWorldIsGrayBGM", "bgm", true);
         fullscreenToggle.isOn = Screen.fullScreen;
 
         Screen.SetResolution(1920, 1080, Screen.fullScreen);

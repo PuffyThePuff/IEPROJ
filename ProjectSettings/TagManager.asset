@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Interactable
   - Piece
+  - QuitButton
   layers:
   - Default
   - TransparentFX

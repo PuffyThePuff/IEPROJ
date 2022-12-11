@@ -4,6 +4,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,11 +20,12 @@ public class GameManager : MonoBehaviour
     public bool isBoardInteractable = true; // pieces can be selected if true
     public List<GameObject> selected;   //list of selected pieces including powerups
     public List<GameObject> powerups;   //list of selected powerups
+    public List<GameObject> lockedHexes;
 
 
     public float catchphraseDuration = 3.5f;
     public float catchPhraseTick = 0.0f;
-
+    
 
     //hold timer
     private float holdTime = 5.0f;
@@ -65,16 +68,21 @@ public class GameManager : MonoBehaviour
     public float playerPoisonedTick = 0.0f;
     public float playerPoisonedDamage = 1.0f;
     private float basicDamage = 10;
-    private float enhancedDamage = 60;
+    private float enhancedDamageMultiplier = 60;
     private float damageMultiplier = 0.0f;
 
-    
+
 
     //player stats
+    private float currentDamageCounter = 0;
+    private float currentHealCounter = 0;
+    private float currentDamageMultiplier = 1;
+    private float currentHealMultiplier = 1;
 
     //status effects
     private bool enemyStunned = false;
     private int enemyStunnedRounds = 0;
+    private int enemyStunSetRounds = 1;
 
     private bool playerStunned = false;
     private int playerStunnedRounds = 0;
@@ -106,6 +114,15 @@ public class GameManager : MonoBehaviour
     private int xDimension = 7;
     private int yDimension = 4;
 
+    public static bool isRigged = false;
+    public static int enemyLevel = 0;
+    public static bool is2ndLastLevel = false;
+    public static int dialogueIndexFor2ndLast = 0;
+    public static bool isFinalLevel = false;
+    public static int dialogueIndexForFinal = 0;
+    public static bool isPuzzleDone = false;
+
+    public static float initTextPosY = 0;
     //tutorial
     public static bool isTutorial = false;
     public static int tutorialPhase = 0;
@@ -132,14 +149,42 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        lockedHexes = new List<GameObject>();
         //debug
         Debug.Log("c1 index: " + Values.Player.equippedChar1.index + ", c2 Index: " + Values.Player.equippedChar2.index + ", c3 Index: " + Values.Player.equippedChar3.index);
 
         //setting up stats accoroding to values.cs
         isTutorial = Values.Puzzle.isTutorial;
+        isRigged = Values.Puzzle.isRigged;
+        enemyLevel = Values.Enemy.enemyLevel;
+        is2ndLastLevel = Values.Puzzle.is2ndLastLevel;
+        isFinalLevel = Values.Puzzle.isFinalLevel;
+        dialogueIndexFor2ndLast = 0;
+        isPuzzleDone = false;
 
+        PuzzleUIManager.Instance.charDialogue1.gameObject.GetComponentInChildren<Text>().color = Color.white;
+        PuzzleUIManager.Instance.charDialogue2.gameObject.GetComponentInChildren<Text>().color = Color.white;
+        PuzzleUIManager.Instance.charDialogue3.gameObject.GetComponentInChildren<Text>().color = Color.white;
 
-        if(!isTutorial)
+        //normal bg
+        PuzzleUIManager.Instance.BackgroundImage.sprite = PuzzleUIManager.Instance.BGSprites[0];
+
+        if (isFinalLevel)
+        {
+            PuzzleUIManager.Instance.AllGameHUD.SetActive(false);
+            PuzzleUIManager.Instance.FadeToBlackPanel.SetActive(true);
+            PuzzleUIManager.Instance.Text.SetActive(true);
+
+            //final bg bg
+            PuzzleUIManager.Instance.BackgroundImage.sprite = PuzzleUIManager.Instance.BGSprites[1];
+
+            PuzzleUIManager.Instance.FadeToBlackColor = PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color;
+            PuzzleUIManager.Instance.FadeToBlackColor.a = 0f;
+            PuzzleUIManager.Instance.Text.GetComponent<Text>().text = "";
+            initTextPosY =  PuzzleUIManager.Instance.Text.GetComponent<RectTransform>().position.y;
+
+        }
+        if (!isTutorial)
         {
             //setup game
             c1Index = Values.Player.equippedChar1.index;
@@ -154,20 +199,55 @@ public class GameManager : MonoBehaviour
             PuzzleUIManager.Instance.charDialogue1.text = Values.Player.equippedChar1.catchPhrase;
             PuzzleUIManager.Instance.charDialogue2.text = Values.Player.equippedChar2.catchPhrase;
             PuzzleUIManager.Instance.charDialogue3.text = Values.Player.equippedChar3.catchPhrase;
+
             enemyMaxHp = Values.Enemy.maxHP;
             enemyCurrentHp = enemyMaxHp;
             enemyDmg = Values.Enemy.dmg;
-            basicDamage = Values.Player.basicDamage;
-            enhancedDamage = Values.Player.enhancedDmaage;
             enemyAttackInterval = Values.Enemy.attackInterval;
+
+            basicDamage = Values.Player.basicDamage;
+            enhancedDamageMultiplier = Values.Player.enhancedDamageMultiplier;
+            enemyStunSetRounds = Values.Player.setStunAmount;
 
             bossExtraAttackPerStack = Values.Puzzle.BlackHexBurstDamage;
             selfHurtDamage = Values.Puzzle.PainHexPosionDamage;
 
             PuzzleUIManager.Instance.SetEnemyBossSprite(Values.Enemy.enemyLevel);
+            if ((Values.Enemy.enemyLevel == 1 && !isRigged) || (Values.Enemy.enemyLevel == 2 && isRigged))
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
+            else if ((Values.Enemy.enemyLevel == 2 && !isRigged) || (Values.Enemy.enemyLevel == 3 && isRigged))
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
+            else if ((Values.Enemy.enemyLevel == 3 && !isRigged) || (Values.Enemy.enemyLevel == 5 || Values.Enemy.enemyLevel == 5))
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(true);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
+            else
+            {
+                FindObjectOfType<CharacterPortraitHolder>().ChangeRed(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeBlue(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeGreen(false);
+                FindObjectOfType<CharacterPortraitHolder>().ChangeSkillBarColor();
+            }
 
         }
-
+        else
+        {
+            PuzzleUIManager.Instance.SetEnemyBossSprite(0);
+        }
+        
 
         if (!isTutorial)
             nBoard = InitializeBoard();
@@ -374,7 +454,7 @@ public class GameManager : MonoBehaviour
         {
             UpdateHelpDialogue();
 
-            if (tutorialPhase == 2)
+            if (tutorialPhase == 3)
             {
                 if (c1CurrentHp == c1MaxHp)
                     c1CurrentHp -= enemyDmg;
@@ -382,31 +462,31 @@ public class GameManager : MonoBehaviour
 
                 if (Input.GetMouseButtonUp(0))
                 {
-                    tutorialPhase = 3;
+                    tutorialPhase = 4;
                 }
 
-            }
-
-            else if (tutorialPhase == 2 && Input.GetMouseButtonUp(0))
-            {
-                tutorialPhase = 3;
             }
 
             else if (tutorialPhase == 3 && Input.GetMouseButtonUp(0))
             {
                 tutorialPhase = 4;
-
             }
 
-            else if (tutorialPhase == 5 && Input.GetMouseButtonUp(0))
+            else if (tutorialPhase == 4 && Input.GetMouseButtonUp(0))
             {
-                tutorialPhase = 6;
-                c1CurrentHp -= enemyDmg;
+                tutorialPhase = 5;
+
             }
 
             else if (tutorialPhase == 6 && Input.GetMouseButtonUp(0))
             {
-                SceneManager.LoadScene("TransitionSample");
+                tutorialPhase = 7;
+                c1CurrentHp -= enemyDmg;
+            }
+
+            else if (tutorialPhase == 7 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
                 FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
                     .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
                 FindObjectOfType<StoryManager>().currentDialogue++;
@@ -415,43 +495,65 @@ public class GameManager : MonoBehaviour
 
         else
         {
-            UpdateCatchphraseDialogue();
-
+            if (!is2ndLastLevel)
+            {
+                UpdateCatchphraseDialogue();
+            }
+            
             UpdateGameState();
         }
 
 
-        if (!enemyStunned)
+        enemyAttackTick += Time.deltaTime;
+        if (enemyAttackTick >= enemyAttackInterval)
         {
-            enemyAttackTick += Time.deltaTime;
-            if (enemyAttackTick >= enemyAttackInterval)
+            if (!isTutorial)
             {
-                if (!isTutorial)
+                if (!enemyStunned)
                 {
-                    
                     EnemyPerformAttack();
                     EnemyPerformSkill();
-
-                    enemyAttackTick = 0.0f;
                 }
+
+                else
+                {
+                    Debug.Log("Enemy is stunned and cannot attack");
+                    enemyStunnedRounds--;
+                    PuzzleUIManager.Instance.stunCounter.text = enemyStunnedRounds.ToString();
+
+                    if (enemyStunnedRounds == 0)
+                    {
+                        enemyStunned = false;
+                        PuzzleUIManager.Instance.stunIndicator.SetActive(false);
+                        PuzzleUIManager.Instance.stunIndicator.transform.rotation = Quaternion.identity;
+                    }    
+                        
+
+                }
+
+
+                enemyAttackTick = 0.0f;
             }
         }
+        if (enemyLevel == 1)
+            PuzzleUIManager.Instance.painHexTriggerBar.fillAmount = (float)bossExtraAttackRoundCurrent / bossExtraAttackRoundTrigger;
+        if (enemyLevel == 3)
+            PuzzleUIManager.Instance.lockHexTransferBar.fillAmount = (float)((currentTurn % 3)) / 2;
 
-        else
+        Debug.Log(bossExtraAttackRoundCurrent + "/" + bossExtraAttackRoundTrigger);
+        if (enemyStunned)
         {
-            Debug.Log("Enemy is stunned and cannot attack");
-            enemyStunnedRounds--;
-
-            if (enemyStunnedRounds == 0)
-                enemyStunned = false;
-
+            Vector3 stunIndicatorRot = PuzzleUIManager.Instance.stunIndicator.transform.rotation.eulerAngles;
+            PuzzleUIManager.Instance.stunIndicator.transform.rotation = Quaternion.Euler(stunIndicatorRot.x, stunIndicatorRot.y, stunIndicatorRot.z + (150 *Time.deltaTime));
         }
+
         
 
-        if(Input.GetMouseButtonUp(0))   //if left mouse button released
+        if (Input.GetMouseButtonUp(0))   //if left mouse button released
         {
             if(!isTutorial)
             {
+                
                 if (GameManager.Instance.selected.Count >= 3)   //if more than 3 pieces selected
                 {
                     GameManager.Instance.Attack();  //delete normal pieces and trigger special pieces effects
@@ -464,10 +566,12 @@ public class GameManager : MonoBehaviour
                 {
                     UnselectAllPieces();
                 }
+                
             }
 
             else
             {
+                
                 Debug.Log("true2");
                 if (GameManager.Instance.selected.Count < 3)   //if more than 3 pieces selected
                 {
@@ -507,11 +611,16 @@ public class GameManager : MonoBehaviour
                     Debug.Log("true3");
                 }
 
-                else if (GameManager.tutorialPhase == 4 && GameManager.Instance.selected.Count >= 4)
+                else if (GameManager.tutorialPhase == 5 && GameManager.Instance.selected.Count >= 5)
                 {
-                    GameManager.tutorialPhase = 5;
+                    GameManager.tutorialPhase = 6;
                     GameManager.Instance.Attack();
                     GameManager.Instance.InstantRefreshBoard();
+                }
+
+                else
+                {
+                    UnselectAllPieces();
                 }
             }
             
@@ -588,12 +697,109 @@ public class GameManager : MonoBehaviour
 
             hasEnded = true;
         }
+
+        if (isPuzzleDone)
+        {
+            SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+            FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+            FindObjectOfType<StoryManager>().currentDialogue = 0;
+            FindObjectOfType<StoryManager>().currentChapter = 5;
+        }
+
+        if (hasEnded && gameState == 1)
+        {
+            if (enemyLevel == 1 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (enemyLevel == 2 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (enemyLevel == 3 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (enemyLevel == 0 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (enemyLevel == 5 && Input.GetMouseButtonUp(0)) 
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+
+        }
+        else if (hasEnded && gameState == -1)
+        {
+            if (isRigged && enemyLevel == 1 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (!isRigged && enemyLevel == 1 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
+
+            if (isRigged && enemyLevel == 2 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (!isRigged && enemyLevel == 2 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
+
+            if (isRigged && enemyLevel == 3 && Input.GetMouseButtonUp(0))
+            {
+                SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+                FindObjectOfType<StoryManager>().currentDialogue++;
+            }
+            else if (!isRigged && enemyLevel == 3 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
+
+            if (!isRigged && enemyLevel == 0 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
+
+            if (!isRigged && enemyLevel == 5 && Input.GetMouseButtonUp(0)) //try again
+            {
+                SceneManager.LoadScene(Values.SceneNames.PuzzleScene);
+            }
+        }
     }
 
     private void EnemyPerformSkill()
     {
         bool performSkill = false;
-        if (Random.Range(0, 5) == 4)
+        if (UnityEngine.Random.Range(0, 5) == 4)
             performSkill = true;
 
         if(performSkill)
@@ -601,7 +807,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("Performing enemy skill");
             if (Values.Enemy.skill == Values.Enemy.SkillType.Burst)
             {
-                int charToBurst = Random.Range(0, 2);
+                int charToBurst = UnityEngine.Random.Range(0, 2);
                 switch (charToBurst)
                 {
 
@@ -678,7 +884,7 @@ public class GameManager : MonoBehaviour
 
     private void EnemyPerformAttack()
     {
-        int charToAttack = Random.Range(0, 2);
+        int charToAttack = UnityEngine.Random.Range(0, 2);
         switch (charToAttack)
         {
 
@@ -866,12 +1072,12 @@ public class GameManager : MonoBehaviour
             for(int j = 0; j < yDimension; j++)
             {
                 GameObject newPiece;
-                int n = Random.Range(0, 7); //2nd parameter dictates special piece rng: higher = more rare
+                int n = UnityEngine.Random.Range(0, 7); //2nd parameter dictates special piece rng: higher = more rare
 
                 if(n > 0 || specialPiecesCount >= 3)
                 {
                     //create normal piece
-                    n = Random.Range(0, 3); //randomize between normal pieces index (0-2)
+                    n = UnityEngine.Random.Range(0, 3); //randomize between normal pieces index (0-2)
                     newPiece = createPiece(n, i, j);
                 }
 
@@ -909,7 +1115,7 @@ public class GameManager : MonoBehaviour
                         c3CurrentCharge = 0;
                     }   
 
-                    //int specialCharacterIndex = Random.Range(0, 2); // 0-1
+                    //int specialCharacterIndex = UnityEngine.Random.Range(0, 2); // 0-1
 
                     //switch(specialCharacterIndex)
                     //{
@@ -922,7 +1128,7 @@ public class GameManager : MonoBehaviour
                     else
                     {
                         //Debug.Log("creating special piece4");
-                        n = Random.Range(0, 3);
+                        n = UnityEngine.Random.Range(0, 3);
                         newPiece = createPiece(n, i, j);
                     }
                 }
@@ -942,8 +1148,8 @@ public class GameManager : MonoBehaviour
 
             do
             {
-                blockerXIndex = Random.Range(0, xDimension);
-                blockerYIndex = Random.Range(0, yDimension);
+                blockerXIndex = UnityEngine.Random.Range(0, xDimension);
+                blockerYIndex = UnityEngine.Random.Range(0, yDimension);
                 Debug.Log(blockerXIndex + " " + blockerYIndex);
             } while (newBoard[blockerXIndex, blockerYIndex] == -2);
             
@@ -952,11 +1158,13 @@ public class GameManager : MonoBehaviour
 
             newBoard[blockerXIndex, blockerYIndex] = -2;
 
-            GameObject hexBlockerObj;
-            createNeutral(0, blockerXIndex, blockerYIndex);
+            GameObject hexBlockerObj = createNeutral(0, blockerXIndex, blockerYIndex);
 
-            
+            lockedHexes.Add(hexBlockerObj);
+            gBoard[blockerXIndex, blockerYIndex] = hexBlockerObj;
         }
+
+
         return newBoard;
     }
 
@@ -1030,6 +1238,34 @@ public class GameManager : MonoBehaviour
             {
                 //delete normal piece
                 //Debug.Log("Deleting");
+                if (selected[i].GetComponent<PieceBehavior>().ID == 0)
+                {
+                    currentDamageCounter += basicDamage * 1.0f;
+                }
+
+                if (selected[i].GetComponent<PieceBehavior>().ID == 1)
+                {
+                    currentHealCounter += 0.01f;
+                    currentDamageCounter += basicDamage * 0.45f;
+
+                }
+
+                if (selected[i].GetComponent<PieceBehavior>().ID == 2)
+                {
+                    if (!enemyStunned)
+                    {
+                        PuzzleUIManager.Instance.stunIndicator.SetActive(true);
+                        PuzzleUIManager.Instance.stunIndicator.transform.rotation = Quaternion.identity;
+
+                        enemyStunned = true;
+                    }
+
+                    enemyStunnedRounds = Math.Min(enemyStunnedRounds + enemyStunSetRounds, 5);
+                    PuzzleUIManager.Instance.stunCounter.text = enemyStunnedRounds.ToString();
+
+                    currentDamageCounter += basicDamage * 0.3f;
+                }
+
 
                 int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                 int yIndex = selected[i].GetComponent<PieceBehavior>().y;
@@ -1054,7 +1290,7 @@ public class GameManager : MonoBehaviour
                 PerformSpecialPieceEffects(i);
             }
         }
-
+        
         selected.Clear();   //clear reference list of selected pieces
         powerups.Clear();   //clear reference list of selected powerups
         DestroyDamagedPieces(); //destroy game object pieces that have been set to -1 value
@@ -1062,7 +1298,76 @@ public class GameManager : MonoBehaviour
         isBoardInteractable = false;
 
         AnimationManager.Instance.PlayHitAnimation();
+        enemyCurrentHp = Math.Max(enemyCurrentHp - (currentDamageCounter * currentDamageMultiplier), 0);
+
+        c1CurrentHp = Math.Min(c1CurrentHp + (c1MaxHp * (currentHealCounter * currentHealMultiplier)), c1MaxHp);
+        c2CurrentHp = Math.Min(c2CurrentHp + (c2MaxHp * (currentHealCounter * currentHealMultiplier)), c2MaxHp);
+        c3CurrentHp = Math.Min(c3CurrentHp + (c3MaxHp * (currentHealCounter * currentHealMultiplier)), c3MaxHp);
+
+        currentDamageCounter = 0;
+        currentDamageMultiplier = 1;
+        currentHealCounter = 0;
+        currentHealMultiplier = 1;
+        
+
+        if (is2ndLastLevel)
+        {
+            Update2ndLastLevelDialogue();
+            dialogueIndexFor2ndLast++;
+        }
+        
+
+        if (isFinalLevel)
+        {
+            UpdateFinalLevelDialogue();
+            dialogueIndexForFinal++;
+        }
+        
         Debug.Log("Attack");
+
+        currentTurn++;
+        if (currentTurn % 3 == 0)
+        {
+            for (int i = 0; i < Values.Puzzle.hexBlockerCount; i++)
+            {
+
+                int newBlockerXIndex = 0;
+                int newBlockerYIndex = 0;
+
+                do
+                {
+                    newBlockerXIndex = UnityEngine.Random.Range(0, xDimension);
+                    newBlockerYIndex = UnityEngine.Random.Range(0, yDimension);
+                    Debug.Log(newBlockerXIndex + " " + newBlockerYIndex);
+                } while (nBoard[newBlockerXIndex, newBlockerYIndex] == -2);
+
+
+                Destroy(gBoard[newBlockerXIndex, newBlockerYIndex]);
+
+                nBoard[newBlockerXIndex, newBlockerYIndex] = -2;
+
+                GameObject newhexBlockerObj = createNeutral(0, newBlockerXIndex, newBlockerYIndex);
+                gBoard[newBlockerXIndex, newBlockerYIndex] = newhexBlockerObj;
+
+
+
+
+                int oldBlockerXIndex = lockedHexes[i].GetComponent<PieceBehavior>().x;
+                int oldBlockerYIndex = lockedHexes[i].GetComponent<PieceBehavior>().y;
+                GameObject oldHexBlockerObj = gBoard[oldBlockerXIndex, oldBlockerYIndex];
+                Destroy(oldHexBlockerObj);
+
+
+                int n = UnityEngine.Random.Range(0, 3);
+                GameObject newPiece = createPiece(n, oldBlockerXIndex, oldBlockerYIndex);
+
+                nBoard[oldBlockerXIndex, oldBlockerYIndex] = n;
+                gBoard[oldBlockerXIndex, oldBlockerYIndex] = newPiece;
+
+                lockedHexes[i] = newhexBlockerObj;
+
+            }
+        }
     }
 
     
@@ -1078,10 +1383,13 @@ public class GameManager : MonoBehaviour
             c1CurrentCharge = 0;
             UpdateChargeBars(i);
 
-            if(!isTutorial)
+            if (!isTutorial)
+            {
                 PuzzleUIManager.Instance.charDialogue1.gameObject.SetActive(true);
+                PuzzleUIManager.Instance.charDialogue2.gameObject.SetActive(false);
+                PuzzleUIManager.Instance.charDialogue3.gameObject.SetActive(false);
+            }
 
-           
         }
 
         else if (specialPiece.GetComponent<PieceBehavior>().ID == c2Index)
@@ -1092,9 +1400,11 @@ public class GameManager : MonoBehaviour
             UpdateChargeBars(i);
 
             if (!isTutorial)
+            {
                 PuzzleUIManager.Instance.charDialogue2.gameObject.SetActive(true);
-
-            
+                PuzzleUIManager.Instance.charDialogue1.gameObject.SetActive(false);
+                PuzzleUIManager.Instance.charDialogue3.gameObject.SetActive(false);
+            }
 
         }
 
@@ -1107,9 +1417,11 @@ public class GameManager : MonoBehaviour
             UpdateChargeBars(i);
 
             if (!isTutorial)
+            {
                 PuzzleUIManager.Instance.charDialogue3.gameObject.SetActive(true);
-
-            
+                PuzzleUIManager.Instance.charDialogue2.gameObject.SetActive(false);
+                PuzzleUIManager.Instance.charDialogue1.gameObject.SetActive(false);
+            }
 
         }
 
@@ -1134,7 +1446,7 @@ public class GameManager : MonoBehaviour
 
                     //-----------deal huge damage to boss-----------\\
                     Debug.Log("Dealing enhanced damage to enemy");
-                    enemyCurrentHp -= enhancedDamage;
+                    currentDamageMultiplier = enhancedDamageMultiplier;
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
                     nBoard[xIndex, yIndex] = -1;
@@ -1173,16 +1485,17 @@ public class GameManager : MonoBehaviour
                     //nBoard[xIndex, yIndex] = -1;
 
 
-                    //-----------stun boss-----------\\
-                    Debug.Log("Disable next enemy attack (stunned)");
 
-                    enemyStunned = true;
-                    enemyStunnedRounds = 1;
+                    //-----------Heal allies for %hp-----------\\
 
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
                     nBoard[xIndex, yIndex] = -1;
-                    //--------------------------------------------\\
+
+                    currentHealMultiplier = 5;
+
+                    Debug.Log("Healing allies");
+
                 }
                 break;
 
@@ -1197,29 +1510,55 @@ public class GameManager : MonoBehaviour
                     //--------------------------------------------\\
 
 
-                    //-----------random piece rate boost-----------\\
-                    Debug.Log("Boost spawn rate effect");
+                    //-----------UnityEngine.Random piece rate boost-----------\\
+                    //Debug.Log("Boost spawn rate effect");
 
-                    int pieceBoostRateIndex = Random.Range(0, 3);
+                    //int pieceBoostRateIndex = UnityEngine.Random.Range(0, 3);
 
-                    if (pieceBoostRateIndex == 0)
-                        rIncreaseRate = true;
+                    //if (pieceBoostRateIndex == 0)
+                    //    rIncreaseRate = true;
 
-                    else if (pieceBoostRateIndex == 1)
-                        gIncreaseRate = true;
+                    //else if (pieceBoostRateIndex == 1)
+                    //    gIncreaseRate = true;
 
-                    else if (pieceBoostRateIndex == 2)
-                        bIncreaseRate = true;
+                    //else if (pieceBoostRateIndex == 2)
+                    //    bIncreaseRate = true;
 
-                    manipulatedSpawnRates = true;
-                    manipulatedSpawnRatesRounds = 5;
+                    //manipulatedSpawnRates = true;
+                    //manipulatedSpawnRatesRounds = 5;
+
+                    //int xIndex = selected[i].GetComponent<PieceBehavior>().x;
+                    //int yIndex = selected[i].GetComponent<PieceBehavior>().y;
+                    //nBoard[xIndex, yIndex] = -1;
+                    //--------------------------------------------\\
+
+                    //-----------stun boss-----------\\
+
+                    Debug.Log("Disable next enemy attack (stunned)");
+
+                    if (!enemyStunned)
+                    {
+                        PuzzleUIManager.Instance.stunIndicator.SetActive(true);
+                        PuzzleUIManager.Instance.stunIndicator.transform.rotation = Quaternion.identity;
+                        enemyStunned = true;
+                    }
+                        
+
+                    enemyStunnedRounds = Math.Min(enemyStunnedRounds + enemyStunSetRounds + 3, 5);
+                    currentDamageCounter += basicDamage * 1.0f;
+                    PuzzleUIManager.Instance.stunCounter.text = enemyStunnedRounds.ToString();
+
 
                     int xIndex = selected[i].GetComponent<PieceBehavior>().x;
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
                     nBoard[xIndex, yIndex] = -1;
                     //--------------------------------------------\\
 
+
+
                 }
+
+
                 break;
             case 6:
                 {
@@ -1258,14 +1597,14 @@ public class GameManager : MonoBehaviour
                     int yIndex = selected[i].GetComponent<PieceBehavior>().y;
                     nBoard[xIndex, yIndex] = -1;
 
-                    if(c1CurrentHp > 0)
+                    if (c1CurrentHp > 0)
                     {
                         c1CurrentHp += (c1MaxHp * 0.075f);
 
-                        if(c1CurrentHp > c1MaxHp)
+                        if (c1CurrentHp > c1MaxHp)
                         {
                             c1CurrentHp = c1MaxHp;
-                        }    
+                        }
 
                     }
 
@@ -1298,7 +1637,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
-        
+
     }
 
     private void PerformNeutralPieceEffects(int i)
@@ -1362,7 +1701,6 @@ public class GameManager : MonoBehaviour
                 if (nBoard[i, j] == -1)
                 {
                     
-                    enemyCurrentHp -= basicDamage;
                     Destroy(gBoard[i, j].gameObject);
                     gBoard[i, j] = null;
 
@@ -1497,16 +1835,16 @@ public class GameManager : MonoBehaviour
             {
                 if(nBoard[i, j] == -1)
                 {
-                    int n = Random.Range(0, 7);
+                    int n = UnityEngine.Random.Range(0, 7);
 
                     if (n > 0)
                     {
-                        n = Random.Range(0, 3);
+                        n = UnityEngine.Random.Range(0, 3);
                     }
 
                     else
                     {
-                        n = Random.Range(3, 5);
+                        n = UnityEngine.Random.Range(3, 5);
                     }
 
                     GameObject newPiece = createPiece(n, i, j);
@@ -1699,7 +2037,7 @@ public class GameManager : MonoBehaviour
                 {
                     clearedPieces++;
                     GameObject newPiece;
-                    int n = Random.Range(0, 7);
+                    int n = UnityEngine.Random.Range(0, 7);
 
                     //----------manipulating spawning of new pieces in tutorial----------\\
                     if (isTutorial && tutorialPhase == 2)
@@ -1708,13 +2046,17 @@ public class GameManager : MonoBehaviour
                         {
                             n = 3;
                             newPiece = createPiece(n, i, j);
+                            tutorialPhase = 3;
                         }
 
                         else
                         {
-                            n = Random.Range(0, 3);
+                            n = UnityEngine.Random.Range(0, 3);
                             newPiece = createPiece(n, i, j);
                         }
+
+                        
+
                     }
                     //-------------------------------------------------------\\
 
@@ -1723,10 +2065,10 @@ public class GameManager : MonoBehaviour
                         //Debug.Log("spawning normal piece");
                         if (!manipulatedSpawnRates)
                         {
-                            int rng = Random.Range(0, 5);
+                            int rng = UnityEngine.Random.Range(0, 5);
                             if (rng < 4)
                             {
-                                n = Random.Range(0, 3);
+                                n = UnityEngine.Random.Range(0, 3);
                                 newPiece = createPiece(n, i, j);
                             }
 
@@ -1745,7 +2087,7 @@ public class GameManager : MonoBehaviour
                                 
                                 else
                                 {
-                                    n = Random.Range(0, 3);
+                                    n = UnityEngine.Random.Range(0, 3);
                                     newPiece = createPiece(n, i, j);
                                 }
                             }
@@ -1757,7 +2099,7 @@ public class GameManager : MonoBehaviour
                         else if (rIncreaseRate)  //boosted spawn rate red piece
                         {
                             Debug.Log("Spawning pieces with increased spawn rates for red pieces for " + manipulatedSpawnRatesRounds + "rounds");
-                            int m = Random.Range(0, 10);
+                            int m = UnityEngine.Random.Range(0, 10);
 
                             if (m == 1 || m == 2)
                                 newPiece = createPiece(m, i, j);
@@ -1771,7 +2113,7 @@ public class GameManager : MonoBehaviour
                         else if (gIncreaseRate)  //boosted spawn rate red piece
                         {
                             Debug.Log("Spawning pieces with increased spawn rates for green pieces for " + manipulatedSpawnRatesRounds + "rounds");
-                            int m = Random.Range(0, 10);
+                            int m = UnityEngine.Random.Range(0, 10);
 
                             if (m == 0 || m == 2)
                                 newPiece = createPiece(m, i, j);
@@ -1783,7 +2125,7 @@ public class GameManager : MonoBehaviour
                         else if (bIncreaseRate)  //boosted spawn rate red piece
                         {
                             Debug.Log("Spawning pieces with increased spawn rates for blue pieces for " + manipulatedSpawnRatesRounds + "rounds");
-                            int m = Random.Range(0, 10);
+                            int m = UnityEngine.Random.Range(0, 10);
 
                             if (m == 0 || m == 1)
                                 newPiece = createPiece(m, i, j);
@@ -1794,10 +2136,10 @@ public class GameManager : MonoBehaviour
 
                         else //same as default
                         {
-                            int rng = Random.Range(0, 5);
+                            int rng = UnityEngine.Random.Range(0, 5);
                             if (rng < 4)
                             {
-                                n = Random.Range(0, 3);
+                                n = UnityEngine.Random.Range(0, 3);
                                 newPiece = createPiece(n, i, j);
                             }
 
@@ -1816,7 +2158,7 @@ public class GameManager : MonoBehaviour
 
                                 else
                                 {
-                                    n = Random.Range(0, 3);
+                                    n = UnityEngine.Random.Range(0, 3);
                                     newPiece = createPiece(n, i, j);
                                 }
                             }
@@ -1858,7 +2200,7 @@ public class GameManager : MonoBehaviour
                         }
 
 
-                        //int specialCharacterIndex = Random.Range(0, 2); // 0-1
+                        //int specialCharacterIndex = UnityEngine.Random.Range(0, 2); // 0-1
 
                         //switch(specialCharacterIndex)
                         //{
@@ -1870,10 +2212,10 @@ public class GameManager : MonoBehaviour
 
                         else
                         {
-                            int rng = Random.Range(0, 5);
+                            int rng = UnityEngine.Random.Range(0, 5);
                             if (rng < 4)
                             {
-                                n = Random.Range(0, 3);
+                                n = UnityEngine.Random.Range(0, 3);
                                 newPiece = createPiece(n, i, j);
                             }
 
@@ -1892,7 +2234,7 @@ public class GameManager : MonoBehaviour
 
                                 else
                                 {
-                                    n = Random.Range(0, 3);
+                                    n = UnityEngine.Random.Range(0, 3);
                                     newPiece = createPiece(n, i, j);
                                 }
                             }
@@ -1934,8 +2276,9 @@ public class GameManager : MonoBehaviour
         if(!playerIsFrozen)
             isBoardInteractable = true;
 
-        currentTurn++;
+        
 
+        
         //if (currentTurn > maxTurn)
         //    isBoardInteractable = false;
     }
@@ -1985,7 +2328,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 3 && !(PuzzleUIManager.Instance.helpDialogue3.activeInHierarchy))
+        if (tutorialPhase == 4 && !(PuzzleUIManager.Instance.helpDialogue3.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2000,7 +2343,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 4 && !(PuzzleUIManager.Instance.helpDialogue4.activeInHierarchy))
+        if (tutorialPhase == 5 && !(PuzzleUIManager.Instance.helpDialogue4.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2020,7 +2363,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 5 && !(PuzzleUIManager.Instance.helpDialogue5.activeInHierarchy))
+        if (tutorialPhase == 6 && !(PuzzleUIManager.Instance.helpDialogue5.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2041,7 +2384,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if (tutorialPhase == 6 && !(PuzzleUIManager.Instance.endText.activeInHierarchy))
+        if (tutorialPhase == 7 && !(PuzzleUIManager.Instance.endText.activeInHierarchy))
         {
             PuzzleUIManager.Instance.helpDialogue1.SetActive(false);
             PuzzleUIManager.Instance.helpDialogue2.SetActive(false);
@@ -2057,7 +2400,7 @@ public class GameManager : MonoBehaviour
             PuzzleUIManager.Instance.arrowGroup5.SetActive(false);
 
 
-
+            PuzzleUIManager.Instance.endText.GetComponentInChildren<Text>().text = "Click anywhere to exit tutorial!";
             PuzzleUIManager.Instance.endText.SetActive(true);
         }
 
@@ -2086,17 +2429,136 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Update2ndLastLevelDialogue()
+    {
+        PuzzleUIManager.Instance.charDialogue2.gameObject.SetActive(false);
+        PuzzleUIManager.Instance.charDialogue3.gameObject.SetActive(false);
+        PuzzleUIManager.Instance.charDialogue1.gameObject.SetActive(true);
+
+        if (dialogueIndexFor2ndLast < FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length)
+        {
+            PuzzleUIManager.Instance.charDialogue1.gameObject.GetComponentInChildren<Text>().text =
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue]
+                    .sentences[dialogueIndexFor2ndLast];
+        }
+        else
+        {
+            SceneManager.LoadScene(Values.SceneNames.BedroomScene);
+            FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].isDone = true;
+            FindObjectOfType<StoryManager>().currentDialogue++;
+        }
+    }
+
+    private void UpdateFinalLevelDialogue()
+    {
+
+        if (dialogueIndexForFinal < FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length - 3)
+        {
+            
+            PuzzleUIManager.Instance.Text.GetComponent<Text>().text =
+                FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                    .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue]
+                    .sentences[dialogueIndexForFinal];
+
+            int RisingValue = FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length / 2;
+
+            float currentTextPosition = initTextPosY *5 ;
+            float increaseValue = currentTextPosition / RisingValue;
+            Vector3 increaseVector = new Vector3(0, increaseValue, 0);
+
+            float currentAlpha = 1;
+            float increaseAlphaValue = currentAlpha / RisingValue;
+            Color increaseAlpha = new Color(0, 0, 0, increaseAlphaValue);
+
+
+            if (dialogueIndexForFinal >= RisingValue)
+            {
+                PuzzleUIManager.Instance.Text.GetComponent<RectTransform>().position += increaseVector;
+                PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color += increaseAlpha;
+            }
+            
+        }
+        else
+        {
+            Debug.Log("dialogueIndexForFinal:" + dialogueIndexForFinal);
+            StartCoroutine(WaitAnimation());
+        }
+
+        
+    }
+
     private void OnWin()
     {
-        Values.Player.gold += 25;
+        //Values.Player.gold += 25;
         Debug.Log("Win");
-        SceneManager.LoadScene("LevelSetupTest");
+        PuzzleUIManager.Instance.endText.GetComponentInChildren<Text>().text = "Victory!";
+        PuzzleUIManager.Instance.endText.SetActive(true);
+        //SceneManager.LoadScene("LevelSetupTest");
     }
 
     private void OnLose()
     {
-        Debug.Log("Lose");
-        SceneManager.LoadScene("LevelSetupTest");
+       
+        PuzzleUIManager.Instance.endText.SetActive(true);
+        if (isRigged)
+        {
+            Debug.Log("Lose Rigged");
+            PuzzleUIManager.Instance.endText.GetComponentInChildren<Text>().text = "Game Over!";
+        }
+        else
+        {
+            Debug.Log("Lose Not Rigged");
+            PuzzleUIManager.Instance.endText.GetComponentInChildren<Text>().text = "Try Again!";
+        }
+        //SceneManager.LoadScene("LevelSetupTest");
 
     }
+
+    IEnumerator WaitAnimation()
+    {
+        dialogueIndexForFinal++;
+        PuzzleUIManager.Instance.Text.GetComponent<Text>().text =
+            FindObjectOfType<StoryManager>().StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue]
+                .sentences[dialogueIndexForFinal];
+
+        int RisingValue = FindObjectOfType<StoryManager>()
+            .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+            .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length / 2;
+
+        float currentTextPosition = initTextPosY * 5;
+        float increaseValue = currentTextPosition / RisingValue;
+        Vector3 increaseVector = new Vector3(0, increaseValue, 0);
+
+        float currentAlpha = 1;
+        float increaseAlphaValue = currentAlpha / RisingValue;
+        Color increaseAlpha = new Color(0, 0, 0, increaseAlphaValue);
+
+
+        if (dialogueIndexForFinal >= RisingValue)
+        {
+            PuzzleUIManager.Instance.Text.GetComponent<RectTransform>().position += increaseVector;
+            PuzzleUIManager.Instance.FadeToBlackPanel.GetComponent<Image>().color += increaseAlpha;
+        }
+        yield return new WaitForSeconds(3.0f);
+        
+
+        Debug.Log("triggertoscene transfer");
+        if (dialogueIndexForFinal < FindObjectOfType<StoryManager>()
+                .StoryChapters[FindObjectOfType<StoryManager>().currentChapter]
+                .ChapterDialogues[FindObjectOfType<StoryManager>().currentDialogue].sentences.Length)
+        {
+            isPuzzleDone = true;
+        }
+    }
+
+
 }

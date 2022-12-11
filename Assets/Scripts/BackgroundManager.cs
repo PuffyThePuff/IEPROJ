@@ -1,31 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class BackgroundManager : MonoBehaviour
 {
     public GameObject EmptyBedroom;
     public GameObject CharacterBedroom;
+    public GameObject GachaBackground;
+    public GameObject InGameBackground;
+    public GameObject CaveBackground;
+    public GameObject BedYuukiBackground;
+    public GameObject AfterPCSellBG;
+    public GameObject DepressionBG;
+    public GameObject HallwayClassroom;
+
+
+    public GameObject NagiSpawn;
+    public GameObject ChessSpawn;
+    public GameObject SakuraSpawn;
+
+    public Text FinalText;
 
     // Start is called before the first frame update
     void Start()
     {
-        EmptyBedroom.SetActive(false);
-        CharacterBedroom.SetActive(false);
+        if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene)
+            FindObjectOfType<StoryAnimations>().BackgrondChange();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (FindObjectOfType<StoryManager>().currentChapter == 0 && FindObjectOfType<StoryManager>().currentDialogue == 0)
-        {
-            EmptyBedroom.SetActive(false);
-            CharacterBedroom.SetActive(true);
-        }
-        else
-        {
-            EmptyBedroom.SetActive(true);
-            CharacterBedroom.SetActive(false);
-        }
+        
     }
 }

@@ -23,6 +23,9 @@ public class Dialogue
     public int[] speaker1Lines;
     public int[] speaker2Lines;
 
+    public int[] speaker1ExpressionIndex;
+    public int[] speaker2ExpressionIndex;
+
     public Sprite[] speaker1Sprites;
     public Sprite[] speaker2Sprites;
 

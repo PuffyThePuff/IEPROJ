@@ -72,16 +72,33 @@ public static class Values
         public static Character equippedChar2 = Characters.c2;
         public static Character equippedChar3 = Characters.c3;
         public static int gold = 0;
-        public static float basicDamage = 2;
-        public static float enhancedDmaage = 15;
+        public static float basicDamage = 5;
+        public static float enhancedDamageMultiplier = 2;
+        public static float basicHeal = 0.01f;
+        public static float enhancedHealMultiplier = 5;
+        public static int setStunAmount = 1;
+        
     }
     
     public class Puzzle
     {
         public static bool isTutorial = false;
+        public static bool isRigged = false;
+        public static bool is2ndLastLevel = false;
+        public static bool isFinalLevel = false;
+        
         public static int hexBlockerCount = 3;
         public static float PainHexPosionDamage = 50.0f;
         public static float BlackHexBurstDamage = 10.0f;
+    }
+
+
+    public class SceneNames
+    {
+        public static string BedroomScene = "TransitionSample";
+        public static string ClassroomScene = "DestinationSample";
+        public static string PuzzleScene = "Puzzle";
+        public static string LogoScene = "OtaconnectStart";
     }
 }
     
