@@ -1869,7 +1869,7 @@ public class StoryManager : MonoBehaviour
                 Values.Puzzle.isRigged = false;
                 Values.Puzzle.is2ndLastLevel = true;
                 Values.Puzzle.isFinalLevel = false;
-                Values.Enemy.enemyLevel = 0;
+                Values.Enemy.enemyLevel = 5;
                 Values.Enemy.maxHP = 10000;
                 Values.Enemy.dmg = 0.01f;
 

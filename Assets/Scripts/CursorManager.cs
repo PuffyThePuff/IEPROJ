@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 public class CursorManager : MonoBehaviour
 {
+    public static CursorManager instanceRef;
     public enum cursor_state
     {
         up, down
@@ -13,21 +14,15 @@ public class CursorManager : MonoBehaviour
     public Texture2D cursorPressedTex;
 
 
-    private void Awake()
+    void Awake()
     {
-        if (Instance == null)
+        if (instanceRef == null)
         {
-            Instance = this;
-            //DontDestroyOnLoad(gameObject);
-
+            instanceRef = this;
+            DontDestroyOnLoad(gameObject);
         }
-
-        else
-        {
+        else if (instanceRef != this)
             Destroy(gameObject);
-            Debug.Log("Destroying");
-            return;
-        }
     }
 
     // Start is called before the first frame update
