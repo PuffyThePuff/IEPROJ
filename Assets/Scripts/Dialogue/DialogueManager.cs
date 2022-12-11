@@ -433,7 +433,34 @@ public class DialogueManager : MonoBehaviour
                 FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[3].ChapterDialogues[3], true);
             }
         }
-        
+        if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 0)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[0], true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 1)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[1], true);
+            }
+        }
+        if (FindObjectOfType<StoryManager>().currentChapter == 4 &&
+            FindObjectOfType<StoryManager>().currentDialogue == 2)
+        {
+            if (SceneManager.GetActiveScene().name == Values.SceneNames.BedroomScene
+                && !FindObjectOfType<StoryManager>().isOnDialogue && !FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[2].isDone)
+            {
+                FindObjectOfType<DialogueManager>().StartDialogue(FindObjectOfType<StoryManager>().StoryChapters[4].ChapterDialogues[2], true);
+            }
+        }
+
 
 
 
@@ -840,10 +867,17 @@ public class DialogueManager : MonoBehaviour
 
             Speaker2Image.gameObject.SetActive(true);
         }
+        if ((FindObjectOfType<StoryManager>().currentChapter == 1 && 
+             FindObjectOfType<StoryManager>().currentDialogue == 2))
+        {
+            Speaker2Image.color = Color.clear;
+            Speaker1Image.color = Color.clear;
+        }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 2))
         {
             Speaker2Image.color = Color.clear;
+            Speaker1Image.color = Color.clear;
         }
         else if ((FindObjectOfType<StoryManager>().currentChapter == 2 &&
                   FindObjectOfType<StoryManager>().currentDialogue == 4))

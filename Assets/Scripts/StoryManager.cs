@@ -882,32 +882,32 @@ public class StoryManager : MonoBehaviour
             if ((k >= 2 && k < 5) || k == 7 || k == 35)
             {
                 //annoyed
-                StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex[k] = 4;
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 4;
             }
             else if (k == 10)
             {
                 //happy
-                StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex[k] = 1;
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 1;
             }
             else if (k == 8 || k == 9)
             {
                 //disgust
-                StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex[k] = 3;
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 3;
             }
             else if (k == 1)
             {
                 //embarrassed
-                StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex[k] = 2;
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 2;
             }
             else if ((k >= 20 && k < 24) || k >= 33) 
             {
                 //angry
-                StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex[k] = 2;
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 5;
             }
             else
             {
                 //neutral
-                StoryChapters[j].ChapterDialogues[i].speaker2ExpressionIndex[k] = 0;
+                StoryChapters[j].ChapterDialogues[i].speaker1ExpressionIndex[k] = 0;
             }
         }
 
@@ -993,7 +993,7 @@ public class StoryManager : MonoBehaviour
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = new Sprite[] { };
         StoryChapters[j].ChapterDialogues[i].speaker1Sprites = McSprites;
 
-        StoryChapters[j].ChapterDialogues[i].speaker2Lines = new int[] { 29,30,31};
+        StoryChapters[j].ChapterDialogues[i].speaker2Lines = new int[] { 28,29,30,31};
         StoryChapters[j].ChapterDialogues[i].speaker2Sprites = new Sprite[] { };
         StoryChapters[j].ChapterDialogues[i].speaker2Sprites = PhoneSprites;
 
